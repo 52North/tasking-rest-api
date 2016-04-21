@@ -7,7 +7,7 @@
         <version>1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>tasking-webapp</artifactId>
+    <artifactId>webapp</artifactId>
     <packaging>war</packaging>
     <name>Tasking REST API - Webapp</name>
 
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>tasking-rest</artifactId>
+            <artifactId>rest</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

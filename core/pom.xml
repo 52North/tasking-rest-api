@@ -6,7 +6,7 @@
         <artifactId>tasking-rest-api</artifactId>
         <version>1-SNAPSHOT</version>
     </parent>
-    <artifactId>tasking-core</artifactId>
+    <artifactId>core</artifactId>
     <packaging>jar</packaging>
     <name>Tasking REST API - core module</name>
     <url>http://52north.org/communities/sensorweb/</url>

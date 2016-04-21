@@ -67,17 +67,17 @@
         <dependencies>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>tasking-core</artifactId>
+                <artifactId>core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>tasking-rest</artifactId>
+                <artifactId>rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>tasking-webapp</artifactId>
+                <artifactId>webapp</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
