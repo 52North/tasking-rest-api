@@ -28,6 +28,8 @@
  */
 package org.n52.tasking.data.entity;
 
+import java.util.List;
+
 
 public class Device {
 
@@ -38,6 +40,12 @@ public class Device {
     private DeviceDescriptionData descriptionData;
     
     private Offering offering;
+    
+    private String phenomenon;
+    
+    private String feature;
+    
+    private List<TaskingDescription> taskingDescriptions;
     
     public Device(String id, String label, String description) {
         this.id = id;
@@ -75,6 +83,38 @@ public class Device {
 
     public void setDescriptionData(DeviceDescriptionData descriptionData) {
         this.descriptionData = descriptionData;
+    }
+
+    public Offering getOffering() {
+        return offering;
+    }
+
+    public void setOffering(Offering offering) {
+        this.offering = offering;
+    }
+
+    public String getPhenomenon() {
+        return phenomenon;
+    }
+
+    public void setPhenomenon(String phenomenon) {
+        this.phenomenon = phenomenon;
+    }
+
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
+    }
+
+    public List<TaskingDescription> getTaskingDescriptions() {
+        return taskingDescriptions;
+    }
+
+    public void setTaskingDescriptions(List<TaskingDescription> taskingDescriptions) {
+        this.taskingDescriptions = taskingDescriptions;
     }
 
 }

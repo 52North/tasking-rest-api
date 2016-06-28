@@ -77,6 +77,12 @@ public class SmlConfigDeviceRepositoryTest {
         assertTrue(repository.hasDevice(LISA_INSTANCE_ID));
     }
     
+    @Test
+    public void when_lisaInstanceAvailable_then_notEmptyUpdatableParameters() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertTrue(device.getDescriptionData());
+    }
+
     private Path getTestConfigFolder() throws URISyntaxException {
         return Paths.get(getClass().getResource(SML_CONFIG_FOLDER).toURI());
     }
