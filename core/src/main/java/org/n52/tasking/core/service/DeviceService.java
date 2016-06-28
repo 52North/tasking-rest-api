@@ -28,30 +28,31 @@
  */
 package org.n52.tasking.core.service;
 
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.repository.DeviceRepository;
-
 
 public class DeviceService {
 
     private DeviceRepository repository;
 
     public List<Resource> getDevices(String fullUrl) {
-        List<Resource> list = new ArrayList<>();
-        this.repository.getDevices().stream().forEach(dm -> {
-            list.add(Resource.aResource(dm.getId())
-                    .withLabel(dm.getLabel())
-                    .withDescription(dm.getDescription())
-                    .withHref(String.format("%s/%s", fullUrl, dm.getId())));
-        });
-        return list;
+        final Function<Device, Resource> toResource =  dm
+                -> Resource.aResource(dm.getId())
+                .withLabel(dm.getLabel())
+                .withDescription(dm.getDescription())
+                .withHref(String.format("%s/%s", fullUrl, dm.getId()));
+        
+        return this.repository.getDevices()
+                .stream()
+                .map(toResource)
+                .collect(Collectors.toList());
     }
 
     public Object getDevice(String id) throws UnknownDeviceException {
-        if ( !this.repository.hasDevice(id)) {
+        if (!this.repository.hasDevice(id)) {
             throw new UnknownDeviceException("");
         }
 
