@@ -19,10 +19,7 @@
 
     <!-- MVC beans -->
     <bean class="org.n52.eventing.rest.binding.ResourcesController" />
-    <bean class="org.n52.eventing.rest.binding.publications.PublicationsController" />
-    <bean class="org.n52.eventing.rest.binding.subscriptions.SubscriptionsController" />
-    <bean class="org.n52.eventing.rest.binding.deliverymethods.DeliveryMethodsController" />
-    <bean class="org.n52.eventing.rest.binding.templates.TemplatesController" />
+    <bean class="org.n52.eventing.rest.binding.device.DeviceController" />
     <bean class="org.n52.eventing.rest.binding.ExceptionHandlerImpl" />
 
     <bean id="contentNegotiationManager"

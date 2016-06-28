@@ -28,16 +28,28 @@
  */
 package org.n52.tasking.rest.devices;
 
+public class DeviceDescriptionData {
 
-import java.util.List;
+    // TODO probably add xmltext here
 
+    private String href;
 
-public interface DeviceDao {
+    private String format;
 
-    List<Device> getDeliveryMethods();
+    public String getHref() {
+        return href;
+    }
 
-    boolean hasDeliveryMethod(String id);
+    public void setHref(String href) {
+        this.href = href;
+    }
 
-    Device getDeliveryMethod(String id) throws UnknownDeviceException;
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
 
 }
