@@ -52,7 +52,7 @@
         <org.springframework.version>4.2.2.RELEASE</org.springframework.version>
         <logback.version>1.1.3</logback.version>
         <jackson.version>2.6.3</jackson.version>
-        <geotools.version>14.0</geotools.version>
+        <exificient.version>0.9.6</exificient.version>
         <slf4j.version>1.7.12</slf4j.version>
 
         <java.compiler.source>1.8</java.compiler.source>
@@ -85,24 +85,11 @@
                 <artifactId>joda-time</artifactId>
                 <version>2.8.2</version>
             </dependency>
+            
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>3.0.1</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.vividsolutions</groupId>
-                <artifactId>jts</artifactId>
-                <version>1.13</version>
-                <exclusions>
-                    <exclusion>
-                        <!-- old version dependency causes conclicts -->
-                        <groupId>xerces</groupId>
-                        <artifactId>xercesImpl</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>com.siemens.ct.exi</groupId>
+                <artifactId>exificient</artifactId>
+                <version>${exificient.version}</version>
             </dependency>
 
             <dependency>
@@ -115,6 +102,7 @@
                 <artifactId>spring-webmvc</artifactId>
                 <version>${org.springframework.version}</version>
             </dependency>
+            
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-oxm</artifactId>
@@ -144,15 +132,10 @@
             </dependency>
 
             <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.10</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.4</version>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>
@@ -242,21 +225,6 @@
             </plugin>
 
             <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>check-license</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
@@ -289,6 +257,7 @@
                 <configuration>
                     <noticeTemplate>misc/NOTICE.template</noticeTemplate>
                     <licenseMapping>
+                        <param>misc/license-mappings.xml</param>
                         <param>http://52north.github.io/cdn/licenses/license-mappings.xml</param>
                     </licenseMapping>
                     <generateChildNotices>false</generateChildNotices>
@@ -370,6 +339,21 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>2.4</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <inherited>false</inherited>
+                    <executions>
+                        <execution>
+                            <id>check-license</id>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>format</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>

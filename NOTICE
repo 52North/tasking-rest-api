@@ -4,17 +4,21 @@ Licensed under GNU General Public License, Version 2.0
 
 This project includes: 
   AOP alliance under Public Domain
-  Apache Commons Codec under Apache License, Version 2.0
   Apache Commons Logging under The Apache Software License, Version 2.0
   c3p0:JDBC DataSources/Resource Pools under GNU LESSER GENERAL PUBLIC LICENSE
-  Commons IO under The Apache Software License, Version 2.0
   CORS Filter under The Apache Software License, Version 2.0
+  EXIficient under MIT License
+  EXIficient-Core under MIT License
+  EXIficient-Grammars under MIT License
+  Hamcrest All under New BSD License
+  Hamcrest Core under New BSD License
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
   Java Property Utility under The Apache Software License, Version 2.0
   Java Servlet API under CDDL 1.1 or GPL2 w/ CPE
   Joda-Time under Apache 2
+  JUnit under Eclipse Public License 1.0
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Quartz Enterprise Job Scheduler under Apache 2.0
@@ -29,6 +33,8 @@ This project includes:
   Spring Web MVC under The Apache Software License, Version 2.0
   Tasking REST API under GNU General Public License, Version 2.0
   Tasking REST API - core module under GNU General Public License, Version 2.0
-  Tasking REST API - REST module under GNU General Public License, Version 2.0
+  Tasking REST API - REST module under GNU General Public License, version 2
   Tasking REST API - Webapp under GNU General Public License, Version 2.0
+  Xerces2-j under The Apache Software License, Version 2.0
+  XML Commons External Components XML APIs under The Apache Software License, Version 2.0 or The SAX License or The W3C License
 
