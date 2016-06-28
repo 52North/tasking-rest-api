@@ -19,8 +19,8 @@
 
     <!-- MVC beans -->
     <bean class="org.n52.eventing.rest.binding.ResourcesController" />
-    <bean class="org.n52.eventing.rest.binding.device.DeviceController" />
-    <bean class="org.n52.eventing.rest.binding.ExceptionHandlerImpl" />
+    <bean class="org.n52.eventing.rest.binding.device.DeviceController" /
+>    <bean class="org.n52.eventing.rest.binding.ExceptionHandlerImpl" />
 
     <bean id="contentNegotiationManager"
           class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">

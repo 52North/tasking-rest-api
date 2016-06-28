@@ -37,6 +37,7 @@ import org.n52.tasking.rest.UrlSettings;
 import org.n52.tasking.core.service.DeviceService;
 import org.n52.tasking.core.service.Resource;
 import org.n52.tasking.core.service.UnknownDeviceException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,7 @@ import org.springframework.web.servlet.ModelAndView;
         produces = {"application/json"})
 public class DeviceController {
 
+    @Autowired
     private DeviceService service;
 
     @RequestMapping("")
