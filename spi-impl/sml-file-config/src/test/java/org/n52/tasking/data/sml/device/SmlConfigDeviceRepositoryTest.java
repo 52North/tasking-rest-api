@@ -37,6 +37,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class SmlConfigDeviceRepositoryTest {
     private static final String SML_CONFIG_FOLDER = "/files";
 
     private static final String LISA_INSTANCE_ID = "http://www.nexosproject.eu/resource/procedure/trios/lisa/1234567890";
-    
+
     private SmlConfigDeviceRepository repository;
 
     @Before
@@ -76,11 +77,12 @@ public class SmlConfigDeviceRepositoryTest {
     public void when_configFolderRead_then_lisaInstanceAvailable() {
         assertTrue(repository.hasDevice(LISA_INSTANCE_ID));
     }
-    
+
     @Test
     public void when_lisaInstanceAvailable_then_notEmptyUpdatableParameters() {
         Device device = repository.getDevice(LISA_INSTANCE_ID);
-        assertTrue(device.getDescriptionData());
+        Assert.fail();
+//        assertTrue(device.getDescriptionData());
     }
 
     private Path getTestConfigFolder() throws URISyntaxException {
