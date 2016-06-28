@@ -30,8 +30,11 @@ package org.n52.tasking.data.repository;
 
 import org.n52.tasking.data.entity.Task;
 import java.util.List;
+import org.n52.tasking.data.cmd.CreateTask;
 
 public interface TaskRepository {
+    
+    Task createTask(CreateTask createTask);
     
     List<Task> getTasks();
     

@@ -8,6 +8,8 @@ public class Task {
     
     private long estimatedToC;
     
+    private String taskStatus;
+    
     private String requestStatus;
     
     private long submittedAt;
@@ -40,6 +42,14 @@ public class Task {
 
     public void setEstimatedToC(long estimatedToC) {
         this.estimatedToC = estimatedToC;
+    }
+
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
     }
 
     public String getRequestStatus() {
