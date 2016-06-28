@@ -38,7 +38,7 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.n52.tasking.data.RepositoryConfigurationException;
 import org.n52.tasking.data.entity.Device;
-import org.n52.tasking.data.device.DeviceRepository;
+import org.n52.tasking.data.repository.DeviceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

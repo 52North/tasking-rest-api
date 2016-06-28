@@ -26,7 +26,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.device;
+package org.n52.tasking.data.repository;
 
 import java.util.List;
 import org.n52.tasking.data.entity.Device;

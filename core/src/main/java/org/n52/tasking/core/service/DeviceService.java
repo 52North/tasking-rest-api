@@ -32,7 +32,7 @@ package org.n52.tasking.core.service;
 import java.util.ArrayList;
 import java.util.List;
 import org.n52.tasking.data.entity.Device;
-import org.n52.tasking.data.device.DeviceRepository;
+import org.n52.tasking.data.repository.DeviceRepository;
 
 
 public class DeviceService {

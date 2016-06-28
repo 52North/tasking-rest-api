@@ -28,13 +28,12 @@
  */
 package org.n52.tasking.data.sml.device;
 
-import org.n52.tasking.data.sml.ParseException;
-import org.n52.tasking.data.sml.XPathParser;
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 import org.n52.tasking.data.entity.Device;
+import org.n52.tasking.data.sml.ParseException;
+import org.n52.tasking.data.sml.XPathParser;
 import org.xml.sax.SAXException;
 
 public class DeviceParser {
