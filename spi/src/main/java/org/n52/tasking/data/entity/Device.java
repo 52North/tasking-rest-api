@@ -26,23 +26,23 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.eventing.rest.binding;
+package org.n52.tasking.data.entity;
 
-/**
- *
- * @author <a href="mailto:m.rieke@52north.org">Matthes Rieke</a>
- */
-public class ResourceCollection {
+
+public class Device {
 
     private String id;
     private String label;
     private String description;
-    private Integer size;
-    private String href;
-    private String userId;
 
-    private ResourceCollection(String id) {
+    private DeviceDescriptionData descriptionData;
+    
+    private Offering offering;
+    
+    public Device(String id, String label, String description) {
         this.id = id;
+        this.label = label;
+        this.description = description;
     }
 
     public String getId() {
@@ -69,56 +69,12 @@ public class ResourceCollection {
         this.description = description;
     }
 
-    public Integer getSize() {
-        return size;
+    public DeviceDescriptionData getDescriptionData() {
+        return descriptionData;
     }
 
-    public void setSize(Integer size) {
-        this.size = size;
+    public void setDescriptionData(DeviceDescriptionData descriptionData) {
+        this.descriptionData = descriptionData;
     }
 
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public ResourceCollection withLabel(String label) {
-        this.label = label;
-        return this;
-    }
-
-    public ResourceCollection withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public ResourceCollection withCount(Integer count) {
-        this.size = count;
-        return this;
-    }
-
-    public ResourceCollection withHref(String href) {
-        this.href = href;
-        return this;
-    }
-
-    public ResourceCollection withUserId(String id) {
-        this.userId = id;
-        return this;
-    }
-
-    public static ResourceCollection createResource(String id) {
-        return new ResourceCollection(id);
-    }
 }

@@ -26,66 +26,43 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.eventing.rest.binding.device;
+package org.n52.tasking.rest.service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
-import org.n52.eventing.rest.binding.RequestUtils;
-import org.n52.eventing.rest.binding.ResourceCollection;
-import org.n52.eventing.rest.binding.ResourceNotAvailableException;
-import org.n52.eventing.rest.binding.UrlSettings;
-import org.n52.eventing.rest.binding.EmptyArrayModel;
-import org.n52.tasking.rest.devices.Device;
-import org.n52.tasking.rest.devices.DeviceDao;
-import org.n52.tasking.rest.devices.UnknownDeviceException;
+import org.n52.tasking.rest.RequestUtils;
+import org.n52.tasking.rest.ResourceNotAvailableException;
+import org.n52.tasking.rest.UrlSettings;
+import org.n52.tasking.core.service.DeviceService;
+import org.n52.tasking.core.service.Resource;
+import org.n52.tasking.core.service.UnknownDeviceException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- *
- * @author <a href="mailto:m.rieke@52north.org">Matthes Rieke</a>
- */
 @RestController
-@RequestMapping(value = UrlSettings.API_V1_BASE+"/"+ UrlSettings.DEVICES_RESOURCE,
+@RequestMapping(value = UrlSettings.API_V1_BASE + "/" + UrlSettings.DEVICES_RESOURCE,
         produces = {"application/json"})
 public class DeviceController {
 
-    private DeviceDao dao;
+    private DeviceService service;
 
     @RequestMapping("")
-    public ModelAndView getDeliveryMethods() throws IOException, URISyntaxException {
+    public ModelAndView getResourceCollection() throws IOException, URISyntaxException {
         String fullUrl = RequestUtils.resolveFullRequestUrl();
-        List<ResourceCollection> list = new ArrayList<>();
-
-        this.dao.getDeliveryMethods().stream().forEach(dm -> {
-            list.add(ResourceCollection.createResource(dm.getId())
-                .withLabel(dm.getLabel())
-                .withDescription(dm.getDescription())
-                .withHref(String.format("%s/%s", fullUrl, dm.getId())));
-        });
-
-        if (list.isEmpty()) {
-            return EmptyArrayModel.create();
-        }
-
+        List<Resource> list = this.service.getDevices(fullUrl);
         return new ModelAndView().addObject(list);
     }
 
     @RequestMapping("/{item}")
-    public Device getDeliveryMethod(@PathVariable("item") String id) throws ResourceNotAvailableException {
-        if (this.dao.hasDeliveryMethod(id)) {
-            try {
-                return this.dao.getDeliveryMethod(id);
-            } catch (UnknownDeviceException ex) {
-                throw new ResourceNotAvailableException(ex.getMessage(), ex);
-            }
+    public Object getResourceItem(@PathVariable("item") String id) throws ResourceNotAvailableException {
+        try {
+            return this.service.getDevice(id);
+        } catch (UnknownDeviceException ex) {
+            throw new ResourceNotAvailableException(ex.getMessage(), ex);
         }
-
-        throw new ResourceNotAvailableException("Delivery method not available: "+id);
     }
 
 }

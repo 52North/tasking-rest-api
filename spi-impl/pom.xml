@@ -6,27 +6,21 @@
         <artifactId>tasking-rest-api</artifactId>
         <version>1-SNAPSHOT</version>
     </parent>
-    <artifactId>core</artifactId>
-    <packaging>jar</packaging>
-    <name>Tasking REST API - core module</name>
+    <artifactId>spi-impl</artifactId>
+    <packaging>pom</packaging>
+    <name>Tasking REST API - spi impl modules</name>
     <url>http://52north.org/communities/sensorweb/</url>
+    <modules>
+        <module>sml-file-config</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>spi</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
         </dependency>
         
         <dependency>

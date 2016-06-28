@@ -26,19 +26,36 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.rest.devices;
+package org.n52.tasking.core.service;
 
 
-public class UnknownDeviceException extends Exception {
+import java.util.ArrayList;
+import java.util.List;
+import org.n52.tasking.data.entity.Device;
+import org.n52.tasking.data.device.DeviceRepository;
 
-    private static final long serialVersionUID = -2516818469000766407L;
 
-    public UnknownDeviceException(String message) {
-        super(message);
+public class DeviceService {
+
+    private DeviceRepository repository;
+
+    public List<Resource> getDevices(String fullUrl) {
+        List<Resource> list = new ArrayList<>();
+        this.repository.getDevices().stream().forEach(dm -> {
+            list.add(Resource.aResource(dm.getId())
+                    .withLabel(dm.getLabel())
+                    .withDescription(dm.getDescription())
+                    .withHref(String.format("%s/%s", fullUrl, dm.getId())));
+        });
+        return list;
     }
 
-    public UnknownDeviceException(String message, Throwable cause) {
-        super(message, cause);
+    public Object getDevice(String id) throws UnknownDeviceException {
+        if ( !this.repository.hasDevice(id)) {
+            throw new UnknownDeviceException("");
+        }
+
+        return this.repository.getDevice(id);
     }
 
 }

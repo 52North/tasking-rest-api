@@ -26,30 +26,19 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.rest.devices;
+package org.n52.tasking.core.service;
 
-public class DeviceDescriptionData {
 
-    // TODO probably add xmltext here
+public class UnknownDeviceException extends Exception {
 
-    private String href;
+    private static final long serialVersionUID = -2516818469000766407L;
 
-    private String format;
-
-    public String getHref() {
-        return href;
+    public UnknownDeviceException(String message) {
+        super(message);
     }
 
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
+    public UnknownDeviceException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

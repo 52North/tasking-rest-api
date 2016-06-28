@@ -26,18 +26,20 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.rest.devices;
+package org.n52.tasking.rest;
 
+/**
+ *
+ * TODO JavaDoc
+ */
+public interface UrlSettings {
 
-import java.util.List;
+    String API_V1_BASE = "/v1";
 
+    String DEVICES_RESOURCE = "devices";
 
-public interface DeviceDao {
+    String TASKS_RESOURCE = "tasks";
 
-    List<Device> getDeliveryMethods();
-
-    boolean hasDeliveryMethod(String id);
-
-    Device getDeliveryMethod(String id) throws UnknownDeviceException;
+    String RESULTS_RESOURCE = "results";
 
 }

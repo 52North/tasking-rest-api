@@ -26,20 +26,32 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.eventing.rest.binding;
+package org.n52.tasking.data.sml.device;
 
-/**
- *
- * @author <a href="mailto:m.rieke@52north.org">Matthes Rieke</a>
- */
-public class ResourceNotAvailableException extends Exception {
+import org.n52.tasking.data.sml.ParseException;
+import org.n52.tasking.data.sml.XPathParser;
+import java.io.File;
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import org.n52.tasking.data.entity.Device;
+import org.xml.sax.SAXException;
 
-    public ResourceNotAvailableException(String message) {
-        super(message);
+public class DeviceParser {
+
+    private final XPathParser parser;
+
+    DeviceParser(File file) throws ParseException {
+        try {
+            parser = new XPathParser(file);
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            throw new ParseException("Unable to create XPathParser", e);
+        }
     }
 
-    public ResourceNotAvailableException(String message, Throwable cause) {
-        super(message, cause);
+    public Device parse() throws ParseException {
+        String id = parser.parseString("/PhysicalComponent/identifier");
+        return new Device(id, null, null);
     }
 
 }

@@ -26,36 +26,16 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.rest.devices;
+package org.n52.tasking.data;
 
-import java.util.Collections;
-import java.util.List;
+public class RepositoryConfigurationException extends Exception {
 
-public class SmlConfigDeviceDao implements DeviceDao {
-
-    private final Device dummyDevice;
-
-    public SmlConfigDeviceDao() {
-        this.dummyDevice = new Device("email", "Email", "Send email for every match");
+    public RepositoryConfigurationException(String message) {
+        super(message);
     }
 
-    @Override
-    public List<Device> getDeliveryMethods() {
-        return Collections.singletonList(dummyDevice);
-    }
-
-    @Override
-    public boolean hasDeliveryMethod(String id) {
-        return dummyDevice.getId().equals(id);
-    }
-
-    @Override
-    public Device getDeliveryMethod(String id) throws UnknownDeviceException {
-        if (hasDeliveryMethod(id)) {
-            return dummyDevice;
-        }
-
-        throw new UnknownDeviceException("Not there: "+id);
+    public RepositoryConfigurationException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

@@ -26,42 +26,30 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.eventing.rest.binding;
+package org.n52.tasking.data.entity;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+public class DeviceDescriptionData {
 
-/**
- *
- * @author <a href="mailto:m.rieke@52north.org">Matthes Rieke</a>
- */
-public class RequestUtils {
+    // TODO probably add xmltext here
 
-    public static String resolveFullRequestUrl() throws IOException, URISyntaxException {
-        HttpServletRequest request = ((ServletRequestAttributes)
-                RequestContextHolder.currentRequestAttributes()).getRequest();
+    private String href;
 
-        URL url = new URL(request.getRequestURL().toString());
+    private String format;
 
-        String scheme = url.getProtocol();
-        String userInfo = url.getUserInfo();
-        String host  = url.getHost();
+    public String getHref() {
+        return href;
+    }
 
-        int port = url.getPort();
+    public void setHref(String href) {
+        this.href = href;
+    }
 
-        String path = request.getRequestURI();
-        if (path != null && path.endsWith("/")) {
-            path = path.substring(0, path.length() - 1);
-        }
-        String query = request.getQueryString();
+    public String getFormat() {
+        return format;
+    }
 
-        URI uri = new URI(scheme, userInfo, host, port, path, query, null);
-        return uri.toString();
+    public void setFormat(String format) {
+        this.format = format;
     }
 
 }
