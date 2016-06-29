@@ -39,6 +39,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.tasking.data.entity.Device;
@@ -57,11 +58,16 @@ public class SmlConfigDeviceRepositoryTest {
         repository = new SmlConfigDeviceRepository(folder.getAbsolutePath());
     }
 
-    @Test(expected = RepositoryConfigurationException.class)
-    public void when_configFolderNotPresentOnCreation_thenException() throws Exception {
-        repository = new SmlConfigDeviceRepository("does-not-exist");
+    @Test
+    public void when_relativeConfigFolderNotPresentOnCreation_thenFolderGetsCreated() throws Exception {
+        repository = new SmlConfigDeviceRepository("test-sml-folder");
+        File expected = new File(getClass().getResource("/test-sml-folder").toURI());
+        assertTrue(expected.exists());
+        if ( !expected.delete()) {
+            fail("could not remove created test-sml-folder");
+        }
     }
-
+    
     @Test(expected = RepositoryConfigurationException.class)
     public void when_givenFileOnCreation_thenException() throws Exception {
         String file = getTestConfigFile("empty.txt").getAbsolutePath();

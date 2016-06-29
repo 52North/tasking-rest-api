@@ -28,12 +28,15 @@
  */
 package org.n52.tasking.data.entity;
 
+import java.util.Collections;
 import java.util.List;
 
 
 public class Device {
-
+    
     private String id;
+
+    private String domainId;
     private String label;
     private String description;
 
@@ -47,8 +50,8 @@ public class Device {
 
     private List<TaskingDescription> taskingDescriptions;
 
-    public Device(String id, String label, String description) {
-        this.id = id;
+    public Device(String domainId, String label, String description) {
+        this.domainId = domainId;
         this.label = label;
         this.description = description;
     }
@@ -57,8 +60,16 @@ public class Device {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String storageId) {
+        this.id = storageId;
+    }
+
+    public String getDomainId() {
+        return domainId;
+    }
+
+    public void setDomainId(String domainId) {
+        this.domainId = domainId;
     }
 
     public String getLabel() {
@@ -110,7 +121,9 @@ public class Device {
     }
 
     public List<TaskingDescription> getTaskingDescriptions() {
-        return taskingDescriptions;
+        return taskingDescriptions != null
+                ? Collections.unmodifiableList(taskingDescriptions)
+                : taskingDescriptions;
     }
 
     public void setTaskingDescriptions(List<TaskingDescription> taskingDescriptions) {
@@ -119,7 +132,7 @@ public class Device {
 
     @Override
     public String toString() {
-        return "Device{" + "id=" + id + ", label=" + label + ", description=" + description + ", descriptionData=" + descriptionData + ", offering=" + offering + ", phenomenon=" + phenomenon + ", feature=" + feature + ", taskingDescriptions=" + taskingDescriptions + '}';
+        return "Device{" + "domainId=" + domainId + ", label=" + label + ", description=" + description + ", descriptionData=" + descriptionData + ", offering=" + offering + ", phenomenon=" + phenomenon + ", feature=" + feature + ", taskingDescriptions=" + taskingDescriptions + '}';
     }
 
 }

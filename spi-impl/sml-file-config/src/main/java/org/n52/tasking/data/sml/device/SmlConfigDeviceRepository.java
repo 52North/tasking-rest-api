@@ -30,11 +30,16 @@ package org.n52.tasking.data.sml.device;
  */
 import org.n52.tasking.data.sml.ParseException;
 import java.io.File;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import javax.annotation.PostConstruct;
 import org.apache.commons.io.FilenameUtils;
 import org.n52.tasking.data.RepositoryConfigurationException;
 import org.n52.tasking.data.entity.Device;
@@ -46,22 +51,42 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger((SmlConfigDeviceRepository.class));
 
-    private final Map<String,Device> id2Device = new HashMap<>();
+    private final Map<String, Device> deviceById = new HashMap<>();
 
     private boolean failOnParsingErrors = false;
 
-    public SmlConfigDeviceRepository(String smlFolder) throws RepositoryConfigurationException {
-        File folder = new File(smlFolder);
-        if ( !isValid(folder)) {
+    private final String smlFolder;
+
+    private Path basePath;
+
+    public SmlConfigDeviceRepository(String smlFolder) {
+        this.smlFolder = smlFolder;
+    }
+
+    @PostConstruct
+    public void readFiles() throws RepositoryConfigurationException {
+        File folder = getFolder(smlFolder);
+        if (!isValid(folder)) {
             throw new RepositoryConfigurationException("SML config folder does not exist: '" + folder.toString() + "'");
         }
         LOGGER.info("Reading sml devices from '{}' ...", folder.getAbsolutePath());
         readDevices(folder);
     }
 
-    private static boolean isValid(File folder) {
-        return folder.exists()
-               && folder.isDirectory();
+    private boolean isValid(File folder) {
+        return folder.isDirectory();
+    }
+
+    private File getFolder(String smlFolder) throws RepositoryConfigurationException {
+        try {
+            final Path root = basePath == null
+                    ? Paths.get(getClass().getResource("/").toURI())
+                    : basePath;
+            Path target = root.resolve(smlFolder);
+            return target.toFile();
+        } catch (URISyntaxException e) {
+            throw new RepositoryConfigurationException("Could not resolve SML folder: '" + smlFolder + "'", e);
+        }
     }
 
     private void readDevices(File folder) throws RepositoryConfigurationException {
@@ -84,7 +109,8 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
         try {
             DeviceParser parser = new DeviceParser(file);
             Device device = parser.parse();
-            id2Device.put(device.getId(), device);
+            StorageIdGenerator.generateIdFor(device);
+            deviceById.put(device.getId(), device);
         } catch (ParseException e) {
             String filePath = file.getAbsolutePath();
             if (failOnParsingErrors) {
@@ -97,22 +123,29 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
 
     @Override
     public List<Device> getDevices() {
-        ArrayList<Device> devices = new ArrayList<>(id2Device.values());
+        ArrayList<Device> devices = new ArrayList<>(deviceById.values());
         return Collections.unmodifiableList(devices);
     }
 
     @Override
     public boolean hasDevice(String id) {
-        return id2Device.containsKey(id);
+        return deviceById.containsKey(id);
     }
 
     @Override
     public Device getDevice(String id) {
-        return null;
+        return deviceById.get(id);
     }
 
     public void setFailOnParsingErrors(boolean failOnParsingErrors) {
         this.failOnParsingErrors = failOnParsingErrors;
+    }
+
+    private static class StorageIdGenerator {
+        static void generateIdFor(Device device) {
+            final byte[] bytes = device.getDomainId().getBytes();
+            device.setId(UUID.nameUUIDFromBytes(bytes).toString());
+        }
     }
 
 }

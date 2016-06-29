@@ -6,7 +6,7 @@
             <pattern>%d{ISO8601} [%t] %-5p %c{32}: %m%n</pattern>
         </encoder>
     </appender>
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="tasking-console" />
     </root>
 </configuration>

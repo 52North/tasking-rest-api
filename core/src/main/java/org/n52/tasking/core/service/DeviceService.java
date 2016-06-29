@@ -59,4 +59,14 @@ public class DeviceService {
         return this.repository.getDevice(id);
     }
 
+    public DeviceRepository getRepository() {
+        return repository;
+    }
+
+    public void setRepository(DeviceRepository repository) {
+        this.repository = repository;
+    }
+
+
+
 }

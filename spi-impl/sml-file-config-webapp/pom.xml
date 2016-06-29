@@ -70,13 +70,14 @@
                     <stopPort>34343</stopPort>
                     <reload>manual</reload>
                     <webApp>
-                        <contextPath>/${project.build.finalName}</contextPath>
-                        <extraClasspath>target/classes;../../core/target/classes;../../rest/target/classes;../sml-file-config/target/classes</extraClasspath>
+                        <contextPath>/</contextPath>
+                        <extraClasspath>target/${project.build.finalName}/WEB-INF/classes;../../core/target/classes;../../spi/target/classes;../../rest/target/classes;../sml-file-config/target/classes</extraClasspath>
                     </webApp>
                     <scanTargets>
                         <scanTarget>target/${project.build.finalName}/WEB-INF/classes</scanTarget>
                         <scanTarget>../sml-file-config/target/classes</scanTarget>
                         <scanTarget>../../core/target/classes</scanTarget>
+                        <scanTarget>../../spi/target/classes</scanTarget>
                         <scanTarget>../../rest/target/classes</scanTarget>
                     </scanTargets>
                 </configuration>
