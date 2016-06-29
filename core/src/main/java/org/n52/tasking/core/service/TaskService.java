@@ -36,9 +36,9 @@ import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.TaskRepository;
 
 public class TaskService {
-
+    
     private TaskRepository repository;
-
+    
     public List<Resource> getTasks(String fullUrl) {
         final Function<Task, Resource> toResource =  dm
                 -> Resource.aResource(dm.getId())
@@ -75,6 +75,5 @@ public class TaskService {
     public void setRepository(TaskRepository repository) {
         this.repository = repository;
     }
-
-
+    
 }
