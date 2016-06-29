@@ -55,7 +55,9 @@ public class DeviceParser {
     public Device parse() throws ParseException {
         LOGGER.debug("Parsing device ...");
         String id = parser.parseString("/PhysicalComponent/identifier");
-        final Device device = new Device(id, null, null);
+        String description = parser.parseString("/PhysicalComponent/description");        
+        String label = parser.parseString("/PhysicalComponent/identification/IdentifierList/identifier/Term[contains(@definition,'#modelID')]/value/text()");
+        final Device device = new Device(id, label, description);
         LOGGER.debug("Parsed device: {}", device.toString());
         return device;
     }
