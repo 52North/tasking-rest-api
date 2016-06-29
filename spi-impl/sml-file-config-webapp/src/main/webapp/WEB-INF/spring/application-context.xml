@@ -25,7 +25,9 @@
     <bean class="org.n52.tasking.core.service.TaskService" name="taskService">
         <property name="repository" ref="taskRepository" />
     </bean>
-    <bean class="org.n52.tasking.data.sml.task.InMemoryTaskRepository" name="taskRepository" />
-
+    <bean class="org.n52.tasking.data.sml.task.InMemoryTaskRepository" name="taskRepository">
+        <property name="taskRunner" ref="taskRunner" />
+    </bean>
+    <bean class="org.n52.tasking.data.sml.task.SmlFileConfigTaskRunner" name="taskRunner" destroy-method="shutdown"/>
 
 </beans>
