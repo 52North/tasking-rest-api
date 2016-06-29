@@ -21,6 +21,7 @@
     <bean class="org.n52.tasking.rest.ResourcesController" />
     <bean class="org.n52.tasking.rest.ExceptionHandlerImpl" />
     <bean class="org.n52.tasking.rest.service.DeviceController" />
+    <bean class="org.n52.tasking.rest.service.TaskController" />
 
     <bean id="contentNegotiationManager"
           class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
