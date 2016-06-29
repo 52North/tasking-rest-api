@@ -29,15 +29,15 @@
 package org.n52.tasking.core.service;
 
 
-public class UnknownDeviceException extends Exception {
+public class UnknownItemException extends Exception {
 
     private static final long serialVersionUID = -2516818469000766407L;
 
-    public UnknownDeviceException(String message) {
+    public UnknownItemException(String message) {
         super(message);
     }
 
-    public UnknownDeviceException(String message, Throwable cause) {
+    public UnknownItemException(String message, Throwable cause) {
         super(message, cause);
     }
 

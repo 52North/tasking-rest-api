@@ -51,9 +51,9 @@ public class DeviceService {
                 .collect(Collectors.toList());
     }
 
-    public Object getDevice(String id) throws UnknownDeviceException {
+    public Object getDevice(String id) throws UnknownItemException {
         if (!this.repository.hasDevice(id)) {
-            throw new UnknownDeviceException("Not found");
+            throw new UnknownItemException("Not found");
         }
 
         return this.repository.getDevice(id);

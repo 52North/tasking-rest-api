@@ -36,7 +36,7 @@ import org.n52.tasking.rest.ResourceNotAvailableException;
 import org.n52.tasking.rest.UrlSettings;
 import org.n52.tasking.core.service.DeviceService;
 import org.n52.tasking.core.service.Resource;
-import org.n52.tasking.core.service.UnknownDeviceException;
+import org.n52.tasking.core.service.UnknownItemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +62,7 @@ public class DeviceController {
     public Object getResourceItem(@PathVariable("item") String id) throws ResourceNotAvailableException {
         try {
             return this.service.getDevice(id);
-        } catch (UnknownDeviceException ex) {
+        } catch (UnknownItemException ex) {
             throw new ResourceNotAvailableException(ex.getMessage(), ex);
         }
     }
