@@ -38,8 +38,6 @@ public class Task {
 
     private String taskStatus;
 
-    private String requestStatus;
-
     private long submittedAt;
 
     private double percentCompletion;
@@ -78,14 +76,6 @@ public class Task {
 
     public void setTaskStatus(String taskStatus) {
         this.taskStatus = taskStatus;
-    }
-
-    public String getRequestStatus() {
-        return requestStatus;
-    }
-
-    public void setRequestStatus(String requestStatus) {
-        this.requestStatus = requestStatus;
     }
 
     public long getSubmittedAt() {

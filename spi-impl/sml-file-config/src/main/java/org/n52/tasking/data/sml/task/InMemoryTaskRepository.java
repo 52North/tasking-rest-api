@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.n52.tasking.data.RequestStatus;
 import org.n52.tasking.data.TaskStatus;
 import org.n52.tasking.data.cmd.CreateTask;
 import org.n52.tasking.data.entity.Task;
@@ -54,7 +53,6 @@ public class InMemoryTaskRepository implements TaskRepository {
         task.setEncodedParameters(createTask.getParameters());
         task.setPercentCompletion(100.0);
         task.setTaskStatus(TaskStatus.FINISHED.name());
-        task.setRequestStatus(RequestStatus.ACCEPTED.name());
         return task;
     }
 
