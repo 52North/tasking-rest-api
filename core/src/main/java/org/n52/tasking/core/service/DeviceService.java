@@ -40,7 +40,7 @@ public class DeviceService {
 
     public List<Resource> getDevices(String fullUrl) {
         final Function<Device, Resource> toResource =  dm
-                -> Resource.aResource(dm.getId())
+                -> Resource.aResource(dm.getDomainId())
                 .withLabel(dm.getLabel())
                 .withDescription(dm.getDescription())
                 .withHref(String.format("%s/%s", fullUrl, dm.getId()));
@@ -53,7 +53,7 @@ public class DeviceService {
 
     public Object getDevice(String id) throws UnknownDeviceException {
         if (!this.repository.hasDevice(id)) {
-            throw new UnknownDeviceException("");
+            throw new UnknownDeviceException("Not found");
         }
 
         return this.repository.getDevice(id);
