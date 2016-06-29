@@ -32,7 +32,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.xml.xpath.XPathExpressionException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
@@ -52,21 +51,28 @@ public class XPathParserTest {
     }
 
     @Test
-    public void when_parserReady_then_parseNodeList() throws XPathExpressionException {
+    public void when_parserReady_then_parseNodeList() {
         NodeList nodes = parser.parseNodes("/PhysicalComponent/identification");
         assertThat(nodes.getLength(), is(greaterThan(0)));
     }
 
     @Test
-    public void when_parserReady_then_parseLisaIdentification() throws XPathExpressionException {
+    public void when_parserReady_then_parseLisaIdentification() {
         String id = parser.parseString("/PhysicalComponent/identifier");
         assertThat(id, is("http://www.nexosproject.eu/resource/procedure/trios/lisa/1234567890"));
     }
 
     @Test
-    public void when_parserReady_then_parseUpdatableParameters() throws XPathExpressionException {
+    public void when_parserReady_then_parseUpdatableParameters() {
         NodeList nodes = parser.parseNodes("/PhysicalComponent/parameters/ParameterList/parameter[@updatable='true']");
         assertThat(nodes.getLength(), is(4));
+    }
+
+    @Test
+    public void when_parserReady_then_parseStringFromNode() {
+        NodeList nodes = parser.parseNodes("/PhysicalComponent/identification/IdentifierList/identifier");
+        String label = parser.parseString("Term/label/text()", nodes.item(0));
+        assertThat(label, is("Model ID"));
     }
 
     private Path getTestConfigFolder() throws URISyntaxException {

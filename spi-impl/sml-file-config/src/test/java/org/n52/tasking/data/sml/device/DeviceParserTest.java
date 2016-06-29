@@ -26,56 +26,50 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml.task;
+package org.n52.tasking.data.sml.device;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
+import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import org.junit.Before;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import org.n52.tasking.data.cmd.CreateTask;
-import org.n52.tasking.data.entity.Task;
-import org.n52.tasking.data.repository.TaskRepository;
+import org.n52.tasking.data.entity.Device;
+import org.n52.tasking.data.entity.TaskingDescription;
 
-public class InMemoryTaskRepositoryTest {
+public class DeviceParserTest extends SmlConfigTest {
 
-    private TaskRepository repository;
+    private static final String LISA_INSTANCE_ID = "c599c4ea-08bc-3254-8c16-8381b22ab228";
 
-    @Before
-    public void setUp() {
-        repository = new InMemoryTaskRepository();
+    @Test
+    public void when_configFolderRead_then_lisaInstanceAvailable() {
+        assertTrue(repository.hasDevice(LISA_INSTANCE_ID));
     }
 
     @Test
-    public void when_emptyRepository_then_emptyList() {
-        assertThat(repository.getTasks(), is(empty()));
+    public void when_lisaInstanceAvailable_then_notEmptyLabel() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertThat(device.getLabel(), is("LISA - SAC 254nm"));
     }
 
     @Test
-    public void when_addingTask_then_expectNonNullTask() {
-        CreateTask cmd = new CreateTask();
-        cmd.setId("42");
-        cmd.setParameters("some-fancy-parameters-here");
-        assertThat(repository.createTask(cmd), notNullValue(Task.class));
+    public void when_lisaInstanceAvailable_then_notEmptyDescription() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertThat(device.getDescription(), is("Metadata of a LISA device"));
     }
 
     @Test
-    public void when_addingTask_then_expectValidTask() {
-        final String id = "42";
-        final String parameters = "some-fancy-parameters-here";
-
-        CreateTask cmd = new CreateTask();
-        cmd.setId(id);
-        cmd.setParameters(parameters);
-        Task task = repository.createTask(cmd);
-        assertThat(task.getId(), is(id));
-        assertThat(task.getEncodedParameters(), is(parameters));
+    public void when_lisaInstanceAvailable_then_HavingConfigTaskingDescription() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertThat(device.getTaskingDescriptions().size(), is(1));
+        assertThat(device.getTaskingDescriptions().get("configurationTask"), is(notNullValue()));
     }
 
     @Test
-    public void when_addingInvalidTask_then_expectRejectedTask() {
-        final String id = "42";
-        final String parameters = "some-fancy-parameters-here";
+    public void when_lisaInstanceAvailable_then_havingUpdatableParameters() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        TaskingDescription taskDescription = device.getTaskingDescriptions().get("configurationTask");
+        assertThat(taskDescription.getTaskingParameters().size(), is(4));
     }
+
 }

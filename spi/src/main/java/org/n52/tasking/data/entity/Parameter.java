@@ -34,7 +34,9 @@ public abstract class Parameter {
 
     private boolean optional;
 
-    private String type;
+    public Parameter(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -52,13 +54,6 @@ public abstract class Parameter {
         this.optional = optional;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    public abstract String getType();
 
 }

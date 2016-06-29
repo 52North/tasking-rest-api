@@ -26,55 +26,32 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.core.service;
+package org.n52.tasking.data.sml.device;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.junit.Before;
 
-public class Resource {
+public abstract class SmlConfigTest {
 
-    private final String id;
+    private static final String SML_CONFIG_FOLDER = "/files";
 
-    private final Map<String, Object> properties;
+    protected SmlConfigDeviceRepository repository;
 
-    private Resource(String id) {
-        this.id = id;
-        this.properties = new HashMap<>();
+    @Before
+    public void setUp() throws Exception {
+        File folder = getTestConfigFolder().toFile();
+        repository = new SmlConfigDeviceRepository(folder.getAbsolutePath());
     }
 
-    public String getId() {
-        return id;
+    protected Path getTestConfigFolder() throws URISyntaxException {
+        return Paths.get(getClass().getResource(SML_CONFIG_FOLDER).toURI());
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getProperties() {
-        return Collections.unmodifiableMap(properties);
-    }
-
-    public Resource withLabel(String label) {
-        return withProperty("label", label);
-    }
-
-    public Resource withDescription(String description) {
-        return withProperty("description", description);
-    }
-
-    public Resource withCount(Integer count) {
-        return withProperty("size", count);
-    }
-
-    public Resource withHref(String href) {
-        return withProperty("href", href);
-    }
-
-    public Resource withProperty(String key, Object value) {
-        this.properties.put(key, value);
-        return this;
-    }
-
-    public static Resource aResource(String id) {
-        return new Resource(id);
+    protected File getTestConfigFile(String name) throws URISyntaxException {
+        Path folder = getTestConfigFolder();
+        return folder.resolve(name).toFile();
     }
 }

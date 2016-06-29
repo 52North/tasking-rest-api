@@ -32,7 +32,16 @@ public class QuantityParameter extends Parameter {
 
     private String uom;
 
+    public QuantityParameter(String name) {
+        super(name);
+    }
+
     // TODO allowedValues
+
+    @Override
+    public String getType() {
+        return "quantity";
+    }
 
     public String getUom() {
         return uom;

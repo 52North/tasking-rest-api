@@ -41,6 +41,7 @@ import javax.xml.xpath.XPathFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -57,30 +58,44 @@ public class XPathParser {
     }
 
     public NodeList parseNodes(String expression) {
-        LOGGER.trace("parsing nodes at '{}'", expression);
+        LOGGER.trace("parsing nodes via '{}'", expression);
         return (NodeList) evaluate(expression, XPathConstants.NODESET);
     }
 
     public String parseString(String expression) {
-        LOGGER.trace("parsing string at '{}'", expression);
+        LOGGER.trace("parsing string via '{}'", expression);
         return (String) evaluate(expression, XPathConstants.STRING);
     }
 
-    public boolean parseBoolean(String expression) throws XPathExpressionException {
-        LOGGER.trace("parsing boolean at '{}'", expression);
+    public String parseString(String expression, Node node) {
+        LOGGER.trace("parsing string via '{}' at {}", expression, node);
+        return (String) evaluate(expression, node, XPathConstants.STRING);
+    }
+
+    public boolean parseBoolean(String expression) {
+        LOGGER.trace("parsing boolean via '{}'", expression);
         return (boolean) evaluate(expression, XPathConstants.BOOLEAN);
     }
 
+    public boolean parseBoolean(String expression, Node node) {
+        LOGGER.trace("parsing boolean via '{}' at {}", expression, node);
+        return (boolean) evaluate(expression, node, XPathConstants.BOOLEAN);
+    }
+
     private Object evaluate(String expression, QName returnType) {
+        return evaluate(expression, document, returnType);
+    }
+
+    private Object evaluate(String expression, Object input, QName returnType) {
         try {
-            XPathExpression expr = createXPathExpression(expression);
-            return expr.evaluate(document, returnType);
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            return xpath.evaluate(expression, input, returnType);
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException("Illegal XPath expression", e);
         }
     }
 
-    private XPathExpression createXPathExpression(String expression) throws XPathExpressionException {
+    private XPathExpression compileXPathExpression(String expression) throws XPathExpressionException {
         XPath xpath = XPathFactory.newInstance().newXPath();
         return xpath.compile(expression);
     }

@@ -26,55 +26,19 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.core.service;
+package org.n52.tasking.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+public class TextParameter extends Parameter {
 
-public class Resource {
-
-    private final String id;
-
-    private final Map<String, Object> properties;
-
-    private Resource(String id) {
-        this.id = id;
-        this.properties = new HashMap<>();
+    public TextParameter(String name) {
+        super(name);
     }
 
-    public String getId() {
-        return id;
+    // TODO allowedTokens
+
+    @Override
+    public String getType() {
+        return "text";
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getProperties() {
-        return Collections.unmodifiableMap(properties);
-    }
-
-    public Resource withLabel(String label) {
-        return withProperty("label", label);
-    }
-
-    public Resource withDescription(String description) {
-        return withProperty("description", description);
-    }
-
-    public Resource withCount(Integer count) {
-        return withProperty("size", count);
-    }
-
-    public Resource withHref(String href) {
-        return withProperty("href", href);
-    }
-
-    public Resource withProperty(String key, Object value) {
-        this.properties.put(key, value);
-        return this;
-    }
-
-    public static Resource aResource(String id) {
-        return new Resource(id);
-    }
 }

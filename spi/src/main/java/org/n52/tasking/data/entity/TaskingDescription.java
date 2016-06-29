@@ -28,6 +28,7 @@
  */
 package org.n52.tasking.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class TaskingDescription {
         this.taskingParameters = new HashMap<>();
     }
 
+    @JsonAnyGetter
     public Map<String, Parameter> getTaskingParameters() {
         return Collections.unmodifiableMap(taskingParameters);
     }
@@ -51,7 +53,6 @@ public class TaskingDescription {
 
     @Override
     public String toString() {
-        return "TaskingDescription{" + "taskingParameters=" + taskingParameters + '}';
+        return "TaskingDescription{taskingParameters=" + taskingParameters + '}';
     }
-
 }

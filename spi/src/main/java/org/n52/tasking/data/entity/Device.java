@@ -28,12 +28,16 @@
  */
 package org.n52.tasking.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Device {
-    
+
     private String id;
 
     private String domainId;
@@ -48,12 +52,13 @@ public class Device {
 
     private String feature;
 
-    private List<TaskingDescription> taskingDescriptions;
+    private Map<String, TaskingDescription> taskingDescriptions;
 
     public Device(String domainId, String label, String description) {
         this.domainId = domainId;
         this.label = label;
         this.description = description;
+        this.taskingDescriptions = new HashMap<>();
     }
 
     public String getId() {
@@ -120,13 +125,17 @@ public class Device {
         this.feature = feature;
     }
 
-    public List<TaskingDescription> getTaskingDescriptions() {
-        return taskingDescriptions != null
-                ? Collections.unmodifiableList(taskingDescriptions)
-                : taskingDescriptions;
+    public TaskingDescription addNewTaskingDescription(String name) {
+        TaskingDescription taskingDescription = new TaskingDescription();
+        taskingDescriptions.put(name, taskingDescription);
+        return taskingDescription;
     }
 
-    public void setTaskingDescriptions(List<TaskingDescription> taskingDescriptions) {
+    public Map<String, TaskingDescription> getTaskingDescriptions() {
+        return Collections.unmodifiableMap(taskingDescriptions);
+    }
+
+    public void setTaskingDescriptions(Map<String, TaskingDescription> taskingDescriptions) {
         this.taskingDescriptions = taskingDescriptions;
     }
 
