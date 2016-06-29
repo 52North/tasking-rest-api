@@ -55,6 +55,7 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
         if ( !isValid(folder)) {
             throw new RepositoryConfigurationException("SML config folder does not exist: '" + folder.toString() + "'");
         }
+        LOGGER.info("Reading sml devices from '{}' ...", folder.getAbsolutePath());
         readDevices(folder);
     }
 
@@ -70,10 +71,13 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
     }
 
     private void parseToDevice(File file) throws RepositoryConfigurationException {
+        int count = 0;
         String extension = FilenameUtils.getExtension(file.getName());
         if ("xml".equalsIgnoreCase(extension)) {
             parsePlainXmlToDevice(file);
+            count++;
         }
+        LOGGER.info("Parsed #{} device files", count);
     }
 
     private void parsePlainXmlToDevice(File file) throws RepositoryConfigurationException {
@@ -86,7 +90,7 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
             if (failOnParsingErrors) {
                 throw new RepositoryConfigurationException("Could not parse file '" + filePath + "'.", e);
             } else {
-                LOGGER.info("Device parsing failed for file '" + filePath);
+                LOGGER.info("Parsing device failed for file '{}'", filePath);
             }
         }
     }

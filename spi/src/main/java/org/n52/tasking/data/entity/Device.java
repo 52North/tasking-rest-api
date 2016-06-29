@@ -38,15 +38,15 @@ public class Device {
     private String description;
 
     private DeviceDescriptionData descriptionData;
-    
+
     private Offering offering;
-    
+
     private String phenomenon;
-    
+
     private String feature;
-    
+
     private List<TaskingDescription> taskingDescriptions;
-    
+
     public Device(String id, String label, String description) {
         this.id = id;
         this.label = label;
@@ -115,6 +115,11 @@ public class Device {
 
     public void setTaskingDescriptions(List<TaskingDescription> taskingDescriptions) {
         this.taskingDescriptions = taskingDescriptions;
+    }
+
+    @Override
+    public String toString() {
+        return "Device{" + "id=" + id + ", label=" + label + ", description=" + description + ", descriptionData=" + descriptionData + ", offering=" + offering + ", phenomenon=" + phenomenon + ", feature=" + feature + ", taskingDescriptions=" + taskingDescriptions + '}';
     }
 
 }

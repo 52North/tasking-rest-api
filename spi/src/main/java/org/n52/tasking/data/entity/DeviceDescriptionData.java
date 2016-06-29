@@ -52,4 +52,9 @@ public class DeviceDescriptionData {
         this.format = format;
     }
 
+    @Override
+    public String toString() {
+        return "DeviceDescriptionData{" + "href=" + href + ", format=" + format + '}';
+    }
+
 }

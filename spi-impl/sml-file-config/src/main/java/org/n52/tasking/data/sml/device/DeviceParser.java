@@ -34,9 +34,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.sml.ParseException;
 import org.n52.tasking.data.sml.XPathParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 public class DeviceParser {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceParser.class);
 
     private final XPathParser parser;
 
@@ -49,8 +53,11 @@ public class DeviceParser {
     }
 
     public Device parse() throws ParseException {
+        LOGGER.debug("Parsing device ...");
         String id = parser.parseString("/PhysicalComponent/identifier");
-        return new Device(id, null, null);
+        final Device device = new Device(id, null, null);
+        LOGGER.debug("Parsed device: {}", device.toString());
+        return device;
     }
 
 }

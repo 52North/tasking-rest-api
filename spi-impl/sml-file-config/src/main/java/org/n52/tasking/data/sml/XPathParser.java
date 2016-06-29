@@ -38,11 +38,15 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class XPathParser {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XPathParser.class);
 
     private final Document document;
 
@@ -53,14 +57,17 @@ public class XPathParser {
     }
 
     public NodeList parseNodes(String expression) {
+        LOGGER.trace("parsing nodes at '{}'", expression);
         return (NodeList) evaluate(expression, XPathConstants.NODESET);
     }
 
     public String parseString(String expression) {
+        LOGGER.trace("parsing string at '{}'", expression);
         return (String) evaluate(expression, XPathConstants.STRING);
     }
 
     public boolean parseBoolean(String expression) throws XPathExpressionException {
+        LOGGER.trace("parsing boolean at '{}'", expression);
         return (boolean) evaluate(expression, XPathConstants.BOOLEAN);
     }
 
