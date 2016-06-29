@@ -51,7 +51,7 @@ public class ResourcesController {
     private static final Logger LOG = LoggerFactory.getLogger(ResourcesController.class);
 
     @RequestMapping("")
-    public ModelAndView getResources(@RequestParam(required = false) MultiValueMap<String, String> query) throws IOException, URISyntaxException {
+    public ModelAndView getResources() throws IOException, URISyntaxException {
         String fullUrl = RequestUtils.resolveFullRequestUrl();
         return new ModelAndView().addObject(createResources(fullUrl));
     }
