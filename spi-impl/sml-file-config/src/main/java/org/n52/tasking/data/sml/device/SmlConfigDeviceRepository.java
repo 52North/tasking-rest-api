@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import javax.annotation.PostConstruct;
 import org.apache.commons.io.FilenameUtils;
 import org.n52.tasking.data.RepositoryConfigurationException;
 import org.n52.tasking.data.entity.Device;
@@ -55,16 +54,9 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
 
     private boolean failOnParsingErrors = false;
 
-    private final String smlFolder;
-
     private Path basePath;
 
-    public SmlConfigDeviceRepository(String smlFolder) {
-        this.smlFolder = smlFolder;
-    }
-
-    @PostConstruct
-    public void readFiles() throws RepositoryConfigurationException {
+    public SmlConfigDeviceRepository(String smlFolder) throws RepositoryConfigurationException {
         File folder = getFolder(smlFolder);
         if (!isValid(folder)) {
             throw new RepositoryConfigurationException("SML config folder does not exist: '" + folder.toString() + "'");

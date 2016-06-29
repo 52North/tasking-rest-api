@@ -18,6 +18,8 @@
     <bean class="org.n52.tasking.core.service.DeviceService" name="deviceService">
         <property name="repository" ref="deviceRepository" />
     </bean>
+
+    <bean class="org.n52.tasking.data.sml.device.SmlConfigDeviceRepository" name="deviceRepository">
         <constructor-arg index="0" value="sml" />
     </bean>
 

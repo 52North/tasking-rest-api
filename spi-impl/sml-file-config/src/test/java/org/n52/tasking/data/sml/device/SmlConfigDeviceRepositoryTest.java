@@ -37,9 +37,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.tasking.data.entity.Device;
@@ -48,7 +46,7 @@ public class SmlConfigDeviceRepositoryTest {
 
     private static final String SML_CONFIG_FOLDER = "/files";
 
-    private static final String LISA_INSTANCE_ID = "http://www.nexosproject.eu/resource/procedure/trios/lisa/1234567890";
+    private static final String LISA_INSTANCE_ID = "c599c4ea-08bc-3254-8c16-8381b22ab228";
 
     private SmlConfigDeviceRepository repository;
 
@@ -58,16 +56,11 @@ public class SmlConfigDeviceRepositoryTest {
         repository = new SmlConfigDeviceRepository(folder.getAbsolutePath());
     }
 
-    @Test
+    @Test(expected = RepositoryConfigurationException.class)
     public void when_relativeConfigFolderNotPresentOnCreation_thenFolderGetsCreated() throws Exception {
         repository = new SmlConfigDeviceRepository("test-sml-folder");
-        File expected = new File(getClass().getResource("/test-sml-folder").toURI());
-        assertTrue(expected.exists());
-        if ( !expected.delete()) {
-            fail("could not remove created test-sml-folder");
-        }
     }
-    
+
     @Test(expected = RepositoryConfigurationException.class)
     public void when_givenFileOnCreation_thenException() throws Exception {
         String file = getTestConfigFile("empty.txt").getAbsolutePath();
@@ -85,12 +78,23 @@ public class SmlConfigDeviceRepositoryTest {
     }
 
     @Test
+    public void when_lisaInstanceAvailable_then_notEmptyLabel() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertThat(device.getLabel(), is("LISA - SAC 254nm"));
+    }
+    
+    @Test
+    public void when_lisaInstanceAvailable_then_notEmptyDescription() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertThat(device.getDescription(), is("Metadata of a LISA device"));
+    }
+    
+    @Test
     public void when_lisaInstanceAvailable_then_notEmptyUpdatableParameters() {
         Device device = repository.getDevice(LISA_INSTANCE_ID);
-//        Assert.fail();
-//        assertTrue(device.getDescriptionData());
+        assertThat(device.getTaskingDescriptions().size(), is(4));
     }
-
+    
     private Path getTestConfigFolder() throws URISyntaxException {
         return Paths.get(getClass().getResource(SML_CONFIG_FOLDER).toURI());
     }
