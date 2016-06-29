@@ -29,11 +29,11 @@
 package org.n52.tasking.data.entity;
 
 public abstract class Parameter {
-    
+
     private String name;
-    
+
     private boolean optional;
-    
+
     private String type;
 
     public String getName() {
@@ -59,6 +59,6 @@ public abstract class Parameter {
     public void setType(String type) {
         this.type = type;
     }
-    
-    
+
+
 }

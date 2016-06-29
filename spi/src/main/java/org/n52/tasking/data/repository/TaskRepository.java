@@ -33,11 +33,11 @@ import java.util.List;
 import org.n52.tasking.data.cmd.CreateTask;
 
 public interface TaskRepository {
-    
+
     Task createTask(CreateTask createTask);
-    
+
     List<Task> getTasks();
-    
+
     List<Task> getTasks(String deviceId);
 
     boolean hasTask(String taskId);

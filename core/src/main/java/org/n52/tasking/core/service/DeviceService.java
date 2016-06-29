@@ -44,7 +44,7 @@ public class DeviceService {
                 .withLabel(dm.getLabel())
                 .withDescription(dm.getDescription())
                 .withHref(String.format("%s/%s", fullUrl, dm.getId()));
-        
+
         return this.repository.getDevices()
                 .stream()
                 .map(toResource)
