@@ -20,7 +20,6 @@
         <module>spi</module>
         <module>rest</module>
         <module>spi-impl</module>
-        <module>webapp</module>
     </modules>
 
     <organization>

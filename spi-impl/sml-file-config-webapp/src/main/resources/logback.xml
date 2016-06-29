@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="logFile" value="${catalina.base:-.}/logs/eventing-rest" />
-    <appender name="eventing-rest-file"
+    <property name="logFile" value="${catalina.base:-.}/logs/tasking-rest-api" />
+    <appender name="tasking-logfile"
                   class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
         <!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy -->
@@ -19,15 +19,15 @@
             <pattern>%d{ISO8601} [%t] %-5p %c{32}: %m%n</pattern>
         </encoder>
     </appender>
-    <appender name="eventing-rest-console" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="tasking-log-console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%d{ISO8601} [%t] %-5p %c{32}: %m%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.n52.eventing" level="DEBUG" />
+    <logger name="org.n52.tasking" level="DEBUG" />
     <root level="WARN">
-        <appender-ref ref="eventing-rest-file" />
-        <appender-ref ref="eventing-rest-console" />
+        <appender-ref ref="tasking-logfile" />
+        <appender-ref ref="tasking-log-console" />
     </root>
 </configuration>

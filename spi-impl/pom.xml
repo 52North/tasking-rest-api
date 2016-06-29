@@ -12,6 +12,7 @@
     <url>http://52north.org/communities/sensorweb/</url>
     <modules>
         <module>sml-file-config</module>
+        <module>sml-file-config-webapp</module>
     </modules>
     <dependencies>
         <dependency>

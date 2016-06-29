@@ -14,6 +14,8 @@
     <mvc:annotation-driven />
     <ctx:annotation-config />
 
-    <bean class="org.n52.tasking.data.device.SmlConfigDeviceRepository" name="deviceService" />
+    <bean class="org.n52.tasking.data.sml.device.SmlConfigDeviceRepository" name="deviceService">
+        <constructor-arg index="0" value="/sml" />
+    </bean>
 
 </beans>

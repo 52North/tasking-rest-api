@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>CUSTOM-jetty:run</actionName>
+        <displayName>jetty:run</displayName>
+        <goals>
+            <goal>jetty:run</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>disable-notice</activatedProfile>
+        </activatedProfiles>
+        <properties>
+            <skipTests>true</skipTests>
+            <jpda.listen>maven</jpda.listen>
+            <enforcer.skip>true</enforcer.skip>
+            <notice.skipChecks>true</notice.skipChecks>
+        </properties>
+    </action>
+</actions>

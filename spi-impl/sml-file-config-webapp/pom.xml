@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.n52.tasking-api</groupId>
-        <artifactId>tasking-rest-api</artifactId>
+        <artifactId>spi-impl</artifactId>
         <version>1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>webapp</artifactId>
+    <artifactId>sml-file-config-webapp</artifactId>
     <packaging>war</packaging>
-    <name>Tasking REST API - Webapp</name>
+    <name>Tasking REST API - SML File Config Webapp</name>
 
     <properties>
         <webappDirectory>${project.build.directory}/${project.artifactId}</webappDirectory>
@@ -68,15 +68,16 @@
                 <configuration>
                     <stopKey>C</stopKey>
                     <stopPort>34343</stopPort>
-                    <scanIntervalSeconds>3</scanIntervalSeconds>
-                    <webAppConfig>
+                    <reload>manual</reload>
+                    <webApp>
                         <contextPath>/${project.build.finalName}</contextPath>
-                        <extraClasspath>target/classes;../tasking-core/target/classes;../tasking-rest/target/classes</extraClasspath>
-                    </webAppConfig>
+                        <extraClasspath>target/classes;../../core/target/classes;../../rest/target/classes;../sml-file-config/target/classes</extraClasspath>
+                    </webApp>
                     <scanTargets>
-                        <scanTarget>target/classes</scanTarget>
-                        <scanTarget>../tasking-core/target/classes</scanTarget>
-                        <scanTarget>../tasking-rest/target/classes</scanTarget>
+                        <scanTarget>target/${project.build.finalName}/WEB-INF/classes</scanTarget>
+                        <scanTarget>../sml-file-config/target/classes</scanTarget>
+                        <scanTarget>../../core/target/classes</scanTarget>
+                        <scanTarget>../../rest/target/classes</scanTarget>
                     </scanTargets>
                 </configuration>
             </plugin>
@@ -90,22 +91,6 @@
                     <version>2.6</version>
                     <configuration>
                         <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-                        <webResources>
-                            <resource>
-                                <directory>src/main/webapp</directory>
-                                <filtering>true</filtering>
-                                <excludes>
-                                    <!-- exclude files from filtering -->
-                                    <exclude>img/*</exclude>
-                                    <exclude>cache/*</exclude>
-                                </excludes>
-                            </resource>
-                            <resource>
-                                <directory>src/main/resources</directory>
-                                <filtering>true</filtering>
-                                <targetPath>WEB-INF/classes</targetPath>
-                            </resource>
-                        </webResources>
                     </configuration>
                 </plugin>
             </plugins>
