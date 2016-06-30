@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.n52.tasking.data.TaskStatus;
 import org.n52.tasking.data.cmd.CreateTask;
 import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.TaskRepository;
@@ -42,11 +41,12 @@ import org.n52.tasking.data.repository.TaskRepository;
 public class InMemoryTaskRepository implements TaskRepository {
 
     private final Map<String, List<Task>> tasksByDevice;
-    
-    private SmlFileConfigTaskRunner taskRunner;
 
-    public InMemoryTaskRepository() {
+    private TaskRunner taskRunner;
+
+    public InMemoryTaskRepository(TaskRunner taskRunner) {
         this.tasksByDevice = new HashMap<>();
+        this.taskRunner = taskRunner;
     }
 
     @Override
@@ -54,13 +54,13 @@ public class InMemoryTaskRepository implements TaskRepository {
         Task task = new Task();
         task.setId(UUID.randomUUID().toString());
         task.setEncodedParameters(createTask.getParameters());
-        
+
         taskRunner.runTask(task);
-        
+
         addTaskForDevice(createTask.getId(), task);
         return task;
     }
-    
+
     private void addTaskForDevice(String deviceId, Task task) {
         if ( !tasksByDevice.containsKey(deviceId)) {
             tasksByDevice.put(deviceId, new ArrayList<>());
@@ -99,12 +99,4 @@ public class InMemoryTaskRepository implements TaskRepository {
                 .get();
     }
 
-    public SmlFileConfigTaskRunner getTaskRunner() {
-        return taskRunner;
-    }
-
-    public void setTaskRunner(SmlFileConfigTaskRunner taskRunner) {
-        this.taskRunner = taskRunner;
-    }
-    
 }
