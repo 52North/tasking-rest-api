@@ -47,7 +47,7 @@ public class DeviceParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DeviceParser.class);
 
-    private static final String CONFIGURATION_TASKING = "configurationTask";
+    static final String CONFIGURATION_TASKING = "configurationTask";
 
     private final XPathParser parser;
 
