@@ -28,7 +28,7 @@ package org.n52.tasking.data.sml.device;
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-import org.n52.tasking.data.sml.ParseException;
+import org.n52.tasking.data.sml.xml.ParseException;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;

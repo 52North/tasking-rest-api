@@ -26,7 +26,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml;
+package org.n52.tasking.data.sml.xml;
 
 import java.io.File;
 import java.io.IOException;
