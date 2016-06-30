@@ -44,9 +44,8 @@ public class SimpleTextDecoder {
         this.taskingDescription = taskingDescription;
     }
 
-    List<Parameter<?>> decode(String encodedParameters) throws ParseValueException {
+    public List<Parameter<?>> decode(String encodedParameters) throws ParseValueException {
         List<Parameter<?>> decodedParameters = new ArrayList<>();
-
         String[] parameterTokens = parseParameters(encodedParameters);
         List<Parameter<?>> parameters = taskingDescription.getParameters();
         int valueIdx = 0;
