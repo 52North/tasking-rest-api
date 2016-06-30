@@ -6,6 +6,7 @@ This project includes:
   AOP alliance under Public Domain
   Apache Commons Logging under The Apache Software License, Version 2.0
   c3p0:JDBC DataSources/Resource Pools under GNU LESSER GENERAL PUBLIC LICENSE
+  Commons IO under The Apache Software License, Version 2.0
   CORS Filter under The Apache Software License, Version 2.0
   EXIficient under MIT License
   EXIficient-Core under MIT License
@@ -28,13 +29,15 @@ This project includes:
   Spring Context under The Apache Software License, Version 2.0
   Spring Core under The Apache Software License, Version 2.0
   Spring Expression Language (SpEL) under The Apache Software License, Version 2.0
-  Spring Object/XML Marshalling under The Apache Software License, Version 2.0
   Spring Web under The Apache Software License, Version 2.0
   Spring Web MVC under The Apache Software License, Version 2.0
   Tasking REST API under GNU General Public License, Version 2.0
   Tasking REST API - core module under GNU General Public License, Version 2.0
   Tasking REST API - REST module under GNU General Public License, version 2
-  Tasking REST API - Webapp under GNU General Public License, Version 2.0
+  Tasking REST API - SML File Config Webapp under GNU General Public License, Version 2.0
+  Tasking REST API - sml-file-config module under GNU General Public License, Version 2.0
+  Tasking REST API - spi impl modules under GNU General Public License, Version 2.0
+  Tasking REST API - spi module under GNU General Public License, Version 2.0
   Xerces2-j under The Apache Software License, Version 2.0
   XML Commons External Components XML APIs under The Apache Software License, Version 2.0 or The SAX License or The W3C License
 

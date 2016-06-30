@@ -78,11 +78,11 @@ public class DeviceParser {
         String label = parser.parseString("/PhysicalComponent/identification/IdentifierList/identifier/Term[contains(@definition,'#modelID')]/value/text()");
         return new Device(id, label, description);
     }
-    
+
     private void parserDescriptionData(Device device) {
-        
+
         // TODO
-        
+
         // add dummy
         DeviceDescriptionData deviceDescriptionData = new DeviceDescriptionData();
         deviceDescriptionData.setFormat("http://www.opengis.net/sensorML/1.0.1");

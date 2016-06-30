@@ -72,7 +72,7 @@ public class TaskController {
             throw new ResourceNotAvailableException(ex.getMessage(), ex);
         }
     }
-    
+
     @RequestMapping(path="", consumes = "application/json", method = POST)
     public Resource createTask(@RequestBody CreateTask createTask) throws IOException, URISyntaxException {
         String fullUrl = RequestUtils.resolveFullRequestUrl();
