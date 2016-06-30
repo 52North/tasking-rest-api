@@ -28,8 +28,10 @@
  */
 package org.n52.tasking.data.entity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Device {
@@ -48,13 +50,13 @@ public class Device {
 
     private String feature;
 
-    private Map<String, TaskingDescription> taskingDescriptions;
+    private List<TaskingDescription> taskingDescriptions;
 
     public Device(String domainId, String label, String description) {
         this.domainId = domainId;
         this.label = label;
         this.description = description;
-        this.taskingDescriptions = new HashMap<>();
+        this.taskingDescriptions = new ArrayList<>();
     }
 
     public String getId() {
@@ -122,16 +124,16 @@ public class Device {
     }
 
     public TaskingDescription addNewTaskingDescription(String name) {
-        TaskingDescription taskingDescription = new TaskingDescription();
-        taskingDescriptions.put(name, taskingDescription);
+        TaskingDescription taskingDescription = new TaskingDescription(name);
+        taskingDescriptions.add(taskingDescription);
         return taskingDescription;
     }
 
-    public Map<String, TaskingDescription> getTaskingDescriptions() {
-        return Collections.unmodifiableMap(taskingDescriptions);
+    public List<TaskingDescription> getTaskingDescriptions() {
+        return Collections.unmodifiableList(taskingDescriptions);
     }
 
-    public void setTaskingDescriptions(Map<String, TaskingDescription> taskingDescriptions) {
+    public void setTaskingDescriptions(List<TaskingDescription> taskingDescriptions) {
         this.taskingDescriptions = taskingDescriptions;
     }
 
