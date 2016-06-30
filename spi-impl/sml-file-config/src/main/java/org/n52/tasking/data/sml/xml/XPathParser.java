@@ -60,9 +60,25 @@ public class XPathParser {
         }
     }
 
+    public Node parseNode(String expression) {
+        LOGGER.trace("parsing node via '{}'", expression);
+        return (Node) evaluate(expression, XPathConstants.NODE);
+    }
+
+    public Node parseNode(String expression, Node node) {
+        LOGGER.trace("parsing node via '{}' at {}", expression, node);
+        return (Node) evaluate(expression, node, XPathConstants.NODE);
+    }
+
+
     public NodeList parseNodes(String expression) {
-        LOGGER.trace("parsing nodes via '{}'", expression);
+        LOGGER.trace("parsing node list via '{}'", expression);
         return (NodeList) evaluate(expression, XPathConstants.NODESET);
+    }
+
+    public NodeList parseNodes(String expression, Node node) {
+        LOGGER.trace("parsing node list via '{}' at {}", expression, node);
+        return (NodeList) evaluate(expression, node, XPathConstants.NODESET);
     }
 
     public String parseString(String expression) {
