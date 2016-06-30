@@ -29,13 +29,10 @@
 package org.n52.tasking.data.sml.device;
 
 import java.io.File;
-import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException;
 import org.n52.tasking.data.entity.BooleanParameter;
 import org.n52.tasking.data.entity.CountParameter;
 import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.DeviceDescriptionData;
-import org.n52.tasking.data.entity.Parameter;
 import org.n52.tasking.data.entity.QuantityParameter;
 import org.n52.tasking.data.entity.TaskingDescription;
 import org.n52.tasking.data.entity.TextParameter;
@@ -45,7 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 public class DeviceParser {
 
@@ -56,11 +52,7 @@ public class DeviceParser {
     private final XPathParser parser;
 
     DeviceParser(File file) throws ParseException {
-        try {
-            parser = new XPathParser(file);
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            throw new ParseException("Unable to create XPathParser", e);
-        }
+        parser = new XPathParser(file);
     }
 
     public Device parse() {

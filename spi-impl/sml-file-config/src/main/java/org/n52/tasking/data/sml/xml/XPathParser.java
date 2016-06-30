@@ -51,10 +51,13 @@ public class XPathParser {
 
     private final Document document;
 
-    public XPathParser(File file) throws SAXException, ParserConfigurationException, IOException {
-        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-//        domFactory.setNamespaceAware(true);
-        this.document = domFactory.newDocumentBuilder().parse(file);
+    public XPathParser(File file) throws ParseException {
+        try {
+            DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+            this.document = domFactory.newDocumentBuilder().parse(file);
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            throw new ParseException("Could not parse XML from '" + file.getAbsolutePath() + "'", e);
+        }
     }
 
     public NodeList parseNodes(String expression) {
