@@ -1,5 +1,7 @@
 package org.n52.tasking.data.sml.task;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.n52.tasking.core.service.TaskService;
@@ -16,7 +18,7 @@ public class SmlFileConfigTaskRunner implements TaskRunner {
 
     @Override
     public void runTask(Task task) {
-        task.setSubmittedAt(System.currentTimeMillis());
+        task.setSubmittedAt(LocalDateTime.now(ZoneId.of("Z")));
         task.setTaskStatus(TaskStatus.RUNNING.name());
         task.setPercentCompletion(0.0);
         

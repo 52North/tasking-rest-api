@@ -34,6 +34,15 @@ public class CreateTask {
 
     private String parameters;
 
+    public CreateTask() {
+        // keep empty constructor
+    }
+
+    public CreateTask(String id, String parameters) {
+        this.id = id;
+        this.parameters = parameters;
+    }
+
     public String getId() {
         return id;
     }

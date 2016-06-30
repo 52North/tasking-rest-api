@@ -28,17 +28,27 @@
  */
 package org.n52.tasking.core.service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.n52.tasking.data.cmd.CreateTask;
 import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.TaskRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TaskService {
-    
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
+
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE_TIME;
+
     private TaskRepository repository;
-    
+
     public List<Resource> getTasks(String fullUrl) {
         final Function<Task, Resource> toResource =  dm
                 -> Resource.aResource(dm.getId())
@@ -54,19 +64,36 @@ public class TaskService {
         if (!this.repository.hasTask(id)) {
             throw new UnknownItemException("Not found");
         }
-
         return this.repository.getTask(id);
     }
-    
+
     public Resource createTask(CreateTask createTask, String fullUrl) {
         Task task = this.repository.createTask(createTask);
         return Resource.aResource(task.getId())
+                .withProperty("taskStatus", task.getTaskStatus())
+                .withProperty("submittedAt", format(task.getSubmittedAt()))
+                .withProperty("updatedAt", format(task.getUpdatedAt()))
                 .withHref(createHref(fullUrl, task.getId()));
+    }
+
+    private String format(LocalDateTime dateTime) {
+        return dateFormatter.format(dateTime);
     }
 
     private String createHref(String fullUrl, String id) {
         return String.format("%s/%s", fullUrl, id);
     }
+
+    public void setDateFormat(String dateFormat) {
+        if (dateFormat != null) {
+            try {
+                this.dateFormatter = DateTimeFormatter.ofPattern(dateFormat);
+            } catch (IllegalArgumentException e) {
+                LOGGER.info("Illegal dateFormat: '{}'", dateFormat, e);
+            }
+        }
+    }
+
 
     public TaskRepository getRepository() {
         return repository;
@@ -75,5 +102,5 @@ public class TaskService {
     public void setRepository(TaskRepository repository) {
         this.repository = repository;
     }
-    
+
 }

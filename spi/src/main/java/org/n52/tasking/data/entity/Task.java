@@ -28,6 +28,8 @@
  */
 package org.n52.tasking.data.entity;
 
+import java.time.LocalDateTime;
+
 public class Task {
 
     private String id;
@@ -38,11 +40,11 @@ public class Task {
 
     private String taskStatus;
 
-    private long submittedAt;
+    private LocalDateTime submittedAt;
 
     private double percentCompletion;
 
-    private long updatedAt;
+    private LocalDateTime updatedAt;
 
     private String resultId;
 
@@ -78,11 +80,11 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
-    public long getSubmittedAt() {
+    public LocalDateTime getSubmittedAt() {
         return submittedAt;
     }
 
-    public void setSubmittedAt(long submittedAt) {
+    public void setSubmittedAt(LocalDateTime submittedAt) {
         this.submittedAt = submittedAt;
     }
 
@@ -94,11 +96,11 @@ public class Task {
         this.percentCompletion = percentCompletion;
     }
 
-    public long getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(long updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
