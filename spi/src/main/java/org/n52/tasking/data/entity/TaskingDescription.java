@@ -34,23 +34,31 @@ import java.util.List;
 
 public class TaskingDescription {
 
-    private final List<Parameter> taskingParameters;
+    private final String name;
 
-    public TaskingDescription() {
-        this.taskingParameters = new ArrayList<>();
+    private final List<Parameter<?>> parameters;
+
+    public TaskingDescription(String name) {
+        this.name = name;
+        this.parameters = new ArrayList<>();
     }
 
-    public List<Parameter> getTaskingParameters() {
-        return Collections.unmodifiableList(taskingParameters);
+    public String getName() {
+        return name;
     }
 
-    public TaskingDescription addParameter(Parameter parameter) {
-        taskingParameters.add(parameter);
+    public List<Parameter<?>> getParameters() {
+        return Collections.unmodifiableList(parameters);
+    }
+
+    public TaskingDescription addParameter(Parameter<?> parameter) {
+        parameters.add(parameter);
         return this;
     }
 
     @Override
     public String toString() {
-        return "TaskingDescription{taskingParameters=" + taskingParameters + '}';
+        return "TaskingDescription{" + "name=" + name + ", parameters=" + parameters + '}';
     }
+
 }
