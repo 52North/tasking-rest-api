@@ -28,12 +28,18 @@
  */
 package org.n52.tasking.data.entity;
 
-public class CountParameter extends Parameter {
+import org.n52.tasking.data.ParseValueException;
+
+public class CountParameter extends Parameter<Integer> {
 
     private String uom;
 
     public CountParameter(String name) {
         super(name);
+    }
+
+    public CountParameter(String name, boolean optional) {
+        super(name, optional);
     }
 
     // TODO allowedValues
@@ -49,6 +55,18 @@ public class CountParameter extends Parameter {
 
     public void setUom(String uom) {
         this.uom = uom;
+    }
+
+    @Override
+    public Parameter<Integer> toValueInstance(String token) throws ParseValueException {
+        try {
+            CountParameter p = new CountParameter(getName(), isOptional());
+            p.setValue(Integer.parseInt(token));
+            p.setUom(getUom());
+            return p;
+        } catch (NumberFormatException e) {
+            throw new ParseValueException("Invalid value for count: " + token);
+        }
     }
 
 }

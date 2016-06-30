@@ -28,14 +28,23 @@
  */
 package org.n52.tasking.data.entity;
 
-public abstract class Parameter {
+import org.n52.tasking.data.ParseValueException;
+
+public abstract class Parameter<T> {
 
     private String name;
 
     private boolean optional;
 
+    private T value;
+
     public Parameter(String name) {
+        this(name, false);
+    }
+    
+    public Parameter(String name, boolean optional) {
         this.name = name;
+        this.optional = optional;
     }
 
     public String getName() {
@@ -52,6 +61,25 @@ public abstract class Parameter {
 
     public void setOptional(boolean optional) {
         this.optional = optional;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    /**
+     * Parses the given token and returns a new instance based on this one with
+     * the token parsed to the new instance's value.
+     *
+     * @param token the token to parse
+     * @return a new value instance
+     * @throws ParseValueException if the given token does not match the
+     * parameter's actual value type
+     */
+    public abstract Parameter<T> toValueInstance(String token) throws ParseValueException;
+
+    public void setValue(T value) {
+        this.value = value;
     }
 
     public abstract String getType();

@@ -28,10 +28,23 @@
  */
 package org.n52.tasking.data.entity;
 
-public class BooleanParameter extends Parameter {
+import org.n52.tasking.data.ParseValueException;
+
+public class BooleanParameter extends Parameter<Boolean> {
 
     public BooleanParameter(String name) {
         super(name);
+    }
+
+    public BooleanParameter(String name, boolean optional) {
+        super(name, optional);
+    }
+
+    @Override
+    public Parameter<Boolean> toValueInstance(String token) throws ParseValueException {
+        BooleanParameter p = new BooleanParameter(getName(), isOptional());
+        p.setValue(Boolean.parseBoolean(token));
+        return p;
     }
 
     @Override

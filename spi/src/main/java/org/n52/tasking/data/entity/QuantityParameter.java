@@ -28,7 +28,9 @@
  */
 package org.n52.tasking.data.entity;
 
-public class QuantityParameter extends Parameter {
+import org.n52.tasking.data.ParseValueException;
+
+public class QuantityParameter extends Parameter<Double> {
 
     private String uom;
 
@@ -36,12 +38,11 @@ public class QuantityParameter extends Parameter {
         super(name);
     }
 
-    // TODO allowedValues
-
-    @Override
-    public String getType() {
-        return "quantity";
+    public QuantityParameter(String name, boolean optional) {
+        super(name, optional);
     }
+
+    // TODO allowedValues
 
     public String getUom() {
         return uom;
@@ -50,5 +51,21 @@ public class QuantityParameter extends Parameter {
     public void setUom(String uom) {
         this.uom = uom;
     }
-
+    
+    @Override
+    public String getType() {
+        return "quantity";
+    }
+    
+    @Override
+    public Parameter<Double> toValueInstance(String token) throws ParseValueException {
+        try {
+            QuantityParameter p = new QuantityParameter(getName(), isOptional());
+            p.setValue(Double.parseDouble(token));
+            p.setUom(getUom());
+            return p;
+        } catch (NumberFormatException e) {
+            throw new ParseValueException("Invalid value for quantity: " + token);
+        }
+    }
 }

@@ -28,13 +28,26 @@
  */
 package org.n52.tasking.data.entity;
 
-public class TextParameter extends Parameter {
+import org.n52.tasking.data.ParseValueException;
+
+public class TextParameter extends Parameter<String> {
 
     public TextParameter(String name) {
         super(name);
     }
 
+    public TextParameter(String name, boolean optional) {
+        super(name, optional);
+    }
+
     // TODO allowedTokens
+
+    @Override
+    public Parameter<String> toValueInstance(String token) throws ParseValueException {
+        TextParameter p = new TextParameter(getName(), isOptional());
+        p.setValue(token);
+        return p;
+    }
 
     @Override
     public String getType() {
