@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
 import org.n52.tasking.data.RepositoryConfigurationException;
 import org.n52.tasking.data.entity.Device;
@@ -50,7 +51,7 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger((SmlConfigDeviceRepository.class));
 
-    private final Map<String, Device> deviceById = new HashMap<>();
+    private final Map<String, SmlDevice> deviceById = new HashMap<>();
 
     private boolean failOnParsingErrors = false;
 
@@ -102,7 +103,7 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
             DeviceParser parser = new DeviceParser(file);
             Device device = parser.parse();
             StorageIdGenerator.generateIdFor(device);
-            deviceById.put(device.getId(), device);
+            deviceById.put(device.getId(), new SmlDevice(device, file));
         } catch (ParseException e) {
             String filePath = file.getAbsolutePath();
             if (failOnParsingErrors) {
@@ -115,8 +116,12 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
 
     @Override
     public List<Device> getDevices() {
-        ArrayList<Device> devices = new ArrayList<>(deviceById.values());
-        return Collections.unmodifiableList(devices);
+        ArrayList<SmlDevice> devices = new ArrayList<>(deviceById.values());
+        return Collections.unmodifiableList(devices
+                .stream()
+                .map(d -> d.getDevice())
+                .collect(Collectors.toList())
+        );
     }
 
     @Override
@@ -126,7 +131,7 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
 
     @Override
     public Device getDevice(String id) {
-        return deviceById.get(id);
+        return deviceById.get(id).getDevice();
     }
 
     public void setFailOnParsingErrors(boolean failOnParsingErrors) {
