@@ -62,14 +62,14 @@ public class DeviceParserTest extends SmlConfigTest {
     public void when_lisaInstanceAvailable_then_HavingConfigTaskingDescription() {
         Device device = repository.getDevice(LISA_INSTANCE_ID);
         assertThat(device.getTaskingDescriptions().size(), is(1));
-        assertThat(device.getTaskingDescriptions().get("configurationTask"), is(notNullValue()));
+        assertThat(device.getTaskingDescriptions().get(0), is(notNullValue()));
     }
 
     @Test
     public void when_lisaInstanceAvailable_then_havingUpdatableParameters() {
         Device device = repository.getDevice(LISA_INSTANCE_ID);
-        TaskingDescription taskDescription = device.getTaskingDescriptions().get("configurationTask");
-        assertThat(taskDescription.getTaskingParameters().size(), is(4));
+        TaskingDescription taskDescription = device.getTaskingDescriptions().get(0);
+        assertThat(taskDescription.getParameters().size(), is(4));
     }
 
 }
