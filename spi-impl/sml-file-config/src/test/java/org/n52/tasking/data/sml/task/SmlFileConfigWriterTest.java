@@ -26,8 +26,9 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml.device;
+package org.n52.tasking.data.sml.task;
 
+import org.n52.tasking.data.sml.task.SmlFileConfigWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -44,6 +45,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.n52.tasking.data.ParseValueException;
+import org.n52.tasking.data.sml.device.SmlDevice;
 import org.n52.tasking.data.sml.xml.ParseException;
 import org.n52.tasking.data.sml.xml.XPathParser;
 import org.w3c.dom.Document;
@@ -75,7 +78,7 @@ public class SmlFileConfigWriterTest {
     }
 
     @Test
-    public void when_saving_then_xmlGetsOverridden() {
+    public void when_saving_then_xmlGetsOverridden() throws ParseValueException {
         Node root = xPathParser.parseNode("/root");
         Document document = root.getOwnerDocument();
         Node newNode = document.createElement("new");
