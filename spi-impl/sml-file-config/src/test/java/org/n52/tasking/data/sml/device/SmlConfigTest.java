@@ -36,7 +36,7 @@ import org.junit.Before;
 
 public abstract class SmlConfigTest {
 
-    private static final String SML_CONFIG_FOLDER = "/files";
+    private static final String SML_CONFIG_FOLDER = "/sml";
 
     protected SmlConfigDeviceRepository repository;
 
