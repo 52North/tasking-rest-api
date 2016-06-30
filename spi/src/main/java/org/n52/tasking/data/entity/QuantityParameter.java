@@ -51,12 +51,12 @@ public class QuantityParameter extends Parameter<Double> {
     public void setUom(String uom) {
         this.uom = uom;
     }
-    
+
     @Override
     public String getType() {
         return "quantity";
     }
-    
+
     @Override
     public Parameter<Double> toValueInstance(String token) throws ParseValueException {
         try {

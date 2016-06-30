@@ -41,7 +41,7 @@ public abstract class Parameter<T> {
     public Parameter(String name) {
         this(name, false);
     }
-    
+
     public Parameter(String name, boolean optional) {
         this.name = name;
         this.optional = optional;
