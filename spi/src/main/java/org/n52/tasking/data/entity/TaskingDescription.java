@@ -28,26 +28,24 @@
  */
 package org.n52.tasking.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class TaskingDescription {
 
-    private final Map<String, Parameter> taskingParameters;
+    private final List<Parameter> taskingParameters;
 
     public TaskingDescription() {
-        this.taskingParameters = new HashMap<>();
+        this.taskingParameters = new ArrayList<>();
     }
 
-    @JsonAnyGetter
-    public Map<String, Parameter> getTaskingParameters() {
-        return Collections.unmodifiableMap(taskingParameters);
+    public List<Parameter> getTaskingParameters() {
+        return Collections.unmodifiableList(taskingParameters);
     }
 
     public TaskingDescription addParameter(Parameter parameter) {
-        taskingParameters.put(parameter.getName(), parameter);
+        taskingParameters.add(parameter);
         return this;
     }
 
