@@ -59,6 +59,9 @@ public class QuantityParameter extends Parameter<Double> {
 
     @Override
     public Parameter<Double> toValueInstance(String token) throws ParseValueException {
+        if (isNullOrEmpty(token)) {
+            return this;
+        }
         try {
             QuantityParameter p = new QuantityParameter(getName(), isOptional());
             p.setValue(Double.parseDouble(token));

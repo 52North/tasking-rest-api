@@ -59,6 +59,9 @@ public class CountParameter extends Parameter<Integer> {
 
     @Override
     public Parameter<Integer> toValueInstance(String token) throws ParseValueException {
+        if (isNullOrEmpty(token)) {
+            return this;
+        }
         try {
             CountParameter p = new CountParameter(getName(), isOptional());
             p.setValue(Integer.parseInt(token));

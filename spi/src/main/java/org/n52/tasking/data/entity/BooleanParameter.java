@@ -42,6 +42,9 @@ public class BooleanParameter extends Parameter<Boolean> {
 
     @Override
     public Parameter<Boolean> toValueInstance(String token) throws ParseValueException {
+        if (isNullOrEmpty(token)) {
+            return this;
+        }
         BooleanParameter p = new BooleanParameter(getName(), isOptional());
         p.setValue(Boolean.parseBoolean(token));
         return p;

@@ -84,4 +84,8 @@ public abstract class Parameter<T> {
 
     public abstract String getType();
 
+    protected static boolean isNullOrEmpty(String token) {
+        return token == null || token.isEmpty();
+    }
+
 }
