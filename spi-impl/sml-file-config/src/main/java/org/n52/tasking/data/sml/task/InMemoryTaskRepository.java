@@ -28,6 +28,7 @@
  */
 package org.n52.tasking.data.sml.task;
 
+import org.n52.tasking.data.TaskRunner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,11 +43,8 @@ public class InMemoryTaskRepository implements TaskRepository {
 
     private final Map<String, List<Task>> tasksByDevice;
 
-    private TaskRunner taskRunner;
-
-    public InMemoryTaskRepository(TaskRunner taskRunner) {
+    public InMemoryTaskRepository() {
         this.tasksByDevice = new HashMap<>();
-        this.taskRunner = taskRunner;
     }
 
     @Override
@@ -54,9 +52,6 @@ public class InMemoryTaskRepository implements TaskRepository {
         Task task = new Task();
         task.setId(UUID.randomUUID().toString());
         task.setEncodedParameters(createTask.getParameters());
-
-        taskRunner.runTask(task);
-
         addTaskForDevice(createTask.getId(), task);
         return task;
     }

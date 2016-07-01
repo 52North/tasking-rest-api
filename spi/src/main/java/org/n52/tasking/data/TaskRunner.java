@@ -26,13 +26,41 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml.task;
+package org.n52.tasking.data;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.n52.tasking.data.entity.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public interface TaskRunner {
+public abstract class TaskRunner {
 
-    void runTask(Task task);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskRunner.class);
 
-    void shutdown();
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    public abstract Runnable getRunnable(Task task);
+
+    public final void asyncExec(Task task) {
+        task.setSubmittedAt(LocalDateTime.now(ZoneId.of("Z")));
+        task.setTaskStatus(TaskStatus.RUNNING.name());
+        task.setPercentCompletion(0.0);
+        getExecutorService().execute(getRunnable(task));
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
+    }
+
+    public void shutdown() {
+        LOGGER.info("Shut down task runner. Stopping all running tasks.");
+        executorService.shutdownNow();
+    }
 }

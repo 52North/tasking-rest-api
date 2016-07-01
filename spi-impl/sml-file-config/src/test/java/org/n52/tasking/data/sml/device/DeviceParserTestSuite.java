@@ -28,60 +28,48 @@
  */
 package org.n52.tasking.data.sml.device;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.n52.tasking.data.RepositoryConfigurationException;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
+import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.Test;
+import org.n52.tasking.data.entity.Device;
+import org.n52.tasking.data.entity.TaskingDescription;
 
-public class SmlConfigDeviceRepositoryTest {
+public class DeviceParserTest extends SmlConfigTest {
 
     private static final String LISA_INSTANCE_ID = "c599c4ea-08bc-3254-8c16-8381b22ab228";
-
-    private static final String SML_CONFIG_FOLDER = "/sml";
-
-    private SmlConfigDeviceRepository repository;
-
-    @Before
-    public void setUp() throws Exception {
-        File folder = getTestConfigFolder().toFile();
-        repository = new SmlConfigDeviceRepository(folder.getAbsolutePath());
-    }
 
     @Test
     public void when_configFolderRead_then_lisaInstanceAvailable() {
         assertTrue(repository.hasDevice(LISA_INSTANCE_ID));
     }
 
-    @Test(expected = RepositoryConfigurationException.class)
-    public void when_relativeConfigFolderNotPresentOnCreation_thenFolderGetsCreated() throws Exception {
-        repository = new SmlConfigDeviceRepository("test-sml-folder");
-    }
-
-    @Test(expected = RepositoryConfigurationException.class)
-    public void when_givenFileOnCreation_thenException() throws Exception {
-        String file = getTestConfigFile("empty.txt").getAbsolutePath();
-        repository = new SmlConfigDeviceRepository(file);
+    @Test
+    public void when_lisaInstanceAvailable_then_notEmptyLabel() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertThat(device.getLabel(), is("LISA - SAC 254nm"));
     }
 
     @Test
-    public void when_xmlAvailable_then_notEmptyCollection() {
-        assertThat(repository.getDevices(), is(not(empty())));
+    public void when_lisaInstanceAvailable_then_notEmptyDescription() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertThat(device.getDescription(), is("Metadata of a LISA device"));
     }
 
-    protected Path getTestConfigFolder() throws URISyntaxException {
-        return Paths.get(getClass().getResource(SML_CONFIG_FOLDER).toURI());
+    @Test
+    public void when_lisaInstanceAvailable_then_HavingConfigTaskingDescription() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        assertThat(device.getTaskingDescriptions().size(), is(1));
+        assertThat(device.getTaskingDescriptions().get(0), is(notNullValue()));
     }
 
-    protected File getTestConfigFile(String name) throws URISyntaxException {
-        Path folder = getTestConfigFolder();
-        return folder.resolve(name).toFile();
+    @Test
+    public void when_lisaInstanceAvailable_then_havingUpdatableParameters() {
+        Device device = repository.getDevice(LISA_INSTANCE_ID);
+        TaskingDescription taskDescription = device.getTaskingDescriptions().get(0);
+        assertThat(taskDescription.getParameters().size(), is(4));
     }
+
 }

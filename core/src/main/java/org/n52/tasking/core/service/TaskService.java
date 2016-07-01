@@ -28,13 +28,12 @@
  */
 package org.n52.tasking.core.service;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.n52.tasking.data.TaskRunner;
 import org.n52.tasking.data.cmd.CreateTask;
 import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.TaskRepository;
@@ -47,7 +46,13 @@ public class TaskService {
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE_TIME;
 
+    private final TaskRunner taskRunner;
+
     private TaskRepository repository;
+
+    public TaskService(TaskRunner taskRunner) {
+        this.taskRunner = taskRunner;
+    }
 
     public List<Resource> getTasks(String fullUrl) {
         final Function<Task, Resource> toResource =  dm
@@ -69,6 +74,8 @@ public class TaskService {
 
     public Resource createTask(CreateTask createTask, String fullUrl) {
         Task task = this.repository.createTask(createTask);
+        taskRunner.asyncExec(task);
+
         return Resource.aResource(task.getId())
                 .withProperty("taskStatus", task.getTaskStatus())
                 .withProperty("submittedAt", format(task.getSubmittedAt()))
@@ -93,7 +100,6 @@ public class TaskService {
             }
         }
     }
-
 
     public TaskRepository getRepository() {
         return repository;
