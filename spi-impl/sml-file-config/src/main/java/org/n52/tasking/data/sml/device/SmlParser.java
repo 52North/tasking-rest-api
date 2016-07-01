@@ -31,6 +31,7 @@ package org.n52.tasking.data.sml.device;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import org.n52.tasking.data.ParseValueException;
 import org.n52.tasking.data.entity.BooleanParameter;
 import org.n52.tasking.data.entity.CountParameter;
 import org.n52.tasking.data.entity.Parameter;
@@ -38,11 +39,14 @@ import org.n52.tasking.data.entity.QuantityParameter;
 import org.n52.tasking.data.entity.TextParameter;
 import org.n52.tasking.data.sml.xml.SmlXPathConfig;
 import org.n52.tasking.data.sml.xml.XPathParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class SmlParser {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SmlParser.class);
     private final XPathParser xPathParser;
 
     private final SmlXPathConfig xpathConfig;
@@ -86,26 +90,34 @@ public class SmlParser {
             Node parameterType = getNextTagNode(item);
             String name = xPathParser.parseString("@name", item);
             boolean optional = xPathParser.parseBoolean("@optional", item);
+            String value = xPathParser.parseString("*/value/text()",item);
             String nodeName = getPrefixStrippedName(parameterType);
             if (nodeName.equalsIgnoreCase("quantity")) {
-                QuantityParameter parameter = new QuantityParameter(name);
-                parameter.setOptional(optional);
-                parameters.add(parameter);
+                QuantityParameter parameter = new QuantityParameter(name, optional);
+                parameters.add(createParameter(value, parameter));
             } else if (nodeName.equalsIgnoreCase("boolean")) {
-                BooleanParameter parameter = new BooleanParameter(name);
-                parameter.setOptional(optional);
-                parameters.add(parameter);
+                BooleanParameter parameter = new BooleanParameter(name, optional);
+                parameters.add(createParameter(value, parameter));
             } else if (nodeName.equalsIgnoreCase("count")) {
-                CountParameter parameter = new CountParameter(name);
-                parameter.setOptional(optional);
-                parameters.add(parameter);
+                CountParameter parameter = new CountParameter(name, optional);
+                parameters.add(createParameter(value, parameter));
             } else if (nodeName.equalsIgnoreCase("text")) {
-                TextParameter parameter = new TextParameter(name);
-                parameter.setOptional(optional);
-                parameters.add(parameter);
+                TextParameter parameter = new TextParameter(name, optional);
+                parameters.add(createParameter(value, parameter));
             }
         }
         return parameters;
+    }
+
+    private static Parameter<?> createParameter(String value, Parameter parameter) {
+        try {
+            return value != null
+                ? parameter.toValueInstance(value)
+                : parameter;
+        } catch(ParseValueException e) {
+            LOGGER.warn("Unable to parse parameter value: '{}'", value, e);
+            return parameter;
+        }
     }
 
     private Node getNextTagNode(Node node) {
