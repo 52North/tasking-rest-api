@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +34,12 @@ public class SmlXPathConfig {
         return prefix.toLowerCase();
     }
 
-    public String getXPath(String key) {
+    public String getXPath(String key, String... properties) {
         if (xpaths == null) {
             xpaths = loadXPathProperties();
         }
-        return xpaths.getProperty(smlType + key);
+        final String xpath = xpaths.getProperty(smlType + key);
+        return MessageFormat.format(xpath, (Object[]) properties);
     }
 
     private Properties loadXPathProperties() {
