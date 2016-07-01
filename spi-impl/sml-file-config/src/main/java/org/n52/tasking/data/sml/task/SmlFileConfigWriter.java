@@ -33,7 +33,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.FileLock;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,20 +69,20 @@ public class SmlFileConfigWriter {
 
     public void saveConfiguration(String configParameters) throws ParseValueException, ServiceProviderInterfaceException {
         File file = smlDevice.getSmlConfigFile();
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            FileLock lock = out.getChannel().lock();
-            try {
+        try {
+//        try (RandomAccessFile raFile = new RandomAccessFile(file, "rw")) {
+//        try (FileOutputStream out = new FileOutputStream(file)) {
+//            FileLock lock = raFile.getChannel().lock();
+//            FileLock lock = out.getChannel().lock();
+//            try {
                 Document document = parseDocument(file);
                 writeConfig(configParameters, document);
                 overrideFile(file, document);
-            } finally {
-                lock.release();
-            }
-        } catch (IOException e) {
-            LOGGER.error("Lock failed for file '{}'", file.getAbsolutePath(), e);
-            throw new ServiceProviderInterfaceException("Unable to save configuration.");
-        } catch (ParserConfigurationException | SAXException e) {
-            LOGGER.error("Could not parse targeted XML: '{}'", file.getAbsolutePath(), e);
+//            } finally {
+//                lock.release();
+//            }
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            LOGGER.error("Could not save targeted XML: '{}'", file.getAbsolutePath(), e);
             throw new ServiceProviderInterfaceException("Unable to save configuration.");
         }
     }
@@ -93,7 +92,7 @@ public class SmlFileConfigWriter {
         return domFactory.newDocumentBuilder().parse(file);
     }
 
-    private void overrideFile(File file, Document document) {
+    protected void overrideFile(File file, Document document) {
         try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
             StreamResult streamResult = new StreamResult(os);
             Transformer transformer = createXmlTransformer();
@@ -110,7 +109,7 @@ public class SmlFileConfigWriter {
         return transformer;
     }
 
-    private void writeConfig(String configParameters, Document document) throws ParseValueException, ServiceProviderInterfaceException {
+    protected void writeConfig(String configParameters, Document document) throws ParseValueException, ServiceProviderInterfaceException {
         Device device = smlDevice.getDevice();
         SimpleTextDecoder decoder = new SimpleTextDecoder(getConfigDescription(device));
         try {
@@ -118,7 +117,6 @@ public class SmlFileConfigWriter {
             XPathParser parser = new XPathParser(smlDevice.getSmlConfigFile());
 
             // TODO
-
         } catch (ParseException e) {
             LOGGER.error("Could not parsse sensor configuration", e);
             throw new ServiceProviderInterfaceException("Unable to perform configuration task.");

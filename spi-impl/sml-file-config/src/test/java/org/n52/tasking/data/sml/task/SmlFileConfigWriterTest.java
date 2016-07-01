@@ -28,19 +28,12 @@
  */
 package org.n52.tasking.data.sml.task;
 
-import org.n52.tasking.data.sml.task.SmlFileConfigWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
-import org.hamcrest.MatcherAssert;
 import static org.hamcrest.MatcherAssert.assertThat;
-import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -85,7 +78,8 @@ public class SmlFileConfigWriterTest {
         Node newNode = document.createElement("new");
         newNode.appendChild(document.createTextNode("I am new"));
         root.appendChild(newNode);
-        new SmlFileConfigWriter(smlDevice).saveConfiguration(null);
+        new SmlFileConfigWriter(smlDevice).overrideFile(inputFile, document);
         assertThat(new XPathParser(inputFile).parseString("/root/new/text()"), is("I am new"));
     }
+    
 }
