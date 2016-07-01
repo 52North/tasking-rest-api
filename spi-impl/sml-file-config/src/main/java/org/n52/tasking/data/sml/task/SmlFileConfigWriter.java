@@ -26,7 +26,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml.device;
+package org.n52.tasking.data.sml.task;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.channels.FileLock;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -43,8 +44,15 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.n52.tasking.data.ParseValueException;
+import org.n52.tasking.data.ServiceProviderInterfaceException;
 import org.n52.tasking.data.entity.Device;
+import org.n52.tasking.data.entity.Parameter;
 import org.n52.tasking.data.entity.TaskingDescription;
+import org.n52.tasking.data.sml.SimpleTextDecoder;
+import org.n52.tasking.data.sml.device.SmlDevice;
+import org.n52.tasking.data.sml.xml.ParseException;
+import org.n52.tasking.data.sml.xml.XPathParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -60,7 +68,7 @@ public class SmlFileConfigWriter {
         this.smlDevice = smlDevice;
     }
 
-    public void saveConfiguration(String configParameters) {
+    public void saveConfiguration(String configParameters) throws ParseValueException, ServiceProviderInterfaceException {
         File file = smlDevice.getSmlConfigFile();
         try (FileOutputStream out = new FileOutputStream(file)) {
             FileLock lock = out.getChannel().lock();
@@ -71,8 +79,12 @@ public class SmlFileConfigWriter {
             } finally {
                 lock.release();
             }
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            LOGGER.error("Could not parse targeted SML file '{}'", file.getAbsolutePath(), e);
+        } catch (IOException e) {
+            LOGGER.error("Lock failed for file '{}'", file.getAbsolutePath(), e);
+            throw new ServiceProviderInterfaceException("Unable to save configuration.");
+        } catch (ParserConfigurationException | SAXException e) {
+            LOGGER.error("Could not parse targeted XML: '{}'", file.getAbsolutePath(), e);
+            throw new ServiceProviderInterfaceException("Unable to save configuration.");
         }
     }
 
@@ -98,8 +110,19 @@ public class SmlFileConfigWriter {
         return transformer;
     }
 
-    private void writeConfig(String configParameters, Document document) {
+    private void writeConfig(String configParameters, Document document) throws ParseValueException, ServiceProviderInterfaceException {
         Device device = smlDevice.getDevice();
+        SimpleTextDecoder decoder = new SimpleTextDecoder(getConfigDescription(device));
+        try {
+            List<Parameter<?>> configValues = decoder.decode(configParameters);
+            XPathParser parser = new XPathParser(smlDevice.getSmlConfigFile());
+
+            // TODO
+
+        } catch (ParseException e) {
+            LOGGER.error("Could not parsse sensor configuration", e);
+            throw new ServiceProviderInterfaceException("Unable to perform configuration task.");
+        }
 
     }
 
