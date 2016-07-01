@@ -29,6 +29,14 @@
 package org.n52.tasking.data.sml.device;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Properties;
 import org.n52.tasking.data.entity.BooleanParameter;
 import org.n52.tasking.data.entity.CountParameter;
 import org.n52.tasking.data.entity.Device;
@@ -43,35 +51,68 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class DeviceParser {
+class DeviceParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DeviceParser.class);
 
     private static final String CONFIGURATION_TASKING = "configurationTask";
 
-    private final XPathParser parser;
+    private static final String XPATH_PROPERTIES_FILE = "xpath.properties";
 
+    private final String sensorMLType;
+    
+    private final Properties xpaths;
+
+    private final XPathParser parser;
+    
     DeviceParser(File file) throws ParseException {
         parser = new XPathParser(file);
+        sensorMLType = getSensorMLType();
+        xpaths = readXPathProperties();
+    }
+
+    private String getSensorMLType() {
+        Node type = getNextTagNode(parser.parseNode("/"));
+        return getPrefixStrippedName(type).toLowerCase();
+    }
+
+    private Properties readXPathProperties() {
+        Properties properties = new Properties();
+        try {
+            File file = getXPathPropertiesFile();
+            properties.load(new FileReader(file));
+            return properties;
+        } catch(IOException | URISyntaxException e) {
+            LOGGER.error("Could not read XPath properties: '{}'", XPATH_PROPERTIES_FILE, e);
+            return properties;
+        }
+    }
+
+    protected File getXPathPropertiesFile() throws URISyntaxException {
+        Path path = Paths.get(getClass().getResource("/").toURI());
+        return path.resolve(XPATH_PROPERTIES_FILE).toFile();
     }
 
     public Device parse() {
-        LOGGER.debug("Parsing device ...");
         Device device = parseDevice();
-        parserDescriptionData(device);
+        parseDescriptionData(device);
         parseTaskingParameters(device);
         LOGGER.debug("Parsed device: {}", device.toString());
         return device;
     }
-
-    private Device parseDevice() {
-        String id = parser.parseString("/PhysicalComponent/identifier");
-        String description = parser.parseString("/PhysicalComponent/description");
-        String label = parser.parseString("/PhysicalComponent/identification/IdentifierList/identifier/Term[contains(@definition,'#modelID')]/value/text()");
-        return new Device(id, label, description);
+    
+    private String getXPath(String key) {
+        return xpaths.getProperty(sensorMLType + "." + key);
     }
 
-    private void parserDescriptionData(Device device) {
+    private Device parseDevice() {
+        String id = parser.parseString(getXPath("identifier.string"));
+        String description = parser.parseString(getXPath("description.string"));
+        String label = parser.parseString(getXPath("label.string"));
+        return new Device(id, label, description);
+    }
+    
+    private void parseDescriptionData(Device device) {
 
         // TODO
 
@@ -84,7 +125,7 @@ public class DeviceParser {
 
     private void parseTaskingParameters(Device device) {
         TaskingDescription taskDescription = device.addNewTaskingDescription(CONFIGURATION_TASKING);
-        NodeList nodes = parser.parseNodes("/PhysicalComponent/parameters/ParameterList/parameter[@updatable='true']");
+        NodeList nodes = parser.parseNodes(getXPath("updatableParameters.nodes"));
         for (int i = 0 ; i < nodes.getLength() ; i++) {
             Node item = nodes.item(i);
             Node parameterType = getNextTagNode(item);
