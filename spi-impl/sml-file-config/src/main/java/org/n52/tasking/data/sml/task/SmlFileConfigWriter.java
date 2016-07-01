@@ -48,7 +48,7 @@ import org.n52.tasking.data.ServiceProviderInterfaceException;
 import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.Parameter;
 import org.n52.tasking.data.entity.TaskingDescription;
-import org.n52.tasking.data.sml.SimpleTextDecoder;
+import org.n52.tasking.data.sml.decode.SimpleTextDecoder;
 import org.n52.tasking.data.sml.device.SmlDevice;
 import org.n52.tasking.data.sml.device.SmlParser;
 import org.n52.tasking.data.sml.device.SmlWriter;

@@ -26,7 +26,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml;
+package org.n52.tasking.data.sml.decode;
 
 import java.util.ArrayList;
 import java.util.Arrays;

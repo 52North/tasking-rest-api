@@ -26,8 +26,9 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml;
+package org.n52.tasking.data.sml.decode;
 
+import org.n52.tasking.data.sml.decode.SimpleTextDecoder;
 import java.util.List;
 import org.hamcrest.MatcherAssert;
 import static org.hamcrest.MatcherAssert.assertThat;
