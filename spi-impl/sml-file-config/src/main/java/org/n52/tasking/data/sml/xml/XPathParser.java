@@ -70,7 +70,6 @@ public class XPathParser {
         return (Node) evaluate(expression, node, XPathConstants.NODE);
     }
 
-
     public NodeList parseNodes(String expression) {
         LOGGER.trace("parsing node list via '{}'", expression);
         return (NodeList) evaluate(expression, XPathConstants.NODESET);

@@ -38,8 +38,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.n52.tasking.data.ParseValueException;
-import org.n52.tasking.data.ServiceProviderInterfaceException;
 import org.n52.tasking.data.sml.device.SmlDevice;
 import org.n52.tasking.data.sml.xml.ParseException;
 import org.n52.tasking.data.sml.xml.XPathParser;
