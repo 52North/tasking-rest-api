@@ -110,7 +110,7 @@ public class XPathParser {
             XPath xpath = XPathFactory.newInstance().newXPath();
             return xpath.evaluate(expression, input, returnType);
         } catch (XPathExpressionException e) {
-            throw new IllegalArgumentException("Illegal XPath expression", e);
+            throw new IllegalArgumentException("Illegal XPath expression: '" + expression + "'", e);
         }
     }
 
