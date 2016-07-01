@@ -28,48 +28,11 @@
  */
 package org.n52.tasking.data.sml.device;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import org.hamcrest.Matchers;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
-import org.n52.tasking.data.entity.Device;
-import org.n52.tasking.data.entity.TaskingDescription;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class DeviceParserTest extends SmlConfigTest {
-
-    private static final String LISA_INSTANCE_ID = "c599c4ea-08bc-3254-8c16-8381b22ab228";
-
-    @Test
-    public void when_configFolderRead_then_lisaInstanceAvailable() {
-        assertTrue(repository.hasDevice(LISA_INSTANCE_ID));
-    }
-
-    @Test
-    public void when_lisaInstanceAvailable_then_notEmptyLabel() {
-        Device device = repository.getDevice(LISA_INSTANCE_ID);
-        assertThat(device.getLabel(), is("LISA - SAC 254nm"));
-    }
-
-    @Test
-    public void when_lisaInstanceAvailable_then_notEmptyDescription() {
-        Device device = repository.getDevice(LISA_INSTANCE_ID);
-        assertThat(device.getDescription(), is("Metadata of a LISA device"));
-    }
-
-    @Test
-    public void when_lisaInstanceAvailable_then_HavingConfigTaskingDescription() {
-        Device device = repository.getDevice(LISA_INSTANCE_ID);
-        assertThat(device.getTaskingDescriptions().size(), is(1));
-        assertThat(device.getTaskingDescriptions().get(0), is(notNullValue()));
-    }
-
-    @Test
-    public void when_lisaInstanceAvailable_then_havingUpdatableParameters() {
-        Device device = repository.getDevice(LISA_INSTANCE_ID);
-        TaskingDescription taskDescription = device.getTaskingDescriptions().get(0);
-        assertThat(taskDescription.getParameters().size(), is(4));
-    }
+@RunWith(Suite.class)
+@Suite.SuiteClasses(PhysicalComponentLisaInstanceTest.class)
+public class DeviceParserTestSuite {
 
 }

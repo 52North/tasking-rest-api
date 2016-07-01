@@ -28,48 +28,42 @@
  */
 package org.n52.tasking.data.sml.device;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import org.hamcrest.Matchers;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.junit.Before;
+import org.mockito.Mockito;
 import org.n52.tasking.data.entity.Device;
-import org.n52.tasking.data.entity.TaskingDescription;
+import org.n52.tasking.data.sml.xml.ParseException;
 
-public class DeviceParserTest extends SmlConfigTest {
+public abstract class AbstractDeviceParser {
 
-    private static final String LISA_INSTANCE_ID = "c599c4ea-08bc-3254-8c16-8381b22ab228";
+    private Device device;
 
-    @Test
-    public void when_configFolderRead_then_lisaInstanceAvailable() {
-        assertTrue(repository.hasDevice(LISA_INSTANCE_ID));
+    @Before
+    public void setUp() throws Exception {
+        DeviceParser parser = new DeviceParserSeam(getFileToParse());
+        this.device = parser.parse();
     }
 
-    @Test
-    public void when_lisaInstanceAvailable_then_notEmptyLabel() {
-        Device device = repository.getDevice(LISA_INSTANCE_ID);
-        assertThat(device.getLabel(), is("LISA - SAC 254nm"));
+    protected abstract File getFileToParse() throws Exception;
+
+    protected Device getParsedDevice() {
+        return device;
     }
 
-    @Test
-    public void when_lisaInstanceAvailable_then_notEmptyDescription() {
-        Device device = repository.getDevice(LISA_INSTANCE_ID);
-        assertThat(device.getDescription(), is("Metadata of a LISA device"));
-    }
+    private static class DeviceParserSeam extends DeviceParser {
 
-    @Test
-    public void when_lisaInstanceAvailable_then_HavingConfigTaskingDescription() {
-        Device device = repository.getDevice(LISA_INSTANCE_ID);
-        assertThat(device.getTaskingDescriptions().size(), is(1));
-        assertThat(device.getTaskingDescriptions().get(0), is(notNullValue()));
-    }
+        public DeviceParserSeam(File file) throws ParseException {
+            super(file);
+        }
 
-    @Test
-    public void when_lisaInstanceAvailable_then_havingUpdatableParameters() {
-        Device device = repository.getDevice(LISA_INSTANCE_ID);
-        TaskingDescription taskDescription = device.getTaskingDescriptions().get(0);
-        assertThat(taskDescription.getParameters().size(), is(4));
-    }
+        @Override
+        protected File getXPathPropertiesFile() throws URISyntaxException {
+            Path path = Paths.get(getClass().getResource("/").toURI());
+            return path.resolve("xpath.properties").toFile();
+        }
 
+    }
 }
