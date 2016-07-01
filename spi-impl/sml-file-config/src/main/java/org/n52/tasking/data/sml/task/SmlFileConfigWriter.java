@@ -33,7 +33,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -46,7 +45,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.n52.tasking.data.ParseValueException;
 import org.n52.tasking.data.ServiceProviderInterfaceException;
 import org.n52.tasking.data.entity.Device;
-import org.n52.tasking.data.entity.Parameter;
 import org.n52.tasking.data.entity.TaskingDescription;
 import org.n52.tasking.data.sml.decode.SimpleTextDecoder;
 import org.n52.tasking.data.sml.device.SmlDevice;
@@ -115,17 +113,15 @@ public class SmlFileConfigWriter {
         Device device = smlDevice.getDevice();
         SimpleTextDecoder decoder = new SimpleTextDecoder(getConfigDescription(device));
         try {
-            List<Parameter<?>> configValues = decoder.decode(configParameters);
             XPathParser xpathParser = new XPathParser(smlDevice.getSmlConfigFile());
             SmlWriter smlWriter = new SmlWriter(new SmlParser(xpathParser));
-
-            // TODO
-
+            decoder.decode(configParameters).stream().forEach((parameter) -> {
+                smlWriter.setParameterValue(parameter);
+            });
         } catch (ParseException e) {
             LOGGER.error("Could not parsse sensor configuration", e);
             throw new ServiceProviderInterfaceException("Unable to perform configuration task.");
         }
-
     }
 
     private TaskingDescription getConfigDescription(Device device) {

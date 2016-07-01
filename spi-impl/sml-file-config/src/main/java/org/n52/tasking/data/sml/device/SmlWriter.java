@@ -28,6 +28,7 @@
  */
 package org.n52.tasking.data.sml.device;
 
+import org.n52.tasking.data.entity.Parameter;
 import org.n52.tasking.data.sml.xml.SmlXPathConfig;
 import org.n52.tasking.data.sml.xml.XPathParser;
 import org.w3c.dom.Document;
@@ -43,8 +44,13 @@ public class SmlWriter {
         this.smlParser = parser;
         this.xpathParser = parser.getXPathParser();
     }
+    
+    
+    public void setParameterValue(Parameter<?> parameter) {
+        setParameterValue(parameter.getName(), parameter.getValue());
+    }
 
-    void setParameterValue(String parameterName, Object d) {
+    public void setParameterValue(String parameterName, Object d) {
         SmlXPathConfig config = smlParser.getSmlXPathConfig();
         final String xPath = config.getXPath("updatableParameter.node", parameterName);
         Node node = xpathParser.parseNode(xPath);
