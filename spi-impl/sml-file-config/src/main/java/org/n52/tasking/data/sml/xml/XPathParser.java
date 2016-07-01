@@ -30,12 +30,16 @@ package org.n52.tasking.data.sml.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.slf4j.Logger;
@@ -49,15 +53,49 @@ public class XPathParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XPathParser.class);
 
+
+    private static final Map<String, String> DEFAULT_NAMESPACE_DECLARATIONS = new HashMap<>();
+
+    private final Map<String, String> declaredNamespaces;
+
+    private final NamespaceContext namespaceContext;
+
     private final Document document;
 
+    static {
+        DEFAULT_NAMESPACE_DECLARATIONS.put("sml", "http://www.opengis.net/sensorml/2.0");
+        DEFAULT_NAMESPACE_DECLARATIONS.put("gml", "http://www.opengis.net/gml/3.2");
+        DEFAULT_NAMESPACE_DECLARATIONS.put("swe", "http://www.opengis.net/swe/2.0");
+    }
+
+    public static XPathParser createWithDefaultNamespaces(File file) throws ParseException {
+        return new XPathParser(file, DEFAULT_NAMESPACE_DECLARATIONS);
+    }
+
     public XPathParser(File file) throws ParseException {
+        this(file, Collections.emptyMap());
+    }
+
+    public XPathParser(File file, Map<String, String> namespaceDeclarations) throws ParseException {
         try {
+            declaredNamespaces = namespaceDeclarations != null
+                    ? namespaceDeclarations
+                    : Collections.emptyMap();
+            namespaceContext = createXPathNamespaceContext(declaredNamespaces);
             DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+            domFactory.setNamespaceAware(havingDeclaredNamespaces(namespaceDeclarations));
             this.document = domFactory.newDocumentBuilder().parse(file);
         } catch (IOException | ParserConfigurationException | SAXException e) {
             throw new ParseException("Could not parse XML from '" + file.getAbsolutePath() + "'", e);
         }
+    }
+
+    public Map<String, String> getDeclaredNamespaces() {
+        return Collections.unmodifiableMap(declaredNamespaces);
+    }
+
+    private boolean havingDeclaredNamespaces(Map<String, String> namespaces) {
+        return namespaces != null && !namespaces.isEmpty();
     }
 
     public Node parseNode(String expression) {
@@ -107,15 +145,30 @@ public class XPathParser {
     private Object evaluate(String expression, Object input, QName returnType) {
         try {
             XPath xpath = XPathFactory.newInstance().newXPath();
+            xpath.setNamespaceContext(namespaceContext);
             return xpath.evaluate(expression, input, returnType);
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException("Illegal XPath expression: '" + expression + "'", e);
         }
     }
 
-    private XPathExpression compileXPathExpression(String expression) throws XPathExpressionException {
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        return xpath.compile(expression);
+    private NamespaceContext createXPathNamespaceContext(final Map<String, String> declaredNamespaces) {
+        return new NamespaceContext() {
+            @Override
+            public String getNamespaceURI(String prefix) {
+                return declaredNamespaces.get(prefix);
+            }
+
+            @Override
+            public String getPrefix(String namespaceURI) {
+                return null;
+            }
+
+            @Override
+            public Iterator getPrefixes(String namespaceURI) {
+                return declaredNamespaces.keySet().iterator();
+            }
+        };
     }
 
 }

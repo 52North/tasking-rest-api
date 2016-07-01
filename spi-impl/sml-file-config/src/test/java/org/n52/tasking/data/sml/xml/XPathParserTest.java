@@ -51,6 +51,13 @@ public class XPathParserTest {
     }
 
     @Test
+    public void when_declaringNamespaces_then_expressionsWorkWithPrefixes() throws Exception {
+        parser = XPathParser.createWithDefaultNamespaces(getTestConfigFile("lisa-instance.xml"));
+        String id = parser.parseString("/sml:PhysicalComponent/gml:identifier");
+        assertThat(id, is("http://www.nexosproject.eu/resource/procedure/trios/lisa/1234567890"));
+    }
+
+    @Test
     public void when_parserReady_then_parseNodeList() {
         NodeList nodes = parser.parseNodes("/PhysicalComponent/identification");
         assertThat(nodes.getLength(), is(greaterThan(0)));
