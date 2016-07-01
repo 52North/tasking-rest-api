@@ -81,5 +81,5 @@ public class SmlFileConfigWriterTest {
         new SmlFileConfigWriter(smlDevice).overrideFile(inputFile, document);
         assertThat(new XPathParser(inputFile).parseString("/root/new/text()"), is("I am new"));
     }
-    
+
 }

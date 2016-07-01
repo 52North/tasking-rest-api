@@ -51,6 +51,11 @@ public class TaskingDescription {
         return Collections.unmodifiableList(parameters);
     }
 
+    public TaskingDescription addAllParameters(List<Parameter<?>> parameters) {
+        this.parameters.addAll(parameters);
+        return this;
+    }
+
     public TaskingDescription addParameter(Parameter<?> parameter) {
         parameters.add(parameter);
         return this;

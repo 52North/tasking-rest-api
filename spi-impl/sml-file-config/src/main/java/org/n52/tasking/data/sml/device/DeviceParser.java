@@ -29,26 +29,13 @@
 package org.n52.tasking.data.sml.device;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Properties;
-import org.n52.tasking.data.entity.BooleanParameter;
-import org.n52.tasking.data.entity.CountParameter;
 import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.DeviceDescriptionData;
-import org.n52.tasking.data.entity.QuantityParameter;
 import org.n52.tasking.data.entity.TaskingDescription;
-import org.n52.tasking.data.entity.TextParameter;
 import org.n52.tasking.data.sml.xml.ParseException;
-import org.n52.tasking.data.sml.xml.SmlXPathConfig;
 import org.n52.tasking.data.sml.xml.XPathParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 class DeviceParser {
 
@@ -56,22 +43,17 @@ class DeviceParser {
 
     private static final String CONFIGURATION_TASKING = "configurationTask";
 
-    private final SmlXPathConfig xpathConfig;
+    private final SmlParser smlParser;
 
-    private final XPathParser parser;
+    private final XPathParser xPathParser;
 
     DeviceParser(File file) throws ParseException {
-        parser = new XPathParser(file);
-        xpathConfig = new SmlXPathConfig(getSensorMLType());
+        xPathParser = new XPathParser(file);
+        smlParser = new SmlParser(xPathParser);
     }
 
-    private String getSensorMLType() {
-        Node type = getNextTagNode(parser.parseNode("/"));
-        return getPrefixStrippedName(type).toLowerCase();
-    }
-
-    SmlXPathConfig getXPathConfig() {
-        return xpathConfig;
+    SmlParser getSmlParser() {
+        return smlParser;
     }
 
     public Device parse() {
@@ -83,9 +65,9 @@ class DeviceParser {
     }
 
     private Device parseDevice() {
-        String id = parser.parseString(xpathConfig.getXPath("identifier.string"));
-        String description = parser.parseString(xpathConfig.getXPath("description.string"));
-        String label = parser.parseString(xpathConfig.getXPath("label.string"));
+        String label = smlParser.getLabel();
+        String id = smlParser.getIdentifier();
+        String description = smlParser.getDescription();
         return new Device(id, label, description);
     }
 
@@ -102,47 +84,7 @@ class DeviceParser {
 
     private void parseTaskingParameters(Device device) {
         TaskingDescription taskDescription = device.addNewTaskingDescription(CONFIGURATION_TASKING);
-        NodeList nodes = parser.parseNodes(xpathConfig.getXPath("updatableParameters.nodes"));
-        for (int i = 0 ; i < nodes.getLength() ; i++) {
-            Node item = nodes.item(i);
-            Node parameterType = getNextTagNode(item);
-            String name = parser.parseString("@name", item);
-            boolean optional = parser.parseBoolean("@optional", item);
-            String nodeName = getPrefixStrippedName(parameterType);
-            if (nodeName.equalsIgnoreCase("quantity")) {
-                QuantityParameter parameter = new QuantityParameter(name);
-                parameter.setOptional(optional);
-                taskDescription.addParameter(parameter);
-            } else if (nodeName.equalsIgnoreCase("boolean")) {
-                BooleanParameter parameter = new BooleanParameter(name);
-                parameter.setOptional(optional);
-                taskDescription.addParameter(parameter);
-            } else if (nodeName.equalsIgnoreCase("count")) {
-                CountParameter parameter = new CountParameter(name);
-                parameter.setOptional(optional);
-                taskDescription.addParameter(parameter);
-            } else if (nodeName.equalsIgnoreCase("text")) {
-                TextParameter parameter = new TextParameter(name);
-                parameter.setOptional(optional);
-                taskDescription.addParameter(parameter);
-            }
-        }
-    }
-
-    private Node getNextTagNode(Node node) {
-        NodeList nodes = node.getChildNodes();
-        for (int i = 0; i < nodes.getLength() ; i++) {
-            final Node child = nodes.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                return child;
-            }
-        }
-        return null;
-    }
-
-    private String getPrefixStrippedName(Node parameterType) {
-        final String nodeName = parameterType.getNodeName();
-        return nodeName.substring(nodeName.indexOf(":") + 1);
+        taskDescription.addAllParameters(smlParser.getUpdatableParameters());
     }
 
 }

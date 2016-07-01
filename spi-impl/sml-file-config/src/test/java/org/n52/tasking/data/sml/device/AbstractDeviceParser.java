@@ -34,7 +34,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Before;
 import org.n52.tasking.data.entity.Device;
-import org.n52.tasking.data.sml.xml.SmlXPathConfig;
 
 public abstract class AbstractDeviceParser {
 
@@ -43,8 +42,8 @@ public abstract class AbstractDeviceParser {
     @Before
     public void setUp() throws Exception {
         DeviceParser parser = new DeviceParser(getFileToParse());
-        final SmlXPathConfig config = parser.getXPathConfig();
-        config.setXPathPropertiesFile(getTestXPathPropertiesFile());
+        final SmlParser smlParser = parser.getSmlParser();
+        smlParser.setXPathConfigFile(getTestXPathConfigFile());
         this.device = parser.parse();
     }
 
@@ -54,7 +53,7 @@ public abstract class AbstractDeviceParser {
         return device;
     }
 
-    private File getTestXPathPropertiesFile() throws URISyntaxException {
+    private File getTestXPathConfigFile() throws URISyntaxException {
         Path path = Paths.get(getClass().getResource("/").toURI());
         return path.resolve("xpath.properties").toFile();
     }
