@@ -51,8 +51,8 @@ public class ExceptionHandlerImpl {
         return createModelAndView(e, req);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = ResourceNotAvailableException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView unknownResourceHandler(HttpServletRequest req, Exception e) throws Exception {
         return createModelAndView(e, req);
     }
