@@ -33,9 +33,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Before;
-import org.mockito.Mockito;
 import org.n52.tasking.data.entity.Device;
-import org.n52.tasking.data.sml.xml.ParseException;
+import org.n52.tasking.data.sml.xml.SmlXPathConfig;
 
 public abstract class AbstractDeviceParser {
 
@@ -43,7 +42,9 @@ public abstract class AbstractDeviceParser {
 
     @Before
     public void setUp() throws Exception {
-        DeviceParser parser = new DeviceParserSeam(getFileToParse());
+        DeviceParser parser = new DeviceParser(getFileToParse());
+        final SmlXPathConfig config = parser.getXPathConfig();
+        config.setXPathPropertiesFile(getTestXPathPropertiesFile());
         this.device = parser.parse();
     }
 
@@ -53,17 +54,8 @@ public abstract class AbstractDeviceParser {
         return device;
     }
 
-    private static class DeviceParserSeam extends DeviceParser {
-
-        public DeviceParserSeam(File file) throws ParseException {
-            super(file);
-        }
-
-        @Override
-        protected File getXPathPropertiesFile() throws URISyntaxException {
-            Path path = Paths.get(getClass().getResource("/").toURI());
-            return path.resolve("xpath.properties").toFile();
-        }
-
+    private File getTestXPathPropertiesFile() throws URISyntaxException {
+        Path path = Paths.get(getClass().getResource("/").toURI());
+        return path.resolve("xpath.properties").toFile();
     }
 }

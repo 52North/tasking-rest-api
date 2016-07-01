@@ -41,7 +41,7 @@ import org.w3c.dom.NodeList;
 
 public class XPathParserTest {
 
-    private static final String SML_CONFIG_FOLDER = "/files";
+    private static final String SML_CONFIG_FOLDER = "/sml";
 
     private XPathParser parser;
 
