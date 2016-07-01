@@ -31,7 +31,6 @@ package org.n52.tasking.data.sml.device;
 import org.n52.tasking.data.sml.xml.SmlXPathConfig;
 import org.n52.tasking.data.sml.xml.XPathParser;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class SmlWriter {
@@ -50,7 +49,6 @@ public class SmlWriter {
         final String xPath = config.getXPath("updatableParameter.node", parameterName);
         Node node = xpathParser.parseNode(xPath);
         if (node != null) {
-//            xpathParser.parseNode(xPath, node)
             Node valueNode = xpathParser.parseNode("*/value", node);
             if (valueNode == null) {
                 Document document = node.getOwnerDocument();
