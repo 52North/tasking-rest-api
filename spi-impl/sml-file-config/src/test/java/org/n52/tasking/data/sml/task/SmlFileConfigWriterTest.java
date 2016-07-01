@@ -46,6 +46,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.n52.tasking.data.ParseValueException;
+import org.n52.tasking.data.ServiceProviderInterfaceException;
 import org.n52.tasking.data.sml.device.SmlDevice;
 import org.n52.tasking.data.sml.xml.ParseException;
 import org.n52.tasking.data.sml.xml.XPathParser;
@@ -78,15 +79,13 @@ public class SmlFileConfigWriterTest {
     }
 
     @Test
-    public void when_saving_then_xmlGetsOverridden() throws ParseValueException {
+    public void when_saving_then_xmlGetsOverridden() throws Exception {
         Node root = xPathParser.parseNode("/root");
         Document document = root.getOwnerDocument();
         Node newNode = document.createElement("new");
         newNode.appendChild(document.createTextNode("I am new"));
         root.appendChild(newNode);
-        SmlFileConfigWriter writer = new SmlFileConfigWriter(smlDevice);
-        writer.saveConfiguration(null);
-        assertThat(xPathParser.parseNode("/root/new"), is(not(nullValue(Node.class))));
-        assertThat(xPathParser.parseString("/root/new/text()"), is("I am new"));
+        new SmlFileConfigWriter(smlDevice).saveConfiguration(null);
+        assertThat(new XPathParser(inputFile).parseString("/root/new/text()"), is("I am new"));
     }
 }
