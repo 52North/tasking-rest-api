@@ -50,6 +50,8 @@ import org.n52.tasking.data.entity.Parameter;
 import org.n52.tasking.data.entity.TaskingDescription;
 import org.n52.tasking.data.sml.SimpleTextDecoder;
 import org.n52.tasking.data.sml.device.SmlDevice;
+import org.n52.tasking.data.sml.device.SmlParser;
+import org.n52.tasking.data.sml.device.SmlWriter;
 import org.n52.tasking.data.sml.xml.ParseException;
 import org.n52.tasking.data.sml.xml.XPathParser;
 import org.slf4j.Logger;
@@ -114,9 +116,11 @@ public class SmlFileConfigWriter {
         SimpleTextDecoder decoder = new SimpleTextDecoder(getConfigDescription(device));
         try {
             List<Parameter<?>> configValues = decoder.decode(configParameters);
-            XPathParser parser = new XPathParser(smlDevice.getSmlConfigFile());
+            XPathParser xpathParser = new XPathParser(smlDevice.getSmlConfigFile());
+            SmlWriter smlWriter = new SmlWriter(new SmlParser(xpathParser));
 
             // TODO
+
         } catch (ParseException e) {
             LOGGER.error("Could not parsse sensor configuration", e);
             throw new ServiceProviderInterfaceException("Unable to perform configuration task.");

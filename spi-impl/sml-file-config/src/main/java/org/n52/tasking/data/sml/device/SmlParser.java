@@ -47,6 +47,7 @@ import org.w3c.dom.NodeList;
 public class SmlParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmlParser.class);
+
     private final XPathParser xPathParser;
 
     private final SmlXPathConfig xpathConfig;
@@ -61,6 +62,13 @@ public class SmlParser {
         return getPrefixStrippedName(type).toLowerCase();
     }
 
+    SmlXPathConfig getSmlXPathConfig() {
+        return this.xpathConfig;
+    }
+
+    XPathParser getXPathParser() {
+        return this.xPathParser;
+    }
 
     void setXPathConfigFile(File file) {
         this.xpathConfig.setXPathPropertiesFile(file);
