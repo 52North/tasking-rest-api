@@ -28,7 +28,6 @@
  */
 package org.n52.tasking.data.sml.task;
 
-import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
@@ -44,12 +43,9 @@ public class InMemoryTaskRepositoryTest {
 
     private TaskRepository repository;
 
-    private TaskRunner taskRunnerMock;
-
     @Before
     public void setUp() {
-        taskRunnerMock = mock(TaskRunner.class);
-        repository = new InMemoryTaskRepository(taskRunnerMock);
+        repository = new InMemoryTaskRepository();
     }
 
     @Test
@@ -70,13 +66,6 @@ public class InMemoryTaskRepositoryTest {
         final String deviceId = "42";
         repository.createTask(new CreateTask(deviceId, "params"));
         assertFalse(repository.getTasks(deviceId).isEmpty());
-    }
-
-    @Test
-    public void when_addingTask_then_expectTaskToBeRun() {
-        final String deviceId = "42";
-        Task task = repository.createTask(new CreateTask(deviceId, "params"));
-        verify(taskRunnerMock).runTask(task);
     }
 
 }
