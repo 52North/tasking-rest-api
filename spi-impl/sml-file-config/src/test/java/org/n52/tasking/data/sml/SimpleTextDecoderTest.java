@@ -108,7 +108,7 @@ public class SimpleTextDecoderTest {
         assertThat(decodedParameters.size(), is(2));
         assertThat(decodedParameters.get(1).getValue(), is("Just for testing purposes"));
     }
-    
+
     @Test(expected = ParseValueException.class)
     public void when_illegalValue_then_throwException() throws ParseValueException {
         TaskingDescription description = new TaskingDescription("");
