@@ -48,8 +48,9 @@ import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.TaskingDescription;
 import org.n52.tasking.data.sml.decode.SimpleTextDecoder;
 import org.n52.tasking.data.sml.device.SmlDevice;
-import org.n52.tasking.data.sml.device.SmlParser;
 import org.n52.tasking.data.sml.device.SmlWriter;
+import org.n52.tasking.data.sml.xml.XPathSmlParser;
+import org.n52.tasking.data.sml.xml.XPathSmlWriter;
 import org.n52.tasking.data.sml.xml.ParseException;
 import org.n52.tasking.data.sml.xml.XPathParser;
 import org.slf4j.Logger;
@@ -114,7 +115,7 @@ public class SmlFileConfigWriter {
         SimpleTextDecoder decoder = new SimpleTextDecoder(getConfigDescription(device));
         try {
             XPathParser xpathParser = new XPathParser(smlDevice.getSmlConfigFile());
-            SmlWriter smlWriter = new SmlWriter(new SmlParser(xpathParser));
+            SmlWriter smlWriter = new XPathSmlWriter(new XPathSmlParser(xpathParser));
             decoder.decode(configParameters).stream().forEach((parameter) -> {
                 smlWriter.setParameterValue(parameter);
             });

@@ -34,11 +34,14 @@ import java.nio.charset.Charset;
 import org.apache.commons.io.FileUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.n52.tasking.data.sml.device.SmlDevice;
+import org.n52.tasking.data.sml.device.SmlParser;
+import org.n52.tasking.data.sml.xml.XPathSmlParser;
 import org.n52.tasking.data.sml.xml.ParseException;
 import org.n52.tasking.data.sml.xml.XPathParser;
 import org.w3c.dom.Document;
@@ -46,31 +49,18 @@ import org.w3c.dom.Node;
 
 public class SmlFileConfigWriterTest {
 
+    private static final String LISA_INSTANCE_FILE = "sml/lisa-instance.xml";
+
     @Rule
     public final TemporaryFolder tempFolder = new TemporaryFolder();
 
-    private XPathParser xPathParser;
-
-    private SmlDevice smlDevice;
-
-    private File inputFile;
-
-    @Before
-    public void setUp() throws IOException, ParseException {
-        inputFile = prepareInputFile();
-        smlDevice = new SmlDevice(null, inputFile);
-        xPathParser = new XPathParser(inputFile);
-        assertThat(xPathParser.parseString("/root"), is("someText"));
-    }
-
-    private File prepareInputFile() throws IOException {
-        File file = tempFolder.newFile();
-        FileUtils.write(file, "<root>someText</root>", Charset.forName("UTF-8"));
-        return file;
-    }
-
     @Test
     public void when_saving_then_xmlGetsOverridden() throws Exception {
+        File inputFile = tempFolder.newFile();
+        FileUtils.write(inputFile, "<root>someText</root>", Charset.forName("UTF-8"));
+
+        SmlDevice smlDevice = new SmlDevice(null, inputFile);
+        XPathParser xPathParser = new XPathParser(inputFile);
         Node root = xPathParser.parseNode("/root");
         Document document = root.getOwnerDocument();
         Node newNode = document.createElement("new");

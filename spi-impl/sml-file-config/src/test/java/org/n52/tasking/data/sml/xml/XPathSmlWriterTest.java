@@ -26,8 +26,10 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml.device;
+package org.n52.tasking.data.sml.xml;
 
+import org.n52.tasking.data.sml.xml.XPathSmlWriter;
+import org.n52.tasking.data.sml.xml.XPathSmlParser;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,8 +45,10 @@ import org.junit.rules.TemporaryFolder;
 import org.n52.tasking.data.entity.Parameter;
 import org.n52.tasking.data.sml.xml.ParseException;
 import org.n52.tasking.data.sml.xml.XPathParser;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
-public class SmlWriterTest {
+public class XPathSmlWriterTest {
 
     private static final String LISA_INSTANCE_FILE = "sml/lisa-instance.xml";
 
@@ -63,9 +67,9 @@ public class SmlWriterTest {
 
     @Test
     public void when_updatedSmlIsWritten_then_updatesPresentInDOM() throws ParseException {
-        final SmlParser smlParser = new SmlParser(new XPathParser(testFile));
+        final XPathSmlParser smlParser = new XPathSmlParser(new XPathParser(testFile));
         final String parameterName = "measurementInterval";
-        SmlWriter writer = new SmlWriter(smlParser);
+        XPathSmlWriter writer = new XPathSmlWriter(smlParser);
         writer.setParameterValue(parameterName, 20.4);
         List<Parameter<?>> parameters = smlParser.getUpdatableParameters();
         final Optional<Parameter<?>> parameter = parameters.stream()

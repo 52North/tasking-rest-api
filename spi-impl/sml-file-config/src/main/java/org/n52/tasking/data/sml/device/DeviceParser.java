@@ -28,6 +28,7 @@
  */
 package org.n52.tasking.data.sml.device;
 
+import org.n52.tasking.data.sml.xml.XPathSmlParser;
 import java.io.File;
 import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.DeviceDescriptionData;
@@ -37,7 +38,7 @@ import org.n52.tasking.data.sml.xml.XPathParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class DeviceParser {
+public class DeviceParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DeviceParser.class);
 
@@ -45,15 +46,12 @@ class DeviceParser {
 
     private final SmlParser smlParser;
 
-    private final XPathParser xPathParser;
-
-    DeviceParser(File file) throws ParseException {
-        xPathParser = new XPathParser(file);
-        smlParser = new SmlParser(xPathParser);
+    public DeviceParser(File file) throws ParseException {
+        smlParser = new XPathSmlParser(new XPathParser(file));
     }
 
-    SmlParser getSmlParser() {
-        return smlParser;
+    public DeviceParser(SmlParser smlParser) {
+        this.smlParser = smlParser;
     }
 
     public Device parse() {
