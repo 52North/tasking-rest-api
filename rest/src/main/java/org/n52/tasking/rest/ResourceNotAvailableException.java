@@ -34,6 +34,8 @@ package org.n52.tasking.rest;
  */
 public class ResourceNotAvailableException extends Exception {
 
+    private static final long serialVersionUID = 4801043581673815606L;
+
     public ResourceNotAvailableException(String message) {
         super(message);
     }

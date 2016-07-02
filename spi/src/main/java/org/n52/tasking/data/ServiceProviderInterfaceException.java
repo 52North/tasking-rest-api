@@ -30,6 +30,8 @@ package org.n52.tasking.data;
 
 public class ServiceProviderInterfaceException extends Exception {
 
+    private static final long serialVersionUID = 8704533101106209148L;
+
     public ServiceProviderInterfaceException(String message) {
         super(message);
     }

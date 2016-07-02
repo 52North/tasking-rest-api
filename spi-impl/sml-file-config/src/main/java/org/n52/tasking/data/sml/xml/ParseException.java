@@ -30,6 +30,8 @@ package org.n52.tasking.data.sml.xml;
 
 public class ParseException extends Exception {
 
+    private static final long serialVersionUID = -6352094145875221851L;
+
     public ParseException(String message) {
         super(message);
     }

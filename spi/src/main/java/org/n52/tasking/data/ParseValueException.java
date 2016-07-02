@@ -30,6 +30,8 @@ package org.n52.tasking.data;
 
 public class ParseValueException extends Exception {
 
+    private static final long serialVersionUID = 1571585454564729291L;
+
     public ParseValueException(String message) {
         super(message);
     }
