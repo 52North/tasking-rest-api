@@ -68,4 +68,14 @@ public class PhysicalComponentLisaInstanceTest extends AbstractDeviceParser {
         assertThat(taskDescription.getParameters().size(), is(4));
     }
 
+    @Test
+    public void when_lisaInstanceAvailable_then_optionalValuesSet() {
+        final Device device = getParsedDevice();
+        TaskingDescription taskDescription = device.getTaskingDescriptions().get(0);
+        assertThat("first parameter is not optional", taskDescription.getParameters().get(0).isOptional(), is(true));
+        assertThat("second parameter is optional", taskDescription.getParameters().get(1).isOptional(), is(false));
+        assertThat("third parameter is optional", taskDescription.getParameters().get(2).isOptional(), is(false));
+        assertThat("fourth parameter is not optional", taskDescription.getParameters().get(3).isOptional(), is(true));
+    }
+
 }

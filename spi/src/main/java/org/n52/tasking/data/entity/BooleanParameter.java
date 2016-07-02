@@ -46,8 +46,24 @@ public class BooleanParameter extends Parameter<Boolean> {
             return this;
         }
         BooleanParameter p = new BooleanParameter(getName(), isOptional());
-        p.setValue(Boolean.parseBoolean(token));
+        p.setValue(parseToken(token));
         return p;
+    }
+
+    private Boolean parseToken(String token) throws ParseValueException {
+        if ("false".equalsIgnoreCase(token)
+                || "f".equalsIgnoreCase(token)
+                || "n".equalsIgnoreCase(token)
+                || "0".equalsIgnoreCase(token)) {
+            return false;
+        }
+        if ("true".equalsIgnoreCase(token)
+                || "t".equalsIgnoreCase(token)
+                || "y".equalsIgnoreCase(token)
+                || "1".equalsIgnoreCase(token)) {
+            return true;
+        }
+        throw new ParseValueException("No boolean value: '" + token + "'");
     }
 
     @Override

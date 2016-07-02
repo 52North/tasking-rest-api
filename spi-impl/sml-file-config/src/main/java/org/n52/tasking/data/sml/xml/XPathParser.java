@@ -53,7 +53,6 @@ public class XPathParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XPathParser.class);
 
-
     private static final Map<String, String> DEFAULT_NAMESPACE_DECLARATIONS = new HashMap<>();
 
     private final Map<String, String> declaredNamespaces;
@@ -135,7 +134,7 @@ public class XPathParser {
 
     public boolean parseBoolean(String expression, Node node) {
         LOGGER.trace("parsing boolean via '{}' at {}", expression, node);
-        return (boolean) evaluate(expression, node, XPathConstants.BOOLEAN);
+        return Boolean.parseBoolean(parseString(expression, node));
     }
 
     private Object evaluate(String expression, QName returnType) {
