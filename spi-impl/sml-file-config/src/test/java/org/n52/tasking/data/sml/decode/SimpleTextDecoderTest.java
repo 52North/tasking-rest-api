@@ -108,7 +108,7 @@ public class SimpleTextDecoderTest {
         assertThat(decodedParameters.size(), is(2));
         assertThat(decodedParameters.get(1).getValue(), is("Just for testing purposes"));
     }
-    
+
     @Test
     public void when_multipleOptionals_then_thosePresentAreAvailable() throws ParseValueException {
         TaskingDescription description = new TaskingDescription("");
@@ -124,7 +124,7 @@ public class SimpleTextDecoderTest {
         assertThat(decodedParameters.get(1).getValue(), is("available1"));
         assertThat(decodedParameters.get(2).getValue(), is("available3"));
     }
-    
+
     @Test(expected = ParseValueException.class)
     public void when_missingAvailableIndicator_then_throwException() throws ParseValueException {
         TaskingDescription description = new TaskingDescription("");

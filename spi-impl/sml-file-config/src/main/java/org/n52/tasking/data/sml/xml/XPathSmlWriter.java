@@ -43,7 +43,7 @@ public class XPathSmlWriter implements SmlWriter {
         this.smlParser = parser;
         this.xpathParser = parser.getXPathParser();
     }
-    
+
     @Override
     public Document getDocument() {
         return xpathParser.getDocument();

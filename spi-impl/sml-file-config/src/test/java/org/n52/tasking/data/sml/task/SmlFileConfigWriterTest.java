@@ -85,7 +85,7 @@ public class SmlFileConfigWriterTest {
         final Device device = new DeviceParser(testFile).parse();
         SmlDevice smlDevice = new SmlDevice(device, testFile);
         new SmlFileConfigWriter(smlDevice).saveConfiguration("Y,false,20,30,N");
-        
+
         // reread file after it has been updated
         final SmlParser smlParser = new XPathSmlParser(new XPathParser(testFile));
         assertThat(smlParser.getUpdatableParameters().get(0).getValue(), is(false));
