@@ -50,6 +50,9 @@ public class SimpleTextDecoder {
         List<Parameter<?>> parameters = taskingDescription.getParameters();
         int valueIdx = 0;
         for (Parameter<?> definition : parameters) {
+            if (valueIdx == parameterTokens.length) {
+                throw new IllegalArgumentException("invalid token length.");
+            }
             String token = parameterTokens[valueIdx];
             if (definition.isOptional()) {
                 token = isOptionalValueAvailable(token)
@@ -71,7 +74,11 @@ public class SimpleTextDecoder {
                 .toArray(String[]::new);
     }
 
-    private boolean isOptionalValueAvailable(String token) {
+    private boolean isOptionalValueAvailable(String token) throws ParseValueException {
+        if (!"Y".equalsIgnoreCase(token)
+                && !"N".equalsIgnoreCase(token)) {
+            throw new ParseValueException("Optional values must be prefixed with 'N' or 'Y'. Token was: " + token);
+        }
         return "Y".equalsIgnoreCase(token);
     }
 

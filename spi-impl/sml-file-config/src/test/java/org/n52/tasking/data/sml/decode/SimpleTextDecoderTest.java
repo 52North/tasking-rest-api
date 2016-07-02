@@ -28,7 +28,6 @@
  */
 package org.n52.tasking.data.sml.decode;
 
-import org.n52.tasking.data.sml.decode.SimpleTextDecoder;
 import java.util.List;
 import org.hamcrest.MatcherAssert;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -108,6 +107,31 @@ public class SimpleTextDecoderTest {
         List<Parameter<?>> decodedParameters = simpleTextDecoder.decode(encodedParameters);
         assertThat(decodedParameters.size(), is(2));
         assertThat(decodedParameters.get(1).getValue(), is("Just for testing purposes"));
+    }
+    
+    @Test
+    public void when_multipleOptionals_then_thosePresentAreAvailable() throws ParseValueException {
+        TaskingDescription description = new TaskingDescription("");
+        description.addParameter(new QuantityParameter("frequency"));
+        description.addParameter(new TextParameter("optional1", true));
+        description.addParameter(new TextParameter("optional2", true));
+        description.addParameter(new TextParameter("optional3", true));
+        SimpleTextDecoder simpleTextDecoder = new SimpleTextDecoder(description);
+
+        String encodedParameters = "10.5,Y,available1,N,Y,available3";
+        List<Parameter<?>> decodedParameters = simpleTextDecoder.decode(encodedParameters);
+        assertThat(decodedParameters.size(), is(3));
+        assertThat(decodedParameters.get(1).getValue(), is("available1"));
+        assertThat(decodedParameters.get(2).getValue(), is("available3"));
+    }
+    
+    @Test(expected = ParseValueException.class)
+    public void when_missingAvailableIndicator_then_throwException() throws ParseValueException {
+        TaskingDescription description = new TaskingDescription("");
+        description.addParameter(new QuantityParameter("frequency"));
+        description.addParameter(new TextParameter("optional1", true));
+        SimpleTextDecoder simpleTextDecoder = new SimpleTextDecoder(description);
+        simpleTextDecoder.decode("10.5,availableWithout'Y'Indicator");
     }
 
     @Test(expected = ParseValueException.class)
