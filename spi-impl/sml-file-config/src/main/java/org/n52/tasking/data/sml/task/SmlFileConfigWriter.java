@@ -69,31 +69,11 @@ public class SmlFileConfigWriter {
     }
 
     public void saveConfiguration(String configParameters) throws ParseValueException, ServiceProviderInterfaceException {
+        overrideConfig(updateSml(configParameters));
+    }
+
+    protected void overrideConfig(Document document) {
         File file = smlDevice.getSmlConfigFile();
-        try {
-//        try (RandomAccessFile raFile = new RandomAccessFile(file, "rw")) {
-//        try (FileOutputStream out = new FileOutputStream(file)) {
-//            FileLock lock = raFile.getChannel().lock();
-//            FileLock lock = out.getChannel().lock();
-//            try {
-                Document document = parseDocument(file);
-                writeConfig(configParameters, document);
-                overrideFile(file, document);
-//            } finally {
-//                lock.release();
-//            }
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            LOGGER.error("Could not save targeted XML: '{}'", file.getAbsolutePath(), e);
-            throw new ServiceProviderInterfaceException("Unable to save configuration.");
-        }
-    }
-
-    private Document parseDocument(File file) throws SAXException, IOException, ParserConfigurationException {
-        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        return domFactory.newDocumentBuilder().parse(file);
-    }
-
-    protected void overrideFile(File file, Document document) {
         try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
             StreamResult streamResult = new StreamResult(os);
             Transformer transformer = createXmlTransformer();
@@ -110,7 +90,7 @@ public class SmlFileConfigWriter {
         return transformer;
     }
 
-    protected void writeConfig(String configParameters, Document document) throws ParseValueException, ServiceProviderInterfaceException {
+    private Document updateSml(String configParameters) throws ParseValueException, ServiceProviderInterfaceException {
         Device device = smlDevice.getDevice();
         SimpleTextDecoder decoder = new SimpleTextDecoder(getConfigDescription(device));
         try {
@@ -119,6 +99,7 @@ public class SmlFileConfigWriter {
             decoder.decode(configParameters).stream().forEach((parameter) -> {
                 smlWriter.setParameterValue(parameter);
             });
+            return smlWriter.getDocument();
         } catch (ParseException e) {
             LOGGER.error("Could not parsse sensor configuration", e);
             throw new ServiceProviderInterfaceException("Unable to perform configuration task.");

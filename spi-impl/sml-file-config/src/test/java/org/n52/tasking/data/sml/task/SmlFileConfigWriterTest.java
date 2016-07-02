@@ -31,6 +31,8 @@ package org.n52.tasking.data.sml.task;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -39,6 +41,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.n52.tasking.data.entity.Device;
+import org.n52.tasking.data.sml.device.DeviceParser;
 import org.n52.tasking.data.sml.device.SmlDevice;
 import org.n52.tasking.data.sml.device.SmlParser;
 import org.n52.tasking.data.sml.xml.XPathSmlParser;
@@ -63,11 +67,30 @@ public class SmlFileConfigWriterTest {
         XPathParser xPathParser = new XPathParser(inputFile);
         Node root = xPathParser.parseNode("/root");
         Document document = root.getOwnerDocument();
+
         Node newNode = document.createElement("new");
         newNode.appendChild(document.createTextNode("I am new"));
         root.appendChild(newNode);
-        new SmlFileConfigWriter(smlDevice).overrideFile(inputFile, document);
+        new SmlFileConfigWriter(smlDevice).overrideConfig(document);
         assertThat(new XPathParser(inputFile).parseString("/root/new/text()"), is("I am new"));
     }
 
+    @Test
+    public void when_havingEncodedValues_then_valuesGetsWrittenToFile() throws Exception {
+        Path path = Paths.get(getClass().getResource("/").toURI());
+        File source = path.resolve(LISA_INSTANCE_FILE).toFile();
+        File testFile = tempFolder.newFile("lisa-instance.xml");
+        FileUtils.copyFile(source, testFile);
+
+        final Device device = new DeviceParser(testFile).parse();
+        SmlDevice smlDevice = new SmlDevice(device, testFile);
+        new SmlFileConfigWriter(smlDevice).saveConfiguration("Y,false,20,30,N");
+        
+        // reread file after it has been updated
+        final SmlParser smlParser = new XPathSmlParser(new XPathParser(testFile));
+        assertThat(smlParser.getUpdatableParameters().get(0).getValue(), is(false));
+        assertThat(smlParser.getUpdatableParameters().get(1).getValue(), is(20.0));
+        assertThat(smlParser.getUpdatableParameters().get(2).getValue(), is(30));
+        assertThat(smlParser.getUpdatableParameters().get(3).getValue(), is("http://www.nexosproject.eu/documentation/sensor_xy.html"));
+    }
 }

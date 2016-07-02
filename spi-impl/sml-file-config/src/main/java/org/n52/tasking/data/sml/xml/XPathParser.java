@@ -170,4 +170,7 @@ public class XPathParser {
         };
     }
 
+    public Document getDocument() {
+        return this.document;
+    }
 }
