@@ -29,12 +29,12 @@
 package org.n52.tasking.data.sml.device;
 
 import java.io.File;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
 import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.TaskingDescription;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import org.junit.Assert;
 
 public class PhysicalComponentLisaInstanceTest extends AbstractDeviceParser {
 
@@ -58,7 +58,7 @@ public class PhysicalComponentLisaInstanceTest extends AbstractDeviceParser {
     @Test
     public void when_lisaInstanceAvailable_then_HavingConfigTaskingDescription() {
         assertThat(getParsedDevice().getTaskingDescriptions().size(), is(1));
-        assertThat(getParsedDevice().getTaskingDescriptions().get(0), is(notNullValue()));
+        Assert.assertNotNull(getParsedDevice().getTaskingDescriptions().get(0));
     }
 
     @Test

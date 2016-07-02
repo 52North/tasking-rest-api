@@ -33,10 +33,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.n52.tasking.data.RepositoryConfigurationException;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,7 +70,7 @@ public class SmlConfigDeviceRepositoryTest {
 
     @Test
     public void when_xmlAvailable_then_notEmptyCollection() {
-        assertThat(repository.getDevices(), is(not(empty())));
+        Assert.assertFalse(repository.getDevices().isEmpty());
     }
 
     protected Path getTestConfigFolder() throws URISyntaxException {

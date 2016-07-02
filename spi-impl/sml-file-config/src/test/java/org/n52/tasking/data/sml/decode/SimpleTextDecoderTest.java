@@ -29,12 +29,10 @@
 package org.n52.tasking.data.sml.decode;
 
 import java.util.List;
+import static org.hamcrest.CoreMatchers.is;
 import org.hamcrest.MatcherAssert;
 import static org.hamcrest.MatcherAssert.assertThat;
-import org.hamcrest.Matchers;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import org.junit.Assert;
 import org.junit.Test;
 import org.n52.tasking.data.ParseValueException;
 import org.n52.tasking.data.entity.CountParameter;
@@ -53,7 +51,7 @@ public class SimpleTextDecoderTest {
 
         String encodedParameters = "10.5";
         List<Parameter<?>> decodedParameters = simpleTextDecoder.decode(encodedParameters);
-        assertThat(decodedParameters, is(not(empty())));
+        Assert.assertFalse(decodedParameters.isEmpty());
     }
 
     @Test
@@ -65,7 +63,7 @@ public class SimpleTextDecoderTest {
 
         String encodedParameters = "10.5,Just for testing purposes";
         List<Parameter<?>> decodedParameters = simpleTextDecoder.decode(encodedParameters);
-        MatcherAssert.assertThat(decodedParameters.get(0).getType(), Matchers.is("quantity"));
+        MatcherAssert.assertThat(decodedParameters.get(0).getType(), is("quantity"));
         assertThat(decodedParameters.get(1).getType(), is("text"));
     }
 

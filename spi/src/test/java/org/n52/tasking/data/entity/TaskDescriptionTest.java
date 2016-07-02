@@ -29,7 +29,7 @@
 package org.n52.tasking.data.entity;
 
 import java.util.List;
-import org.hamcrest.Matchers;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -42,8 +42,8 @@ public class TaskDescriptionTest {
         description.addParameter(new TextParameter("second"));
         description.addParameter(new TextParameter("third"));
         List<Parameter<?>> parameters = description.getParameters();
-        Assert.assertThat(parameters.get(0).getName(), Matchers.is("first"));
-        Assert.assertThat(parameters.get(1).getName(), Matchers.is("second"));
-        Assert.assertThat(parameters.get(2).getName(), Matchers.is("third"));
+        Assert.assertThat(parameters.get(0).getName(), is("first"));
+        Assert.assertThat(parameters.get(1).getName(), is("second"));
+        Assert.assertThat(parameters.get(2).getName(), is("third"));
     }
 }

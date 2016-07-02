@@ -120,7 +120,7 @@ public class XPathSmlParser implements SmlParser {
         return parameters;
     }
 
-    private static Parameter<?> createParameter(String value, Parameter parameter) {
+    private static Parameter<?> createParameter(String value, Parameter<?> parameter) {
         try {
             return value != null
                 ? parameter.toValueInstance(value)

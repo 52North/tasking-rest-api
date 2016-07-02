@@ -28,25 +28,19 @@
  */
 package org.n52.tasking.data.sml.xml;
 
-import org.n52.tasking.data.sml.xml.XPathSmlWriter;
-import org.n52.tasking.data.sml.xml.XPathSmlParser;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.io.FileUtils;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.n52.tasking.data.entity.Parameter;
-import org.n52.tasking.data.sml.xml.ParseException;
-import org.n52.tasking.data.sml.xml.XPathParser;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 public class XPathSmlWriterTest {
 

@@ -164,7 +164,7 @@ public class XPathParser {
             }
 
             @Override
-            public Iterator getPrefixes(String namespaceURI) {
+            public Iterator<String> getPrefixes(String namespaceURI) {
                 return declaredNamespaces.keySet().iterator();
             }
         };

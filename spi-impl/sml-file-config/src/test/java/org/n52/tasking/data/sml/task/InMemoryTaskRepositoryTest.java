@@ -28,15 +28,12 @@
  */
 package org.n52.tasking.data.sml.task;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import org.junit.Assert;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.tasking.data.cmd.CreateTask;
-import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.TaskRepository;
 
 public class InMemoryTaskRepositoryTest {
@@ -50,7 +47,7 @@ public class InMemoryTaskRepositoryTest {
 
     @Test
     public void when_emptyRepository_then_emptyList() {
-        assertThat(repository.getTasks(), is(empty()));
+        assertTrue(repository.getTasks().isEmpty());
     }
 
     @Test
@@ -58,7 +55,7 @@ public class InMemoryTaskRepositoryTest {
         CreateTask cmd = new CreateTask();
         cmd.setId("42");
         cmd.setParameters("some-fancy-parameters-here");
-        assertThat(repository.createTask(cmd), notNullValue(Task.class));
+        Assert.assertNotNull(repository.createTask(cmd));
     }
 
     @Test

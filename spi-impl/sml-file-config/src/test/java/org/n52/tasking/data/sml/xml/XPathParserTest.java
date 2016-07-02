@@ -32,9 +32,9 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.NodeList;
@@ -60,7 +60,7 @@ public class XPathParserTest {
     @Test
     public void when_parserReady_then_parseNodeList() {
         NodeList nodes = parser.parseNodes("/PhysicalComponent/identification");
-        assertThat(nodes.getLength(), is(greaterThan(0)));
+        assertTrue(nodes.getLength() > 0);
     }
 
     @Test
