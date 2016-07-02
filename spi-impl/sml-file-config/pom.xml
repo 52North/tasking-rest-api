@@ -17,18 +17,19 @@
     
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>core</artifactId>
-        </dependency>
-        
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>com.siemens.ct.exi</groupId>
             <artifactId>exificient</artifactId>
             <version>${exificient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
         </dependency>
         
         <dependency>
