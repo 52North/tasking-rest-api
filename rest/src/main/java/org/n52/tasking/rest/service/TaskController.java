@@ -36,7 +36,7 @@ import org.n52.tasking.rest.ResourceNotAvailableException;
 import org.n52.tasking.rest.UrlSettings;
 import org.n52.tasking.core.service.Resource;
 import org.n52.tasking.core.service.TaskService;
-import org.n52.tasking.core.service.UnknownItemException;
+import org.n52.tasking.data.repository.UnknownItemException;
 import org.n52.tasking.data.cmd.CreateTask;
 import org.n52.tasking.data.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -26,7 +26,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.core.service;
+package org.n52.tasking.data.repository;
 
 
 public class UnknownItemException extends Exception {
