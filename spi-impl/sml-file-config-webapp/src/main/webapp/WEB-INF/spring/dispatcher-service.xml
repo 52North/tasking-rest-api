@@ -16,6 +16,11 @@
 
     <mvc:annotation-driven />
     <ctx:annotation-config />
+    
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <!-- TODO @Autowire object mapper -->
+        <property name="serializationInclusion" value="NON_NULL" />
+    </bean>
 
     <!-- MVC beans -->
     <bean class="org.n52.tasking.rest.ResourcesController" />
@@ -23,40 +28,28 @@
     <bean class="org.n52.tasking.rest.service.DeviceController" />
     <bean class="org.n52.tasking.rest.service.TaskController" />
 
-    <bean id="contentNegotiationManager"
-          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
-        <property name="mediaTypes">
-            <value>
-                json=application/json*
-            </value>
-        </property>
-    </bean>
-
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+<!--    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">
             <util:list>
                 <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
             </util:list>
         </property>
+    </bean>-->
+
+    <bean id="jsonViewResolver" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+        <property name="extractValueFromSingleKeyModel" value="true" />
+        <property name="objectMapper" ref="objectMapper" />
     </bean>
 
-    <bean
-        class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="defaultContentType" value="application/json" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="defaultViews">
-            <list>
-                <bean
-                    class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
-                    <property name="extractValueFromSingleKeyModel" value="true" />
-                    <property name="objectMapper">
-                        <bean class="com.fasterxml.jackson.databind.ObjectMapper">
-                            <property name="serializationInclusion">
-                                <!-- do not serialize NULL values -->
-                                <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
-                            </property>
-                        </bean>
-                    </property>
-                </bean>
-            </list>
+            <util:list>
+                <ref bean="jsonViewResolver" />
+            </util:list>
         </property>
     </bean>
 </beans>
