@@ -28,7 +28,6 @@
  */
 package org.n52.tasking.data.sml.task;
 
-import org.n52.tasking.data.TaskRunner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -49,8 +48,7 @@ public class InMemoryTaskRepository implements TaskRepository {
 
     @Override
     public Task createTask(CreateTask createTask) {
-        Task task = new Task();
-        task.setId(UUID.randomUUID().toString());
+        Task task = new Task(UUID.randomUUID().toString());
         task.setEncodedParameters(createTask.getParameters());
         addTaskForDevice(createTask.getId(), task);
         return task;

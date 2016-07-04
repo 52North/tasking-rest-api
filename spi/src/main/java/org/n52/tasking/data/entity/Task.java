@@ -48,6 +48,10 @@ public class Task {
 
     private String resultId;
 
+    public Task(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
