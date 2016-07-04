@@ -27,6 +27,7 @@
     <bean class="org.n52.tasking.rest.ExceptionHandlerImpl" />
     <bean class="org.n52.tasking.rest.service.DeviceController" />
     <bean class="org.n52.tasking.rest.service.TaskController" />
+    <bean class="org.n52.tasking.rest.service.ResultsController" />
 
 <!--    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">
