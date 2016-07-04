@@ -44,11 +44,13 @@ public abstract class TaskRunner {
 
     public abstract Runnable getRunnable(Task task);
 
-    public final void asyncExec(Task task) {
-        task.setSubmittedAt(LocalDateTime.now(ZoneId.of("Z")));
-        task.setTaskStatus(TaskStatus.RUNNING.name());
-        task.setPercentCompletion(0.0);
-        getExecutorService().execute(getRunnable(task));
+    public void asyncExec(Task task) {
+        if (executorService != null) {
+            task.setSubmittedAt(LocalDateTime.now(ZoneId.of("Z")));
+            task.setTaskStatus(TaskStatus.RUNNING.name());
+            task.setPercentCompletion(0.0);
+            getExecutorService().execute(getRunnable(task));
+        }
     }
 
     public ExecutorService getExecutorService() {
