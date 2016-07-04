@@ -28,7 +28,6 @@
  */
 package org.n52.tasking.core.service;
 
-import org.n52.tasking.data.repository.UnknownItemException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;

@@ -28,7 +28,6 @@
  */
 package org.n52.tasking.core.service;
 
-import org.n52.tasking.data.repository.UnknownItemException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;

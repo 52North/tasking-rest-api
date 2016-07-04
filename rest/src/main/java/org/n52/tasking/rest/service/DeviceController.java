@@ -36,7 +36,7 @@ import org.n52.tasking.rest.ResourceNotAvailableException;
 import org.n52.tasking.rest.UrlSettings;
 import org.n52.tasking.core.service.DeviceService;
 import org.n52.tasking.core.service.Resource;
-import org.n52.tasking.data.repository.UnknownItemException;
+import org.n52.tasking.core.service.UnknownItemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
