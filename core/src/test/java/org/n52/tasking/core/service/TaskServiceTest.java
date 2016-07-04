@@ -67,9 +67,13 @@ public class TaskServiceTest {
         when(taskRunnerMock.getRunnable(any())).thenReturn((Runnable) () -> {
             // do nothing
         });
-        taskService = new TaskService(taskRunnerMock);
-        taskService.setTaskRepository(taskRepository);
-        taskService.setDeviceRepository(deviceRepository);
+        taskService = prepareWithMocks(new TaskService(taskRunnerMock));
+    }
+
+    private TaskService prepareWithMocks(TaskService service) {
+        service.setTaskRepository(taskRepository);
+        service.setDeviceRepository(deviceRepository);
+        return service;
     }
 
     @Test(expected = UnknownItemException.class)
@@ -87,7 +91,7 @@ public class TaskServiceTest {
         final CreateTask createTask = new CreateTask(deviceId, "params");
         Task task = mockRepositoryTaskFor(createTask);
 
-        TaskService service = new TaskServiceSeam(taskRunnerMock);
+        TaskService service = prepareWithMocks(new TaskServiceSeam(taskRunnerMock));
         Resource resource = service.createTask(createTask, "http://localhost/tasks");
         Assert.assertThat(resource.getProperties().get("href"), is("http://localhost/tasks/" + deviceId));
         verify(taskRunnerMock).asyncExec(task);
