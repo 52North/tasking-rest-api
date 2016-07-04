@@ -84,7 +84,9 @@ public class TaskService {
     }
 
     private String format(LocalDateTime dateTime) {
-        return dateFormatter.format(dateTime);
+        return dateTime != null
+                ? dateFormatter.format(dateTime)
+                : null;
     }
 
     private String createHref(String fullUrl, String id) {
