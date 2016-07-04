@@ -33,57 +33,69 @@ import java.util.concurrent.Executors;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
-import org.mockito.Mockito;
-import static org.mockito.Mockito.mock;
+import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.n52.tasking.data.TaskRunner;
 import org.n52.tasking.data.cmd.CreateTask;
 import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.DeviceRepository;
 import org.n52.tasking.data.repository.TaskRepository;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TaskServiceTest {
 
     private TaskService taskService;
 
-    private TaskRepository repository;
+    @Mock
+    private TaskRepository taskRepository;
 
+    @Mock
+    private DeviceRepository deviceRepository;
+
+    @Mock
     private TaskRunner taskRunnerMock;
 
     @Before
     public void setUp() {
-        taskRunnerMock = mockTaskRunner();
+        when(taskRunnerMock.getRunnable(any())).thenReturn((Runnable) () -> {
+            // do nothing
+        });
         taskService = new TaskService(taskRunnerMock);
-        repository = mock(TaskRepository.class);
-        taskService.setRepository(repository);
+        taskService.setTaskRepository(taskRepository);
+        taskService.setDeviceRepository(deviceRepository);
     }
 
-    private TaskRunner mockTaskRunner() {
-        TaskRunner mock = mock(TaskRunner.class);
-        when(mock.getExecutorService()).thenReturn(Executors.newSingleThreadExecutor());
-        return mock;
+    @Test(expected = UnknownItemException.class)
+    public void when_addingTaskForNonExistingDevice_then_throwException() throws Exception {
+        when(deviceRepository.hasDevice("does-not-exist")).thenReturn(false);
+        final CreateTask createTask = new CreateTask("does-not-exist", "foobar");
+        mockRepositoryTaskFor(createTask);
+        this.taskService.createTask(createTask, "http://...");
     }
 
     @Test
-    @Ignore("FIX: mocked getRunnable() is not called during asyncExec()")
-    public void when_addingTask_then_expectTaskToBeRun() {
-        Task task = new Task();
-        task.setId("someId");
+    public void when_addingTask_then_expectTaskToBeRun() throws Exception {
+        final String deviceId = "42";
+        when(deviceRepository.hasDevice(deviceId)).thenReturn(true);
+        final CreateTask createTask = new CreateTask(deviceId, "params");
+        Task task = mockRepositoryTaskFor(createTask);
+        Resource resource = taskService.createTask(createTask, "http://localhost/tasks");
+        Assert.assertThat(resource.getProperties().get("href"), is("http://localhost/tasks/" + deviceId));
+        verify(taskRunnerMock).asyncExec(task);
+    }
+
+    private Task mockRepositoryTaskFor(CreateTask createTask) {
+        Task task = new Task(createTask.getId());
         task.setSubmittedAt(LocalDateTime.now());
         task.setUpdatedAt(LocalDateTime.now());
-        when(repository.createTask(any())).thenReturn(task);
-        when(taskRunnerMock.getRunnable(task)).thenReturn((Runnable) () -> {
-            // do nothing
-        });
-
-        final String deviceId = "42";
-        Resource resource = taskService.createTask(new CreateTask(deviceId, "params"), "http://localhost/tasks");
-        Assert.assertThat(resource.getProperties().get("href"), is("http://localhost/tasks/someId"));
-        verify(taskRunnerMock).asyncExec(task);
+        task.setEncodedParameters(createTask.getParameters());
+        when(taskRepository.createTask(createTask)).thenReturn(task);
+        return task;
     }
 
 }
