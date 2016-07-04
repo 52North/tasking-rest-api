@@ -28,17 +28,12 @@
  */
 package org.n52.tasking.rest.service;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import org.n52.tasking.rest.RequestUtils;
-import org.n52.tasking.rest.ResourceNotAvailableException;
 import org.n52.tasking.rest.UrlSettings;
 import org.n52.tasking.core.service.Resource;
 import org.n52.tasking.core.service.TaskService;
-import org.n52.tasking.core.service.UnknownItemException;
 import org.n52.tasking.data.cmd.CreateTask;
-import org.n52.tasking.data.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,24 +52,20 @@ public class TaskController {
     @Autowired
     private TaskService service;
 
-    @RequestMapping(path="")
-    public ModelAndView getResourceCollection(@RequestParam(required = false) MultiValueMap<String, String> query) throws IOException, URISyntaxException {
+    @RequestMapping(path = "")
+    public ModelAndView getResourceCollection(@RequestParam(required = false) MultiValueMap<String, String> query) throws Exception {
         String fullUrl = RequestUtils.resolveFullRequestUrl();
         List<Resource> list = this.service.getTasks(fullUrl);
         return new ModelAndView().addObject(list);
     }
 
-    @RequestMapping(path="/{item}")
-    public Object getResourceItem(@PathVariable("item") String id) throws ResourceNotAvailableException {
-        try {
-            return this.service.getTask(id);
-        } catch (UnknownItemException ex) {
-            throw new ResourceNotAvailableException(ex.getMessage(), ex);
-        }
+    @RequestMapping(path = "/{item}")
+    public Object getResourceItem(@PathVariable("item") String id) throws Exception {
+        return this.service.getTask(id);
     }
 
-    @RequestMapping(path="", consumes = "application/json", method = POST)
-    public Resource createTask(@RequestBody CreateTask createTask) throws IOException, URISyntaxException {
+    @RequestMapping(path = "", consumes = "application/json", method = POST)
+    public Resource createTask(@RequestBody CreateTask createTask) throws Exception {
         String fullUrl = RequestUtils.resolveFullRequestUrl();
         return this.service.createTask(createTask, fullUrl);
     }

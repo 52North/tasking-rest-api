@@ -29,6 +29,8 @@
 package org.n52.tasking.rest;
 
 import javax.servlet.http.HttpServletRequest;
+import org.n52.tasking.core.service.UnknownItemException;
+import org.n52.tasking.data.InputValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -55,10 +57,16 @@ public class ExceptionHandlerImpl {
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         return createModelAndView(e, req);
     }
-
+    
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = ResourceNotAvailableException.class)
+    @ExceptionHandler(value = UnknownItemException.class)
     public ModelAndView unknownResourceHandler(HttpServletRequest req, Exception e) throws Exception {
+        return createModelAndView(e, req);
+    }
+    
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = InputValidationException.class)
+    public ModelAndView invalidInputHandler(HttpServletRequest req, Exception e) throws Exception {
         return createModelAndView(e, req);
     }
 

@@ -26,22 +26,19 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.rest;
+package org.n52.tasking.data;
 
-/**
- *
- * @author <a href="mailto:m.rieke@52north.org">Matthes Rieke</a>
- */
-public class ResourceNotAvailableException extends Exception {
+public class InputValidationException extends Exception {
 
-    private static final long serialVersionUID = 4801043581673815606L;
+    private static final long serialVersionUID = 7840459349490316669L;
 
-    public ResourceNotAvailableException(String message) {
+    public InputValidationException(String message) {
         super(message);
     }
 
-    public ResourceNotAvailableException(String message, Throwable cause) {
+    public InputValidationException(String message, Throwable cause) {
         super(message, cause);
     }
+
 
 }

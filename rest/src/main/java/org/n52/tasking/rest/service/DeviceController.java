@@ -28,11 +28,8 @@
  */
 package org.n52.tasking.rest.service;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import org.n52.tasking.rest.RequestUtils;
-import org.n52.tasking.rest.ResourceNotAvailableException;
 import org.n52.tasking.rest.UrlSettings;
 import org.n52.tasking.core.service.DeviceService;
 import org.n52.tasking.core.service.Resource;
@@ -54,19 +51,15 @@ public class DeviceController {
     private DeviceService service;
 
     @RequestMapping("")
-    public ModelAndView getResourceCollection(@RequestParam(required = false) MultiValueMap<String, String> query) throws IOException, URISyntaxException {
+    public ModelAndView getResourceCollection(@RequestParam(required = false) MultiValueMap<String, String> query) throws Exception {
         String fullUrl = RequestUtils.resolveFullRequestUrl();
         List<Resource> list = this.service.getDevices(fullUrl);
         return new ModelAndView().addObject(list);
     }
 
     @RequestMapping("/{item}")
-    public Object getResourceItem(@PathVariable("item") String id) throws ResourceNotAvailableException {
-        try {
-            return this.service.getDevice(id);
-        } catch (UnknownItemException ex) {
-            throw new ResourceNotAvailableException(ex.getMessage(), ex);
-        }
+    public Object getResourceItem(@PathVariable("item") String id) throws UnknownItemException {
+        return this.service.getDevice(id);
     }
 
 }
