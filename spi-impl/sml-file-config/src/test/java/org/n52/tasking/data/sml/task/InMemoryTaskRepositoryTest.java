@@ -28,41 +28,46 @@
  */
 package org.n52.tasking.data.sml.task;
 
-import org.junit.Assert;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.tasking.data.cmd.CreateTask;
+import org.n52.tasking.data.entity.Device;
+import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.TaskRepository;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class InMemoryTaskRepositoryTest {
 
-    private TaskRepository repository;
+    private TaskRepository taskRepository;
 
     @Before
     public void setUp() {
-        repository = new InMemoryTaskRepository();
+        taskRepository = new InMemoryTaskRepository();
     }
 
     @Test
     public void when_emptyRepository_then_emptyList() {
-        assertTrue(repository.getTasks().isEmpty());
+        assertTrue(taskRepository.getTasks().isEmpty());
     }
 
     @Test
     public void when_addingTask_then_expectNonNullTask() {
-        CreateTask cmd = new CreateTask();
-        cmd.setId("42");
-        cmd.setParameters("some-fancy-parameters-here");
-        Assert.assertNotNull(repository.createTask(cmd));
+        CreateTask cmd = new CreateTask("42", "some-fancy-parameters-here");
+        Device device = new Device("domainId", "label", "description");
+        assertNotNull(taskRepository.createTask(device, cmd));
     }
 
     @Test
-    public void when_addingTask_then_expectTaskAddedToDevice() {
-        final String deviceId = "42";
-        repository.createTask(new CreateTask(deviceId, "params"));
-        assertFalse(repository.getTasks(deviceId).isEmpty());
+    public void when_addingTask_then_expectTaskDeviceRelation() {
+        Device device = new Device("domainId", "label", "description");
+        final CreateTask createTask = new CreateTask(device.getId(), "params");
+        Task task = taskRepository.createTask(device, createTask);
+        assertFalse(taskRepository.getTasks(device.getId()).isEmpty());
+        assertThat(task.getDeviceId(), CoreMatchers.is(device.getId()));
     }
 
 }
