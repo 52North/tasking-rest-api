@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 import org.n52.tasking.data.TaskRunner;
 import org.n52.tasking.data.cmd.CreateTask;
 import org.n52.tasking.data.entity.Task;
+import org.n52.tasking.data.repository.DeviceRepository;
 import org.n52.tasking.data.repository.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,9 @@ public class TaskService {
 
     private final TaskRunner taskRunner;
 
-    private TaskRepository repository;
+    private DeviceRepository deviceRepository;
+
+    private TaskRepository taskRepository;
 
     public TaskService(TaskRunner taskRunner) {
         this.taskRunner = taskRunner;
@@ -59,21 +62,26 @@ public class TaskService {
                 -> Resource.aResource(dm.getId())
                 .withHref(createHref(fullUrl, dm.getId()));
 
-        return this.repository.getTasks()
+        return this.taskRepository.getTasks()
                 .stream()
                 .map(toResource)
                 .collect(Collectors.toList());
     }
 
     public Object getTask(String id) throws UnknownItemException {
-        if (!this.repository.hasTask(id)) {
+        if (!this.taskRepository.hasTask(id)) {
             throw new UnknownItemException("Not found");
         }
-        return this.repository.getTask(id);
+        return this.taskRepository.getTask(id);
     }
 
-    public Resource createTask(CreateTask createTask, String fullUrl) {
-        Task task = this.repository.createTask(createTask);
+    public Resource createTask(CreateTask createTask, String fullUrl) throws UnknownItemException {
+        final String deviceId = createTask.getId();
+        if ( !this.deviceRepository.hasDevice(deviceId)) {
+            throw new UnknownItemException("Device does not exist: '" + deviceId + "'.");
+        }
+
+        Task task = this.taskRepository.createTask(createTask);
         taskRunner.asyncExec(task);
 
         return Resource.aResource(task.getId())
@@ -103,12 +111,20 @@ public class TaskService {
         }
     }
 
-    public TaskRepository getRepository() {
-        return repository;
+    public TaskRepository getTaskRepository() {
+        return taskRepository;
     }
 
-    public void setRepository(TaskRepository repository) {
-        this.repository = repository;
+    public void setTaskRepository(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
+
+    public DeviceRepository getDeviceRepository() {
+        return deviceRepository;
+    }
+
+    public void setDeviceRepository(DeviceRepository deviceRepository) {
+        this.deviceRepository = deviceRepository;
     }
 
 }

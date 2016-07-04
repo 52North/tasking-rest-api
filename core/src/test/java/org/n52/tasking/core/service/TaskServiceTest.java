@@ -43,6 +43,7 @@ import static org.mockito.Mockito.when;
 import org.n52.tasking.data.TaskRunner;
 import org.n52.tasking.data.cmd.CreateTask;
 import org.n52.tasking.data.entity.Task;
+import org.n52.tasking.data.repository.DeviceRepository;
 import org.n52.tasking.data.repository.TaskRepository;
 
 public class TaskServiceTest {
