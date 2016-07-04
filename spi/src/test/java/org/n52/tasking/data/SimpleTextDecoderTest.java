@@ -26,7 +26,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml.decode;
+package org.n52.tasking.data;
 
 import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
@@ -34,7 +34,6 @@ import org.hamcrest.MatcherAssert;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Assert;
 import org.junit.Test;
-import org.n52.tasking.data.ParseValueException;
 import org.n52.tasking.data.entity.CountParameter;
 import org.n52.tasking.data.entity.Parameter;
 import org.n52.tasking.data.entity.QuantityParameter;
@@ -45,7 +44,7 @@ public class SimpleTextDecoderTest {
 
     @Test
     public void when_values_then_notEmptyParameters() throws ParseValueException {
-        TaskingDescription description = new TaskingDescription("");
+        TaskingDescription description = new TaskingDescription("example");
         description.addParameter(new QuantityParameter("frequency"));
         SimpleTextDecoder simpleTextDecoder = new SimpleTextDecoder(description);
 
@@ -56,7 +55,7 @@ public class SimpleTextDecoderTest {
 
     @Test
     public void when_differentParameterTypes_then_matchingDecodedTypes() throws ParseValueException {
-        TaskingDescription description = new TaskingDescription("");
+        TaskingDescription description = new TaskingDescription("example");
         description.addParameter(new QuantityParameter("frequency"));
         description.addParameter(new TextParameter("purpose"));
         SimpleTextDecoder simpleTextDecoder = new SimpleTextDecoder(description);
@@ -69,7 +68,7 @@ public class SimpleTextDecoderTest {
 
     @Test
     public void when_differentParameterTypes_then_matchingDecodedValues() throws ParseValueException {
-        TaskingDescription description = new TaskingDescription("");
+        TaskingDescription description = new TaskingDescription("example");
         description.addParameter(new QuantityParameter("frequency"));
         description.addParameter(new TextParameter("purpose"));
         SimpleTextDecoder simpleTextDecoder = new SimpleTextDecoder(description);
@@ -82,7 +81,7 @@ public class SimpleTextDecoderTest {
 
     @Test
     public void when_nonPresentOptional_then_notPresentInDecodedValues() throws ParseValueException {
-        TaskingDescription description = new TaskingDescription("");
+        TaskingDescription description = new TaskingDescription("example");
         description.addParameter(new QuantityParameter("frequency"));
         description.addParameter(new TextParameter("purpose", true));
         description.addParameter(new CountParameter("count"));
@@ -96,7 +95,7 @@ public class SimpleTextDecoderTest {
 
     @Test
     public void when_presentOptional_then_presentInDecodedValues() throws ParseValueException {
-        TaskingDescription description = new TaskingDescription("");
+        TaskingDescription description = new TaskingDescription("example");
         description.addParameter(new QuantityParameter("frequency"));
         description.addParameter(new TextParameter("purpose", true));
         SimpleTextDecoder simpleTextDecoder = new SimpleTextDecoder(description);
@@ -109,7 +108,7 @@ public class SimpleTextDecoderTest {
 
     @Test
     public void when_multipleOptionals_then_thosePresentAreAvailable() throws ParseValueException {
-        TaskingDescription description = new TaskingDescription("");
+        TaskingDescription description = new TaskingDescription("example");
         description.addParameter(new QuantityParameter("frequency"));
         description.addParameter(new TextParameter("optional1", true));
         description.addParameter(new TextParameter("optional2", true));
@@ -125,7 +124,7 @@ public class SimpleTextDecoderTest {
 
     @Test(expected = ParseValueException.class)
     public void when_missingAvailableIndicator_then_throwException() throws ParseValueException {
-        TaskingDescription description = new TaskingDescription("");
+        TaskingDescription description = new TaskingDescription("example");
         description.addParameter(new QuantityParameter("frequency"));
         description.addParameter(new TextParameter("optional1", true));
         SimpleTextDecoder simpleTextDecoder = new SimpleTextDecoder(description);
@@ -134,7 +133,7 @@ public class SimpleTextDecoderTest {
 
     @Test(expected = ParseValueException.class)
     public void when_illegalValue_then_throwException() throws ParseValueException {
-        TaskingDescription description = new TaskingDescription("");
+        TaskingDescription description = new TaskingDescription("example");
         description.addParameter(new QuantityParameter("frequency"));
         SimpleTextDecoder simpleTextDecoder = new SimpleTextDecoder(description);
 

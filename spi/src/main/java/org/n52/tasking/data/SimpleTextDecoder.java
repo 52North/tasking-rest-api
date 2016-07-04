@@ -26,14 +26,13 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.sml.decode;
+package org.n52.tasking.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.n52.tasking.data.ParseValueException;
 import org.n52.tasking.data.entity.Parameter;
-import org.n52.tasking.data.entity.QuantityParameter;
 import org.n52.tasking.data.entity.TaskingDescription;
 
 public class SimpleTextDecoder {

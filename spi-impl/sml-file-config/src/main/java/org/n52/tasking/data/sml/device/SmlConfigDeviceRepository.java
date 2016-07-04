@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
@@ -131,7 +132,14 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
 
     @Override
     public Device getDevice(String id) {
-        return deviceById.get(id).getDevice();
+        final SmlDevice smlDevice = getSmlDevice(id);
+        return smlDevice != null
+                ? smlDevice.getDevice()
+                : null;
+    }
+
+    public SmlDevice getSmlDevice(String id) {
+        return deviceById.get(id);
     }
 
     public void setFailOnParsingErrors(boolean failOnParsingErrors) {

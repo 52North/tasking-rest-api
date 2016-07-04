@@ -68,11 +68,16 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public Object getTask(String id) throws UnknownItemException {
+    public Resource getTask(String id) throws UnknownItemException {
         if (!this.taskRepository.hasTask(id)) {
             throw new UnknownItemException("Not found");
         }
-        return this.taskRepository.getTask(id);
+        Task task = this.taskRepository.getTask(id);
+        return Resource.aResource(task.getId())
+                .withProperty("taskStatus", task.getTaskStatus())
+                .withProperty("updatedAt", format(task.getUpdatedAt()))
+                .withProperty("submittedAt", format(task.getSubmittedAt()))
+                .withProperty("encodedParameters", task.getEncodedParameters().get());
     }
 
     public Resource createTask(CreateTask createTask, String fullUrl) throws UnknownItemException {

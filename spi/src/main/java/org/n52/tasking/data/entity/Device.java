@@ -30,9 +30,8 @@ package org.n52.tasking.data.entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public class Device {
 
@@ -127,6 +126,15 @@ public class Device {
         TaskingDescription taskingDescription = new TaskingDescription(name);
         taskingDescriptions.add(taskingDescription);
         return taskingDescription;
+    }
+
+    public Optional<TaskingDescription> findTaskingDescriptionBy(String parameters) {
+        Optional<TaskingDescription> foundDescription = taskingDescriptions.stream()
+                .filter(d ->  parameters.startsWith(d.getName()))
+                .findFirst();
+        return !foundDescription.isPresent()
+                ? Optional.of(taskingDescriptions.get(0))
+                : foundDescription;
     }
 
     public List<TaskingDescription> getTaskingDescriptions() {

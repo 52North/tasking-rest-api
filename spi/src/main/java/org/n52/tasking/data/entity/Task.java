@@ -29,12 +29,15 @@
 package org.n52.tasking.data.entity;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Task {
 
     private String id;
 
-    private String encodedParameters;
+    private String deviceId;
+
+    private Optional<String> encodedParameters;
 
     private long estimatedToC;
 
@@ -46,7 +49,7 @@ public class Task {
 
     private LocalDateTime updatedAt;
 
-    private String resultId;
+    private Optional<String> resultId;
 
     public Task(String id) {
         this.id = id;
@@ -60,12 +63,24 @@ public class Task {
         this.id = id;
     }
 
-    public String getEncodedParameters() {
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public boolean hasEncodedParameters() {
+        return encodedParameters.isPresent();
+    }
+
+    public Optional<String> getEncodedParameters() {
         return encodedParameters;
     }
 
     public void setEncodedParameters(String encodedParameters) {
-        this.encodedParameters = encodedParameters;
+        this.encodedParameters = Optional.of(encodedParameters);
     }
 
     public long getEstimatedToC() {
@@ -108,12 +123,12 @@ public class Task {
         this.updatedAt = updatedAt;
     }
 
-    public String getResultId() {
+    public Optional<String> getResultId() {
         return resultId;
     }
 
     public void setResultId(String resultId) {
-        this.resultId = resultId;
+        this.resultId = Optional.of(resultId);
     }
 
 

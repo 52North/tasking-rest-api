@@ -33,8 +33,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -44,9 +42,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.n52.tasking.data.ParseValueException;
 import org.n52.tasking.data.ServiceProviderInterfaceException;
+import org.n52.tasking.data.SimpleTextDecoder;
 import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.TaskingDescription;
-import org.n52.tasking.data.sml.decode.SimpleTextDecoder;
 import org.n52.tasking.data.sml.device.SmlDevice;
 import org.n52.tasking.data.sml.device.SmlWriter;
 import org.n52.tasking.data.sml.xml.XPathSmlParser;
@@ -56,7 +54,6 @@ import org.n52.tasking.data.sml.xml.XPathParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 public class SmlFileConfigWriter {
 
