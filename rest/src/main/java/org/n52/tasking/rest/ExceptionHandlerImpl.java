@@ -45,11 +45,11 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @ControllerAdvice
 public class ExceptionHandlerImpl {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandlerImpl.class);
 
     private static final String DEFAULT_ERROR_VIEW = "error";
-    
+
     private static final String BACKLINK = "href";
 
     @ExceptionHandler(value = Exception.class)
@@ -57,13 +57,13 @@ public class ExceptionHandlerImpl {
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         return createModelAndView(e, req);
     }
-    
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = UnknownItemException.class)
     public ModelAndView unknownResourceHandler(HttpServletRequest req, Exception e) throws Exception {
         return createModelAndView(e, req);
     }
-    
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = InputValidationException.class)
     public ModelAndView invalidInputHandler(HttpServletRequest req, Exception e) throws Exception {
