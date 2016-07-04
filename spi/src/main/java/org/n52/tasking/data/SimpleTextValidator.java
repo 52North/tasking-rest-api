@@ -26,22 +26,33 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-package org.n52.tasking.data.repository;
 
-import org.n52.tasking.data.entity.Task;
-import java.util.List;
-import org.n52.tasking.data.cmd.CreateTask;
+package org.n52.tasking.data;
+
+import java.util.Optional;
 import org.n52.tasking.data.entity.Device;
+import org.n52.tasking.data.entity.TaskingDescription;
 
-public interface TaskRepository {
+public class SimpleTextValidator {
 
-    Task createTask(Device device, CreateTask createTask);
+    private final Device device;
 
-    List<Task> getTasks();
+    public SimpleTextValidator(Device device) {
+        this.device = device;
+    }
 
-    List<Task> getTasks(String deviceId);
+    public void validate(String parameters) throws InputValidationException {
+        final Optional<TaskingDescription> foundDescription = device.findTaskingDescriptionBy(parameters);
+        if ( !foundDescription.isPresent()) {
+            throw new InputValidationException("No tasking description found for '" + parameters + "'");
+        }
+        TaskingDescription taskingDescription = foundDescription.get();
+        try {
+            SimpleTextDecoder decoder = new SimpleTextDecoder(taskingDescription);
+            decoder.decode(parameters);
+        } catch (ParseValueException e) {
+            throw new InputValidationException("Invalid parameters for '" + taskingDescription.getName() + "': " + parameters, e);
+        }
+    }
 
-    boolean hasTask(String taskId);
-
-    Task getTask(String taskId);
 }

@@ -29,6 +29,8 @@
         <!--<property name="dateFormat" value="yyyy-MM-dd'T'HH:mm:ss'Z'" />-->
     </bean>
     <bean class="org.n52.tasking.data.sml.task.InMemoryTaskRepository" name="taskRepository" />
-    <bean class="org.n52.tasking.data.sml.task.SmlFileConfigTaskRunner" name="taskRunner" destroy-method="shutdown"/>
+    <bean class="org.n52.tasking.data.sml.task.SmlFileConfigTaskRunner" name="taskRunner" destroy-method="shutdown" >
+        <property name="deviceRepository" ref="deviceRepository" />
+    </bean>
 
 </beans>

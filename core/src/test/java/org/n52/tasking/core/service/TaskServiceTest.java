@@ -29,19 +29,21 @@
 package org.n52.tasking.core.service;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.Executors;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.n52.tasking.data.InputValidationException;
 import org.n52.tasking.data.TaskRunner;
 import org.n52.tasking.data.cmd.CreateTask;
+import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.DeviceRepository;
 import org.n52.tasking.data.repository.TaskRepository;
@@ -84,7 +86,9 @@ public class TaskServiceTest {
         when(deviceRepository.hasDevice(deviceId)).thenReturn(true);
         final CreateTask createTask = new CreateTask(deviceId, "params");
         Task task = mockRepositoryTaskFor(createTask);
-        Resource resource = taskService.createTask(createTask, "http://localhost/tasks");
+
+        TaskService service = new TaskServiceSeam(taskRunnerMock);
+        Resource resource = service.createTask(createTask, "http://localhost/tasks");
         Assert.assertThat(resource.getProperties().get("href"), is("http://localhost/tasks/" + deviceId));
         verify(taskRunnerMock).asyncExec(task);
     }
@@ -94,8 +98,21 @@ public class TaskServiceTest {
         task.setSubmittedAt(LocalDateTime.now());
         task.setUpdatedAt(LocalDateTime.now());
         task.setEncodedParameters(createTask.getParameters());
-        when(taskRepository.createTask(createTask)).thenReturn(task);
+        when(taskRepository.createTask(any(), eq(createTask))).thenReturn(task);
         return task;
+    }
+
+    private static class TaskServiceSeam extends TaskService {
+
+        public TaskServiceSeam(TaskRunner taskRunner) {
+            super(taskRunner);
+        }
+
+        @Override
+        protected Device validateInput(CreateTask createTask) throws InputValidationException, UnknownItemException {
+            return new Device("deviceId", "label", "description");
+        }
+
     }
 
 }

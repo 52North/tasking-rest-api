@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.n52.tasking.data.cmd.CreateTask;
+import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.TaskRepository;
 
@@ -47,14 +48,15 @@ public class InMemoryTaskRepository implements TaskRepository {
     }
 
     @Override
-    public Task createTask(CreateTask createTask) {
+    public Task createTask(Device device, CreateTask createTask) {
         Task task = new Task(UUID.randomUUID().toString());
         task.setEncodedParameters(createTask.getParameters());
-        addTaskForDevice(createTask.getId(), task);
+        addTaskForDevice(device.getId(), task);
         return task;
     }
 
     private void addTaskForDevice(String deviceId, Task task) {
+        task.setDeviceId(deviceId);
         if ( !tasksByDevice.containsKey(deviceId)) {
             tasksByDevice.put(deviceId, new ArrayList<>());
         }

@@ -33,8 +33,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.n52.tasking.data.InputValidationException;
 import org.n52.tasking.data.TaskRunner;
 import org.n52.tasking.data.cmd.CreateTask;
+import org.n52.tasking.data.entity.Device;
 import org.n52.tasking.data.entity.Task;
 import org.n52.tasking.data.repository.DeviceRepository;
 import org.n52.tasking.data.repository.TaskRepository;
@@ -80,20 +82,26 @@ public class TaskService {
                 .withProperty("encodedParameters", task.getEncodedParameters().get());
     }
 
-    public Resource createTask(CreateTask createTask, String fullUrl) throws UnknownItemException {
-        final String deviceId = createTask.getId();
-        if ( !this.deviceRepository.hasDevice(deviceId)) {
-            throw new UnknownItemException("Device does not exist: '" + deviceId + "'.");
-        }
-
-        Task task = this.taskRepository.createTask(createTask);
+    public Resource createTask(CreateTask createTask, String fullUrl) throws UnknownItemException, InputValidationException {
+        Device device = validateInput(createTask);
+        Task task = taskRepository.createTask(device, createTask);
         taskRunner.asyncExec(task);
 
         return Resource.aResource(task.getId())
                 .withProperty("taskStatus", task.getTaskStatus())
-                .withProperty("submittedAt", format(task.getSubmittedAt()))
                 .withProperty("updatedAt", format(task.getUpdatedAt()))
+                .withProperty("submittedAt", format(task.getSubmittedAt()))
                 .withHref(createHref(fullUrl, task.getId()));
+    }
+
+    protected Device validateInput(CreateTask createTask) throws InputValidationException, UnknownItemException {
+        final String deviceId = createTask.getId();
+        if ( !this.deviceRepository.hasDevice(deviceId)) {
+            throw new UnknownItemException("Device does not exist: '" + deviceId + "'.");
+        }
+        Device device = deviceRepository.getDevice(deviceId);
+        device.validate(createTask.getParameters());
+        return device;
     }
 
     private String format(LocalDateTime dateTime) {

@@ -16,7 +16,7 @@
 
     <mvc:annotation-driven />
     <ctx:annotation-config />
-    
+
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
         <!-- TODO @Autowire object mapper -->
         <property name="serializationInclusion" value="NON_NULL" />

@@ -32,8 +32,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.n52.tasking.data.InputValidationException;
+import org.n52.tasking.data.SimpleTextValidator;
 
 public class Device {
+
+    private final SimpleTextValidator validator;
 
     private String id;
 
@@ -56,6 +60,7 @@ public class Device {
         this.label = label;
         this.description = description;
         this.taskingDescriptions = new ArrayList<>();
+        this.validator = new SimpleTextValidator(this);
     }
 
     public String getId() {
@@ -120,6 +125,10 @@ public class Device {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    public void validate(String inputParameters) throws InputValidationException {
+        this.validator.validate(inputParameters);
     }
 
     public TaskingDescription addNewTaskingDescription(String name) {
