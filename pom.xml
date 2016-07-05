@@ -500,12 +500,12 @@
             <id>snapshot-dist</id>
             <distributionManagement>
                 <repository>
-                    <id>n52-releases</id>
+                    <id>n52-releases-dist</id>
                     <name>repository for 52North releases</name>
                     <url>https://52north.org/maven/repo/releases</url>
                 </repository>
                 <snapshotRepository>
-                    <id>n52-snapshots</id>
+                    <id>n52-snapshots-dist</id>
                     <name>repository for 52North snapshots</name>
                     <url>https://52north.org/maven/repo/snapshots</url>
                 </snapshotRepository>
