@@ -136,19 +136,19 @@ public class SmlConfigDeviceRepository implements DeviceRepository {
                 ? smlDevice.getDevice()
                 : null;
     }
-    
+
     public void updateDevice(SmlDevice smlDevice) throws ParseException {
         final File file = smlDevice.getSmlConfigFile();
         String deviceId = smlDevice.getDevice().getId();
         LOGGER.debug("updating device '{}'", deviceId);
-        
+
         DeviceParser parser = new DeviceParser(file);
         Device device = parser.parse();
         device.setId(deviceId);
         addOrUpdate(new SmlDevice(device, file));
-        
+
     }
-    
+
     private void addOrUpdate(SmlDevice smlDevice) {
         deviceById.put(smlDevice.getDevice().getId(), smlDevice);
     }
