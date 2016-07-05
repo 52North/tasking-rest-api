@@ -51,12 +51,17 @@ public class DeviceService {
                 .collect(Collectors.toList());
     }
 
-    public Device getDevice(String id) throws UnknownItemException {
+    public Resource getDevice(String id) throws UnknownItemException {
         if (!this.repository.hasDevice(id)) {
             throw new UnknownItemException("Not found");
         }
 
-        return this.repository.getDevice(id);
+        Device device = this.repository.getDevice(id);
+        return Resource.aResource(device.getId())
+                .withLabel(device.getLabel())
+                .withDescription(device.getDescription())
+                .withProperty("domainId", device.getDomainId())
+                .withProperty("taskingDescriptions", device.getTaskingDescriptions());
     }
 
     public DeviceRepository getRepository() {
