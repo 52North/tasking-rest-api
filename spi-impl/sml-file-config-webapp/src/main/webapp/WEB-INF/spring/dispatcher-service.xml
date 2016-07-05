@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <mvc:annotation-driven />
+    <ctx:annotation-config />
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <!-- TODO @Autowire object mapper -->
+        <property name="serializationInclusion" value="NON_NULL" />
+    </bean>
+
+    <!-- MVC beans -->
+    <bean class="org.n52.tasking.rest.ResourcesController" />
+    <bean class="org.n52.tasking.rest.ExceptionHandlerImpl" />
+    <bean class="org.n52.tasking.rest.service.DeviceController" />
+    <bean class="org.n52.tasking.rest.service.TaskController" />
+    <bean class="org.n52.tasking.rest.service.ResultsController" />
+
+<!--    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <util:list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            </util:list>
+        </property>
+    </bean>-->
+
+    <bean id="jsonViewResolver" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+        <property name="extractValueFromSingleKeyModel" value="true" />
+        <property name="objectMapper" ref="objectMapper" />
+    </bean>
+
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="defaultContentType" value="application/json" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="defaultViews">
+            <util:list>
+                <ref bean="jsonViewResolver" />
+            </util:list>
+        </property>
+    </bean>
+</beans>

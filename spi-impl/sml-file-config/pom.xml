@@ -3,22 +3,33 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.n52.tasking-api</groupId>
-        <artifactId>tasking-rest-api</artifactId>
+        <artifactId>spi-impl</artifactId>
         <version>1-SNAPSHOT</version>
     </parent>
-    <artifactId>core</artifactId>
+    <artifactId>sml-file-config</artifactId>
     <packaging>jar</packaging>
-    <name>Tasking REST API - core module</name>
+    <name>Tasking REST API - sml-file-config module</name>
     <url>http://52north.org/communities/sensorweb/</url>
+    
+    <properties>
+        <exificient.version>0.9.6</exificient.version>
+    </properties>
+    
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>spi</artifactId>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
         
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
+            <groupId>com.siemens.ct.exi</groupId>
+            <artifactId>exificient</artifactId>
+            <version>${exificient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
         </dependency>
         
         <dependency>
@@ -26,12 +37,19 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
