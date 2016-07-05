@@ -29,6 +29,7 @@
 package org.n52.tasking.data;
 
 public enum TaskStatus {
+    ERROR,
     RUNNING,
     CANCELED,
     FINISHED;

@@ -54,7 +54,6 @@ public class SmlDevice {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.device);
         hash = 59 * hash + Objects.hashCode(this.smlConfigFile);
         return hash;
     }
@@ -71,9 +70,6 @@ public class SmlDevice {
             return false;
         }
         final SmlDevice other = (SmlDevice) obj;
-        if (!Objects.equals(this.device, other.device)) {
-            return false;
-        }
         if (!Objects.equals(this.smlConfigFile, other.smlConfigFile)) {
             return false;
         }
