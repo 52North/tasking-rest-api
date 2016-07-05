@@ -465,4 +465,29 @@
         </pluginManagement>
     </build>
 
+    <profiles>
+        <profile>
+            <id>snapshot-dist</id>
+            <distributionManagement>
+                <repository>
+                    <id>n52-releases-dist</id>
+                    <name>repository for 52North releases</name>
+                    <url>dav:https://52north.org/maven/repo/releases</url>
+                </repository>
+                <snapshotRepository>
+                    <id>n52-snapshots-dist</id>
+                    <name>repository for 52North snapshots</name>
+                    <url>dav:https://52north.org/maven/repo/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <repository>
+            <id>n52-releases</id>
+            <name>52n Releases</name>
+            <url>https://52north.org/maven/repo/releases/</url>
+        </repository>
+    </repositories>
 </project>
