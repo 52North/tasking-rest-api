@@ -51,7 +51,7 @@ public class SimpleTextValidator {
             SimpleTextDecoder decoder = new SimpleTextDecoder(taskingDescription);
             decoder.decode(parameters);
         } catch (ParseValueException e) {
-            throw new InputValidationException("Invalid parameters for '" + taskingDescription.getName() + "': " + parameters, e);
+            throw new InputValidationException("Invalid parameters: " + e.getMessage(), e);
         }
     }
 

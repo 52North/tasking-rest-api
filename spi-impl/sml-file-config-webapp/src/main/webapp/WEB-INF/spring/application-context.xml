@@ -32,8 +32,8 @@
     <bean class="org.n52.tasking.data.sml.task.SmlFileConfigTaskRunner" name="taskRunner" destroy-method="shutdown" >
         <property name="deviceRepository" ref="deviceRepository" />
     </bean>
-    
-    
+
+
     <bean class="org.n52.tasking.core.service.ResultService" name="resultService" />
 
 </beans>
