@@ -437,6 +437,21 @@
                 </plugin>
 
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <configuration>
+                        <rules>
+                            <requireNoRepositories>
+                                <allowedRepositories>
+                                    <id>n52-releases</id>
+                                    <id>n52-snapshots</id>
+                                </allowedRepositories>
+                            </requireNoRepositories>
+                        </rules>
+                    </configuration>
+                </plugin>
+
+                <plugin>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.2</version>
                     <configuration>
@@ -480,17 +495,17 @@
                 </plugins>
             </build>
         </profile>
-        
+
         <profile>
             <id>snapshot-dist</id>
             <distributionManagement>
                 <repository>
-                    <id>n52-releases-dist</id>
+                    <id>n52-releases</id>
                     <name>repository for 52North releases</name>
                     <url>dav:https://52north.org/maven/repo/releases</url>
                 </repository>
                 <snapshotRepository>
-                    <id>n52-snapshots-dist</id>
+                    <id>n52-snapshots</id>
                     <name>repository for 52North snapshots</name>
                     <url>dav:https://52north.org/maven/repo/snapshots</url>
                 </snapshotRepository>
