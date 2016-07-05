@@ -40,7 +40,7 @@ public class DeviceService {
 
     public List<Resource> getDevices(String fullUrl) {
         final Function<Device, Resource> toResource =  dm
-                -> Resource.aResource(dm.getDomainId())
+                -> Resource.aResource(dm.getId())
                 .withLabel(dm.getLabel())
                 .withDescription(dm.getDescription())
                 .withHref(String.format("%s/%s", fullUrl, dm.getId()));
@@ -51,7 +51,7 @@ public class DeviceService {
                 .collect(Collectors.toList());
     }
 
-    public Object getDevice(String id) throws UnknownItemException {
+    public Device getDevice(String id) throws UnknownItemException {
         if (!this.repository.hasDevice(id)) {
             throw new UnknownItemException("Not found");
         }
