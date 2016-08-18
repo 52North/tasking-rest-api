@@ -498,6 +498,17 @@
 
         <profile>
             <id>snapshot-dist</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.wagon</groupId>
+                            <artifactId>wagon-webdav-jackrabbit</artifactId>
+                            <version>2.10</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
             <distributionManagement>
                 <repository>
                     <id>n52-releases-dist</id>
@@ -512,12 +523,4 @@
             </distributionManagement>
         </profile>
     </profiles>
-
-    <repositories>
-        <repository>
-            <id>n52-releases</id>
-            <name>52n Releases</name>
-            <url>https://52north.org/maven/repo/releases/</url>
-        </repository>
-    </repositories>
 </project>
