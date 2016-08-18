@@ -1,8 +1,17 @@
-Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
+Licensed under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License. You may obtain a copy of the License at:
 
-Licensed under GNU General Public License, Version 2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-This project includes: 
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on
+an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied. See the License for the
+specific language governing permissions and limitations
+under the License.
+
+This project includes:
   AOP alliance under Public Domain
   Apache Commons Logging under The Apache Software License, Version 2.0
   Commons IO under The Apache Software License, Version 2.0
@@ -12,7 +21,6 @@ This project includes:
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
   Java Property Utility under The Apache Software License, Version 2.0
-  Java Servlet API under CDDL 1.1 or GPL2 w/ CPE
   JUnit under Eclipse Public License 1.0
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
@@ -26,9 +34,8 @@ This project includes:
   Spring Expression Language (SpEL) under The Apache Software License, Version 2.0
   Spring Web under The Apache Software License, Version 2.0
   Spring Web MVC under The Apache Software License, Version 2.0
-  Tasking REST API under GNU General Public License, Version 2.0
   Tasking REST API - core module under GNU General Public License, Version 2.0
-  Tasking REST API - REST module under GNU General Public License, version 2
+  Tasking REST API - REST module under GNU General Public License, Version 2.0
   Tasking REST API - SML File Config Webapp under GNU General Public License, Version 2.0
   Tasking REST API - sml-file-config module under GNU General Public License, Version 2.0
   Tasking REST API - spi impl modules under GNU General Public License, Version 2.0
